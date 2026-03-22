@@ -20,6 +20,7 @@ interface Module {
   name: string;
   criteria: string;
   game: string;
+  exercise?: string;
   type: "quiz" | "simulator" | "race" | "builder" | "debug" | "boss";
   description: string;
 }
@@ -40,18 +41,18 @@ const WORLDS: World[] = [
   {
     id: 1, name: "Monde 1", title: "Explorer les ADT", lo: "LO1", emoji: "🗺️", color: PURPLE, glow: "#7C3AED30",
     modules: [
-      { num: 1, name: "Design Specification", criteria: "P1", game: "/monde-1/ch1-design-spec", type: "quiz", description: "Associez les opérations aux bons ADT" },
-      { num: 2, name: "Memory Stack", criteria: "P2", game: "/monde-1/ch2-memory-stack", type: "simulator", description: "Simulez le call stack pas à pas" },
-      { num: 3, name: "Queue FIFO + Tri", criteria: "M1/M2", game: "/monde-1/ch3-fifo-sorting", type: "race", description: "File d'attente + course Bubble vs Quick" },
-      { num: 4, name: "Shortest Path", criteria: "D1", game: "/monde-1/ch4-shortest-path", type: "simulator", description: "Trouvez le chemin avec Dijkstra" },
+      { num: 1, name: "Design Specification", criteria: "P1", game: "/monde-1/ch1-design-spec", exercise: "/exercice/ch1", type: "quiz", description: "Associez les opérations aux bons ADT" },
+      { num: 2, name: "Memory Stack", criteria: "P2", game: "/monde-1/ch2-memory-stack", exercise: "/exercice/ch2", type: "simulator", description: "Simulez le call stack pas à pas" },
+      { num: 3, name: "Queue FIFO + Tri", criteria: "M1/M2", game: "/monde-1/ch3-fifo-sorting", exercise: "/exercice/ch3", type: "race", description: "File d'attente + course Bubble vs Quick" },
+      { num: 4, name: "Shortest Path", criteria: "D1", game: "/monde-1/ch4-shortest-path", exercise: "/exercice/ch4", type: "simulator", description: "Trouvez le chemin avec Dijkstra" },
     ],
     boss: { route: "/monde-1/boss-lo1", name: "Boss LO1" },
   },
   {
     id: 2, name: "Monde 2", title: "Notation formelle", lo: "LO2", emoji: "📜", color: TEAL, glow: "#0891B230",
     modules: [
-      { num: 5, name: "Spec d'un Stack", criteria: "P3", game: "/monde-2/ch5-formal-spec", type: "builder", description: "Construisez la spécification formelle" },
-      { num: 6, name: "Encapsulation", criteria: "M3", game: "/monde-2/ch6-encapsulation", type: "quiz", description: "Private, public, information hiding" },
+      { num: 5, name: "Spec d'un Stack", criteria: "P3", game: "/monde-2/ch5-formal-spec", exercise: "/exercice/ch5", type: "builder", description: "Construisez la spécification formelle" },
+      { num: 6, name: "Encapsulation", criteria: "M3", game: "/monde-2/ch6-encapsulation", exercise: "/exercice/ch6", type: "quiz", description: "Private, public, information hiding" },
       { num: 7, name: "ADT → POO", criteria: "D2", game: "/monde-2/ch7-adt-oop", type: "quiz", description: "Les 5 arguments : ADT base de la POO" },
     ],
     boss: { route: "/monde-2/boss-lo2", name: "Boss LO2" },
@@ -59,19 +60,19 @@ const WORLDS: World[] = [
   {
     id: 3, name: "Monde 3", title: "Implémenter", lo: "LO3", emoji: "⚙️", color: ORANGE, glow: "#F9731630",
     modules: [
-      { num: 8, name: "LinkedList + HashMap", criteria: "P4a", game: "/monde-3/ch8-linkedlist-hashmap", type: "simulator", description: "Manipulez les structures en temps réel" },
-      { num: 9, name: "Tree + Sorting", criteria: "P4b", game: "/monde-3/ch9-queue-tree-sort", type: "simulator", description: "Parcours d'arbre + tri pas à pas" },
-      { num: 10, name: "Exceptions + JUnit", criteria: "P5", game: "/monde-3/ch10-exceptions-junit", type: "debug", description: "Chassez les bugs + quiz JUnit 5" },
-      { num: 11, name: "ADT + Big O", criteria: "M4/D3", game: "/monde-3/ch11-adt-bigo", type: "quiz", description: "Identifiez la complexité du code" },
+      { num: 8, name: "LinkedList + HashMap", criteria: "P4a", game: "/monde-3/ch8-linkedlist-hashmap", exercise: "/exercice/ch8", type: "simulator", description: "Manipulez les structures en temps réel" },
+      { num: 9, name: "Tree + Sorting", criteria: "P4b", game: "/monde-3/ch9-queue-tree-sort", exercise: "/exercice/ch9", type: "simulator", description: "Parcours d'arbre + tri pas à pas" },
+      { num: 10, name: "Exceptions + JUnit", criteria: "P5", game: "/monde-3/ch10-exceptions-junit", exercise: "/exercice/ch10", type: "debug", description: "Chassez les bugs + quiz JUnit 5" },
+      { num: 11, name: "ADT + Big O", criteria: "M4/D3", game: "/monde-3/ch11-adt-bigo", exercise: "/exercice/ch11", type: "quiz", description: "Identifiez la complexité du code" },
     ],
     boss: { route: "/monde-3/boss-lo3", name: "Boss LO3" },
   },
   {
     id: 4, name: "Monde 4", title: "Évaluer l'efficacité", lo: "LO4", emoji: "📊", color: GREEN, glow: "#16A34A30",
     modules: [
-      { num: 12, name: "Analyse asymptotique", criteria: "P6", game: "/monde-4/ch12-asymptotic", type: "quiz", description: "O, Omega, Theta — 10 questions" },
-      { num: 13, name: "Mesurer l'efficacité", criteria: "P7", game: "/monde-4/ch13-efficiency", type: "quiz", description: "Benchmark temps + mémoire" },
-      { num: 14, name: "Trade-offs", criteria: "M5/D4", game: "/monde-4/ch14-tradeoffs", type: "quiz", description: "Compromis et indépendance" },
+      { num: 12, name: "Analyse asymptotique", criteria: "P6", game: "/monde-4/ch12-asymptotic", exercise: "/exercice/ch12", type: "quiz", description: "O, Omega, Theta — 10 questions" },
+      { num: 13, name: "Mesurer l'efficacité", criteria: "P7", game: "/monde-4/ch13-efficiency", exercise: "/exercice/ch13", type: "quiz", description: "Benchmark temps + mémoire" },
+      { num: 14, name: "Trade-offs", criteria: "M5/D4", game: "/monde-4/ch14-tradeoffs", exercise: "/exercice/ch14", type: "quiz", description: "Compromis et indépendance" },
     ],
     boss: { route: "/monde-4/boss-lo4", name: "Boss LO4" },
   },
@@ -86,8 +87,8 @@ const typeLabels: Record<string, string> = {
 
 function ModuleCard({ m, color }: { m: Module; color: string }) {
   return (
-    <Link href={m.game} style={{ display: "block", textDecoration: "none", background: CARD, border: `1px solid ${BORDER}`, borderRadius: 12, padding: "14px 16px", transition: "border-color 0.2s, transform 0.2s", cursor: "pointer" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
+    <div style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 12, padding: "14px 16px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
         <span style={{ width: 32, height: 32, borderRadius: 8, background: `${color}20`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16 }}>{typeIcons[m.type]}</span>
         <div style={{ flex: 1 }}>
           <div style={{ fontSize: 14, fontWeight: 600, color: TEXT }}>Ch.{m.num} — {m.name}</div>
@@ -95,10 +96,19 @@ function ModuleCard({ m, color }: { m: Module; color: string }) {
             <span style={{ color, fontWeight: 600 }}>{m.criteria}</span> · {typeLabels[m.type]}
           </div>
         </div>
-        <span style={{ fontSize: 18, color: `${color}80` }}>→</span>
       </div>
-      <div style={{ fontSize: 12, color: MUTED, lineHeight: 1.4 }}>{m.description}</div>
-    </Link>
+      <div style={{ fontSize: 12, color: MUTED, lineHeight: 1.4, marginBottom: 10 }}>{m.description}</div>
+      <div style={{ display: "flex", gap: 6 }}>
+        <Link href={m.game} style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 4, padding: "8px", borderRadius: 8, background: `${color}15`, border: `1px solid ${color}30`, color, fontWeight: 600, fontSize: 12, textDecoration: "none" }}>
+          🎮 Mini-jeu
+        </Link>
+        {m.exercise && (
+          <Link href={m.exercise} style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 4, padding: "8px", borderRadius: 8, background: `${TEAL}15`, border: `1px solid ${TEAL}30`, color: TEAL, fontWeight: 600, fontSize: 12, textDecoration: "none" }}>
+            ✏️ Exercice
+          </Link>
+        )}
+      </div>
+    </div>
   );
 }
 
