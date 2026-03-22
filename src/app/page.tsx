@@ -12,7 +12,7 @@ const WORLDS = [
     chapters: [
       { id: "ch1-design-spec", name: "Ch.1 — Design Specification (P1)", status: "ready" },
       { id: "ch2-memory-stack", name: "Ch.2 — Memory Stack (P2)", status: "ready" },
-      { id: "ch3-fifo-sorting", name: "Ch.3 — FIFO Queue + Sorting (M1/M2)", status: "coming" },
+      { id: "ch3-fifo-sorting", name: "Ch.3 — FIFO Queue + Sorting (M1/M2)", status: "ready" },
       { id: "ch4-shortest-path", name: "Ch.4 — Shortest Path (D1)", status: "coming" },
     ],
   },
