@@ -193,7 +193,7 @@ export default function Ch4Game() {
       {!showResult ? (
         <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
           <button onClick={() => setStepIdx(Math.max(0, stepIdx - 1))} disabled={stepIdx === 0}
-            style={{ padding: "8px 20px", border: "1px solid #E2E8F0", borderRadius: 8, background: "white", cursor: stepIdx === 0 ? "default" : "pointer", opacity: stepIdx === 0 ? 0.4 : 1, fontSize: 14, fontWeight: 600 }}>← Précédent</button>
+            style={{ padding: "8px 20px", border: "1px solid #E2E8F0", borderRadius: 8, background: "#111827", cursor: stepIdx === 0 ? "default" : "pointer", opacity: stepIdx === 0 ? 0.4 : 1, fontSize: 14, fontWeight: 600 }}>← Précédent</button>
           {isLastStep ? (
             <button onClick={() => setShowResult(true)}
               style={{ padding: "8px 20px", border: "none", borderRadius: 8, background: "#7C3AED", color: "white", fontSize: 14, fontWeight: 600, cursor: "pointer" }}>Voir le résultat</button>

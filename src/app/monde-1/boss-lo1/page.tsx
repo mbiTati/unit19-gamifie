@@ -134,7 +134,7 @@ export default function BossLO1() {
         {q.options.map((opt, idx) => {
           const isCorrect = idx === q.correctIndex;
           const isSelected = selected === idx;
-          let bg = "white", border = "#1E3A5F";
+          let bg = "#111827", border = "#1E3A5F";
           if (showFeedback) {
             if (isCorrect) { bg = "#F0FDF4"; border = "#16A34A"; }
             else if (isSelected) { bg = "#FEF2F2"; border = "#DC2626"; }
@@ -149,7 +149,7 @@ export default function BossLO1() {
       </div>
       {showFeedback && (
         <>
-          <div style={{ marginTop: 10, padding: "8px 12px", background: "#F0FDF4", borderRadius: 8, fontSize: 13, color: "#166534", border: "1px solid #86EFAC" }}>{q.explanation}</div>
+          <div style={{ marginTop: 10, padding: "8px 12px", background: "#16A34A15", borderRadius: 8, fontSize: 13, color: "#16A34A", border: "1px solid #16A34A40" }}>{q.explanation}</div>
           <button onClick={next} style={{ marginTop: 10, width: "100%", padding: "10px", background: "#DC2626", color: "white", border: "none", borderRadius: 8, fontWeight: 600, cursor: "pointer", fontSize: 15 }}>
             {current + 1 < questions.length ? "Suivant →" : "Résultats"}
           </button>

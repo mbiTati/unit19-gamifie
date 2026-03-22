@@ -127,7 +127,7 @@ export default function Ch2Game() {
         <div style={{ flex: 1 }}>
           <div style={{ background: "#F0FDF4", border: "1px solid #86EFAC", borderRadius: 10, padding: "1rem" }}>
             <div style={{ fontSize: 13, fontWeight: 600, color: "#166534", marginBottom: 4 }}>Explication :</div>
-            <div style={{ fontSize: 14, color: "#334155", lineHeight: 1.5 }}>{step.explanation}</div>
+            <div style={{ fontSize: 14, color: "#E2E8F0", lineHeight: 1.5 }}>{step.explanation}</div>
           </div>
           <div style={{ marginTop: 12, fontSize: 12, color: "#64748B" }}>
             Profondeur : <strong>{step.stack.length}</strong> frame{step.stack.length > 1 ? "s" : ""}
@@ -139,7 +139,7 @@ export default function Ch2Game() {
       {/* Navigation */}
       <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
         <button onClick={() => setStepIdx(Math.max(0, stepIdx - 1))} disabled={stepIdx === 0}
-          style={{ padding: "0.6rem 1.5rem", border: "1px solid #E2E8F0", borderRadius: 8, background: "white", cursor: stepIdx === 0 ? "default" : "pointer", opacity: stepIdx === 0 ? 0.4 : 1, fontSize: 14, fontWeight: 600, color: "#334155" }}>
+          style={{ padding: "0.6rem 1.5rem", border: "1px solid #E2E8F0", borderRadius: 8, background: "#111827", cursor: stepIdx === 0 ? "default" : "pointer", opacity: stepIdx === 0 ? 0.4 : 1, fontSize: 14, fontWeight: 600, color: "#E2E8F0" }}>
           ← Précédent
         </button>
         <button onClick={() => setStepIdx(Math.min(scenario.steps.length - 1, stepIdx + 1))} disabled={stepIdx === scenario.steps.length - 1}

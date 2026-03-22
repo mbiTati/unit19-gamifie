@@ -39,7 +39,7 @@ export default function Ch10Game() {
         <p style={{ color: "#64748B", fontSize: 16 }}>Critère P5 — Error handling et tests</p>
       </div>
       <div style={{ display: "grid", gap: 16 }}>
-        <button onClick={() => { setMode("debug"); setBugIdx(0); setShowFix(false); }} style={{ padding: "1.5rem", border: "2px solid #DC2626", borderRadius: 12, background: "#DC262620", cursor: "pointer", textAlign: "left" as const }}>
+        <button onClick={() => { setMode("debug"); setBugIdx(0); setShowFix(false); }} style={{ padding: "1.5rem", border: "2px solid #DC2626", borderRadius: 12, background: "#DC262615", cursor: "pointer", textAlign: "left" as const }}>
           <div style={{ fontSize: 20, fontWeight: 600, color: "#DC2626" }}>Jeu 1 — Chasseur de bugs</div>
           <div style={{ fontSize: 14, color: "#64748B", marginTop: 4 }}>5 bugs classiques Java — trouvez l'erreur et le fix</div>
         </button>
@@ -57,7 +57,7 @@ export default function Ch10Game() {
       <div style={{ minHeight: "100vh", background: "#0B1120", color: "#E2E8F0", padding: "1.5rem 1rem", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
         <button onClick={() => setMode("menu")} style={{ fontSize: 13, color: "#64748B", background: "none", border: "none", cursor: "pointer", marginBottom: 8 }}>← Retour</button>
         <div style={{ fontSize: 13, color: "#64748B", marginBottom: 8 }}>Bug {bugIdx + 1}/{BUGS.length}</div>
-        <div style={{ background: "#DC262620", border: "2px solid #DC2626", borderRadius: 10, padding: "10px 14px", marginBottom: 12 }}>
+        <div style={{ background: "#DC262615", border: "2px solid #DC2626", borderRadius: 10, padding: "10px 14px", marginBottom: 12 }}>
           <span style={{ fontWeight: 700, color: "#DC2626", fontSize: 16 }}>{bug.title}</span>
           <span style={{ fontSize: 12, color: "#64748B", marginLeft: 8 }}>({bug.concept})</span>
         </div>
@@ -72,8 +72,8 @@ export default function Ch10Game() {
           <button onClick={() => setShowFix(true)} style={{ width: "100%", padding: "10px", background: "#DC2626", color: "white", border: "none", borderRadius: 8, fontWeight: 600, cursor: "pointer", fontSize: 14 }}>Voir l'explication + fix</button>
         ) : (
           <>
-            <div style={{ background: "#16A34A20", border: "1px solid #86EFAC", borderRadius: 8, padding: "10px 14px", marginBottom: 8 }}>
-              <div style={{ fontWeight: 600, color: "#166534", fontSize: 14, marginBottom: 4 }}>Explication :</div>
+            <div style={{ background: "#16A34A15", border: "1px solid #16A34A40", borderRadius: 8, padding: "10px 14px", marginBottom: 8 }}>
+              <div style={{ fontWeight: 600, color: "#16A34A", fontSize: 14, marginBottom: 4 }}>Explication :</div>
               <div style={{ fontSize: 13, color: "#1E3A5F" }}>{bug.explanation}</div>
             </div>
             <div style={{ background: "#1E293B", borderRadius: 8, padding: "10px 14px", marginBottom: 12 }}>
@@ -108,14 +108,14 @@ export default function Ch10Game() {
       <p style={{ fontSize: 16, fontWeight: 600, color: "#1E3A5F", marginBottom: 12 }}>{q.question}</p>
       <div style={{ display: "grid", gap: 8 }}>
         {q.options.map((opt, idx) => {
-          let bg = "white", border = "#1E3A5F";
+          let bg = "#111827", border = "#1E3A5F";
           if (showFeedback) { if (idx === q.correctIndex) { bg = "#F0FDF4"; border = "#16A34A"; } else if (idx === selected) { bg = "#FEF2F2"; border = "#DC2626"; } }
           return <button key={idx} onClick={() => { if (showFeedback) return; setSelected(idx); setShowFeedback(true); if (idx === q.correctIndex) setScore(s => s + 1); }} disabled={showFeedback} style={{ padding: "10px 14px", border: `2px solid ${border}`, borderRadius: 8, background: bg, cursor: showFeedback ? "default" : "pointer", textAlign: "left" as const, fontSize: 14 }}>{opt}</button>;
         })}
       </div>
       {showFeedback && (
         <>
-          <div style={{ marginTop: 10, padding: "8px 12px", background: "#16A34A20", borderRadius: 8, fontSize: 13, color: "#166534", border: "1px solid #86EFAC" }}>{q.explanation}</div>
+          <div style={{ marginTop: 10, padding: "8px 12px", background: "#16A34A15", borderRadius: 8, fontSize: 13, color: "#16A34A", border: "1px solid #16A34A40" }}>{q.explanation}</div>
           <button onClick={() => { setQuizIdx(i => i + 1); setSelected(null); setShowFeedback(false); }} style={{ marginTop: 10, width: "100%", padding: "10px", background: "#7C3AED", color: "white", border: "none", borderRadius: 8, fontWeight: 600, cursor: "pointer" }}>Suivant →</button>
         </>
       )}

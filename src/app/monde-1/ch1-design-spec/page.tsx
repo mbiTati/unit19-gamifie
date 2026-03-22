@@ -250,7 +250,7 @@ export default function Ch1Game() {
           Meilleure série : {maxStreak} {maxStreak > 3 ? "🔥" : ""}
         </div>
         <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
-          <button onClick={() => setPhase("menu")} style={{ padding: "0.75rem 1.5rem", border: "2px solid #028090", borderRadius: 8, background: "white", color: "#028090", fontWeight: 600, cursor: "pointer", fontSize: 15 }}>Retour au menu</button>
+          <button onClick={() => setPhase("menu")} style={{ padding: "0.75rem 1.5rem", border: "2px solid #028090", borderRadius: 8, background: "#111827", color: "#028090", fontWeight: 600, cursor: "pointer", fontSize: 15 }}>Retour au menu</button>
           <button onClick={startQuizADT} style={{ padding: "0.75rem 1.5rem", border: "none", borderRadius: 8, background: "#028090", color: "white", fontWeight: 600, cursor: "pointer", fontSize: 15 }}>Rejouer</button>
         </div>
       </div>
@@ -282,7 +282,7 @@ export default function Ch1Game() {
             const isCorrect = choice === q.operation.correctADT;
             const isSelected = selected === idx;
             let borderColor = adt.color;
-            let bg = "white";
+            let bg = "#111827";
             if (showFeedback) {
               if (isCorrect) { borderColor = "#16A34A"; bg = "#F0FDF4"; }
               else if (isSelected && !isCorrect) { borderColor = "#DC2626"; bg = "#FEF2F2"; }
@@ -336,14 +336,14 @@ export default function Ch1Game() {
             const isCorrect = idx === q.correctIndex;
             const isSelected = selected === idx;
             let borderColor = "#E2E8F0";
-            let bg = "white";
+            let bg = "#111827";
             if (showFeedback) {
               if (isCorrect) { borderColor = "#16A34A"; bg = "#F0FDF4"; }
               else if (isSelected) { borderColor = "#DC2626"; bg = "#FEF2F2"; }
             }
             return (
               <button key={idx} onClick={() => handleAnswer(idx, isCorrect)} disabled={showFeedback}
-                style={{ padding: "0.75rem 1rem", border: `2px solid ${borderColor}`, borderRadius: 10, background: bg, cursor: showFeedback ? "default" : "pointer", textAlign: "left" as const, fontSize: 15, color: "#334155", transition: "all 0.2s" }}>
+                style={{ padding: "0.75rem 1rem", border: `2px solid ${borderColor}`, borderRadius: 10, background: bg, cursor: showFeedback ? "default" : "pointer", textAlign: "left" as const, fontSize: 15, color: "#E2E8F0", transition: "all 0.2s" }}>
                 <span style={{ fontWeight: 500, marginRight: 8, color: "#7C3AED" }}>{String.fromCharCode(65 + idx)}.</span>
                 {opt}
                 {showFeedback && isCorrect && <span style={{ float: "right" as const, color: "#16A34A" }}>✓</span>}
