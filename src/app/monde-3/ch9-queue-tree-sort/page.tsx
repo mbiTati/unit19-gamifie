@@ -106,8 +106,8 @@ function SortingGame() {
         ))}
       </div>
       <div style={{ display: "flex", gap: 8, justifyContent: "center", marginBottom: 12 }}>
-        <button onClick={() => { setAlgo("insertion"); runInsertionSort(); }} style={{ padding: "8px 16px", background: algo === "insertion" ? "#993C1D" : "#E2E8F0", color: algo === "insertion" ? "white" : "#334155", border: "none", borderRadius: 6, fontWeight: 600, cursor: "pointer", fontSize: 13 }}>Insertion Sort</button>
-        <button onClick={() => { setAlgo("bubble"); runBubbleSort(); }} style={{ padding: "8px 16px", background: algo === "bubble" ? "#993C1D" : "#E2E8F0", color: algo === "bubble" ? "white" : "#334155", border: "none", borderRadius: 6, fontWeight: 600, cursor: "pointer", fontSize: 13 }}>Bubble Sort</button>
+        <button onClick={() => { setAlgo("insertion"); runInsertionSort(); }} style={{ padding: "8px 16px", background: algo === "insertion" ? "#993C1D" : "#1E3A5F", color: algo === "insertion" ? "white" : "#334155", border: "none", borderRadius: 6, fontWeight: 600, cursor: "pointer", fontSize: 13 }}>Insertion Sort</button>
+        <button onClick={() => { setAlgo("bubble"); runBubbleSort(); }} style={{ padding: "8px 16px", background: algo === "bubble" ? "#993C1D" : "#1E3A5F", color: algo === "bubble" ? "white" : "#334155", border: "none", borderRadius: 6, fontWeight: 600, cursor: "pointer", fontSize: 13 }}>Bubble Sort</button>
         <button onClick={randomize} style={{ padding: "8px 16px", background: "#64748B", color: "white", border: "none", borderRadius: 6, fontWeight: 600, cursor: "pointer", fontSize: 13 }}>Nouveau tableau</button>
       </div>
       {sorted.length > 0 && (
@@ -130,10 +130,10 @@ export default function Ch9Game() {
   const [mode, setMode] = useState<"menu" | "tree" | "sort">("menu");
 
   if (mode === "menu") return (
-    <div style={{ maxWidth: 700, margin: "0 auto", padding: "2rem 1rem", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: "#0B1120", color: "#1E3A5F", padding: "2rem 1rem", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
       <div style={{ textAlign: "center", marginBottom: "2rem" }}>
         <div style={{ fontSize: 14, color: "#993C1D", fontWeight: 600, letterSpacing: 2, textTransform: "uppercase" as const }}>Monde 3 — Chapitre 9</div>
-        <h1 style={{ fontSize: 32, fontWeight: 700, color: "#1B2A4A", margin: "0.5rem 0" }}>Tree + Algorithmes de tri</h1>
+        <h1 style={{ fontSize: 32, fontWeight: 700, color: "#1E3A5F", margin: "0.5rem 0" }}>Tree + Algorithmes de tri</h1>
         <p style={{ color: "#64748B", fontSize: 16 }}>Critère P4b</p>
       </div>
       <div style={{ display: "grid", gap: 16 }}>

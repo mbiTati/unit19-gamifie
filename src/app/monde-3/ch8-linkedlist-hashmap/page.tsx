@@ -28,7 +28,7 @@ function LinkedListTypes() {
         {nodes.map((n,i)=>{const x=40+i*180;return(
           <g key={i}>
             <rect x={x} y={20} width={120} height={50} rx={8} fill="#1E293B" stroke={cur.color} strokeWidth={1.5}/>
-            <text x={x+60} y={42} fill="#E2E8F0" fontSize={13} fontWeight={600} textAnchor="middle">{n}</text>
+            <text x={x+60} y={42} fill="#1E3A5F" fontSize={13} fontWeight={600} textAnchor="middle">{n}</text>
             <text x={x+60} y={58} fill="#64748B" fontSize={9} textAnchor="middle">data | next{listType==="double"?" | prev":""}</text>
             {i<nodes.length-1&&<line x1={x+120} y1={45} x2={x+180} y2={45} stroke="#F97316" strokeWidth={1.5} markerEnd="url(#ao)"/>}
             {listType==="double"&&i>0&&<line x1={x} y1={55} x2={x-60} y2={55} stroke="#0891B2" strokeWidth={1} markerEnd="url(#ab)" strokeDasharray="4 2"/>}
@@ -65,7 +65,7 @@ function LinkedListSim() {
         ))}
       </div>
       <div style={{display:"flex",gap:6,margin:"8px 0",flexWrap:"wrap" as const}}>
-        <input value={input} onChange={e=>setInput(e.target.value)} placeholder="Nom..." style={{flex:1,minWidth:100,padding:"6px 10px",border:"1px solid #1E3A5F",borderRadius:6,fontSize:12,background:"#1E293B",color:"#E2E8F0"}}/>
+        <input value={input} onChange={e=>setInput(e.target.value)} placeholder="Nom..." style={{flex:1,minWidth:100,padding:"6px 10px",border:"1px solid #1E3A5F",borderRadius:6,fontSize:12,background:"#1E293B",color:"#1E3A5F"}}/>
         <button onClick={addFirst} style={{padding:"6px 8px",background:"#16A34A",color:"white",border:"none",borderRadius:6,fontSize:11,fontWeight:600,cursor:"pointer"}}>addFirst</button>
         <button onClick={addLast} style={{padding:"6px 8px",background:"#16A34A",color:"white",border:"none",borderRadius:6,fontSize:11,fontWeight:600,cursor:"pointer"}}>addLast</button>
         <button onClick={removeFirst} style={{padding:"6px 8px",background:"#DC2626",color:"white",border:"none",borderRadius:6,fontSize:11,fontWeight:600,cursor:"pointer"}}>removeFirst</button>
@@ -101,8 +101,8 @@ function HashMapSim() {
         ))}
       </div>
       <div style={{display:"flex",gap:6,marginBottom:6}}>
-        <input value={key} onChange={e=>setKey(e.target.value)} placeholder="Clé..." style={{flex:1,padding:"6px 10px",border:"1px solid #1E3A5F",borderRadius:6,fontSize:12,background:"#1E293B",color:"#E2E8F0"}}/>
-        <input value={value} onChange={e=>setValue(e.target.value)} placeholder="Valeur..." style={{flex:1,padding:"6px 10px",border:"1px solid #1E3A5F",borderRadius:6,fontSize:12,background:"#1E293B",color:"#E2E8F0"}}/>
+        <input value={key} onChange={e=>setKey(e.target.value)} placeholder="Clé..." style={{flex:1,padding:"6px 10px",border:"1px solid #1E3A5F",borderRadius:6,fontSize:12,background:"#1E293B",color:"#1E3A5F"}}/>
+        <input value={value} onChange={e=>setValue(e.target.value)} placeholder="Valeur..." style={{flex:1,padding:"6px 10px",border:"1px solid #1E3A5F",borderRadius:6,fontSize:12,background:"#1E293B",color:"#1E3A5F"}}/>
       </div>
       <div style={{display:"flex",gap:6}}>
         <button onClick={put} style={{padding:"6px 10px",background:"#16A34A",color:"white",border:"none",borderRadius:6,fontSize:11,fontWeight:600,cursor:"pointer"}}>put(k,v)</button>
@@ -119,7 +119,7 @@ function HashMapSim() {
 export default function Ch8Game() {
   const [mode, setMode] = useState<"menu"|"types"|"linkedlist"|"hashmap">("menu");
   if(mode==="menu")return(
-    <div style={{maxWidth:700,margin:"0 auto",padding:"2rem 1rem",fontFamily:"'Segoe UI',system-ui,sans-serif",color:"#E2E8F0"}}>
+    <div style={{maxWidth:700,margin:"0 auto",padding:"2rem 1rem",fontFamily:"'Segoe UI',system-ui,sans-serif",color:"#1E3A5F"}}>
       <div style={{textAlign:"center" as const,marginBottom:"2rem"}}>
         <div style={{fontSize:14,color:"#F97316",fontWeight:600,letterSpacing:2,textTransform:"uppercase" as const}}>Monde 3 — Chapitre 8</div>
         <h1 style={{fontSize:28,fontWeight:700,color:"white",margin:"0.5rem 0"}}>LinkedList + HashMap</h1>
@@ -142,7 +142,7 @@ export default function Ch8Game() {
     </div>
   );
   return(
-    <div style={{maxWidth:700,margin:"0 auto",padding:"1.5rem 1rem",fontFamily:"'Segoe UI',system-ui,sans-serif",color:"#E2E8F0"}}>
+    <div style={{maxWidth:700,margin:"0 auto",padding:"1.5rem 1rem",fontFamily:"'Segoe UI',system-ui,sans-serif",color:"#1E3A5F"}}>
       <button onClick={()=>setMode("menu")} style={{fontSize:13,color:"#64748B",background:"none",border:"none",cursor:"pointer",marginBottom:12}}>← Retour</button>
       <h2 style={{fontSize:20,fontWeight:700,color:mode==="types"?"#F97316":mode==="linkedlist"?"#D85A30":"#0891B2",marginBottom:12}}>
         {mode==="types"?"🔗 Types de LinkedList":mode==="linkedlist"?"📝 Simulateur LinkedList":"🗃️ Simulateur HashMap"}
