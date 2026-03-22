@@ -71,7 +71,7 @@ function dijkstra(nodes: Node[], edges: Edge[], start: string, end: string) {
     steps.push({
       current,
       distances: { ...dist },
-      visited: [...visited],
+      visited: Array.from(visited),
       description: current === start
         ? `Départ de ${start}. Distance = 0.`
         : `Visite ${current} (distance = ${dist[current]}). Mise à jour des voisins.`,
