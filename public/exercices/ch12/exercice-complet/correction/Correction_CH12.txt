@@ -1,0 +1,2 @@
+CORRECTION — Asymptotic: analyser 10 extraits de code et donner Big O
+Voir les notes enseignant dans le PPTX.

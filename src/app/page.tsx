@@ -15,6 +15,8 @@ const WORLDS = [
       { id: "ch5-formal-spec", name: "Ch.5 — Stack impératif (P3)", status: "ready" },
       { id: "ch6-encapsulation", name: "Ch.6 — Encapsulation (M3)", status: "ready" },
       { id: "ch7-adt-oop", name: "Ch.7 — ADT et POO (D2)", status: "ready" },
+      { id: "boss-lo2", name: "Boss LO2 — Quiz transversal", status: "ready" },
+      { id: "boss-lo2", name: "Boss LO2 — Quiz transversal", status: "ready" },
     ] },
   { id: 3, name: "Monde 3", title: "Implémenter les ADT complexes", lo: "LO3", color: "#993C1D", bgColor: "#FAECE7",
     chapters: [
@@ -22,12 +24,16 @@ const WORLDS = [
       { id: "ch9-queue-tree-sort", name: "Ch.9 — Queue, Tree, Tri (P4b)", status: "ready" },
       { id: "ch10-exceptions-junit", name: "Ch.10 — Exceptions + JUnit (P5)", status: "ready" },
       { id: "ch11-adt-bigo", name: "Ch.11 — ADT et Big O (M4/D3)", status: "ready" },
+      { id: "boss-lo3", name: "Boss LO3 — Quiz transversal", status: "ready" },
+      { id: "boss-lo3", name: "Boss LO3 — Quiz transversal", status: "ready" },
     ] },
   { id: 4, name: "Monde 4", title: "Évaluer l'efficacité", lo: "LO4", color: "#854F0B", bgColor: "#FAEEDA",
     chapters: [
       { id: "ch12-asymptotic", name: "Ch.12 — Analyse asymptotique (P6)", status: "ready" },
       { id: "ch13-efficiency", name: "Ch.13 — Mesurer l'efficacité (P7)", status: "ready" },
       { id: "ch14-tradeoffs", name: "Ch.14/15 — Trade-offs (M5/D4)", status: "ready" },
+      { id: "boss-lo4", name: "Boss LO4 — Quiz final", status: "ready" },
+      { id: "boss-lo4", name: "Boss Final LO4", status: "ready" },
     ] },
 ];
 

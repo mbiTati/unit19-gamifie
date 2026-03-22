@@ -1,0 +1,1 @@
+Réponses : TODO1=O(n), TODO2=O(n²), TODO3=O(1), TODO4=O(n), TODO6=HashMap

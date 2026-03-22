@@ -1,0 +1,2 @@
+CORRECTION — Tree+Sorting: implémenter BST et Insertion Sort
+Voir les notes enseignant dans le PPTX.

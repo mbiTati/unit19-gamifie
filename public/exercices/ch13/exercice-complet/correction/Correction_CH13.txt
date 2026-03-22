@@ -1,0 +1,2 @@
+CORRECTION — Efficiency: benchmark Bubble vs Quick sur différents n
+Voir les notes enseignant dans le PPTX.

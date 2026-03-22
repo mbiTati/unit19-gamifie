@@ -1,0 +1,2 @@
+CORRECTION — Encapsulation: refactorer un code sans encapsulation → avec encapsulation
+Voir les notes enseignant dans le PPTX.

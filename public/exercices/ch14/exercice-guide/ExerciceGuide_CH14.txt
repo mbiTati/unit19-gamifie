@@ -1,0 +1,3 @@
+EXERCICE GUIDÉ — Trade-offs: rédiger 3 avantages avec exemples Java
+Voir le PPTX pour les consignes détaillées.
+Durée : 20 min

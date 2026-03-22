@@ -1,0 +1,3 @@
+EXERCICE GUIDÉ — Tree+Sorting: implémenter BST et Insertion Sort
+Voir le PPTX pour les consignes détaillées.
+Durée : 20 min
