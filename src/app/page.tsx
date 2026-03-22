@@ -71,7 +71,7 @@ const WORLDS: World[] = [
   {
     id: 4, name: "Monde 4", title: "Évaluer l'efficacité", lo: "LO4", emoji: "📊", color: GREEN, glow: "#16A34A30",
     modules: [
-      { num: 12, name: "Analyse asymptotique", criteria: "P6", game: "/monde-4/ch12-asymptotic", exercise: "/exercice/ch12", type: "quiz", description: "O, Omega, Theta — 10 questions" },
+      { num: 12, name: "Analyse asymptotique", criteria: "P6", game: "/monde-4/ch12-asymptotic", exercise: "/exercice/ch12", type: "simulator", description: "Classer, Code→O(), Calculateur visuel, Quiz Big O" },
       { num: 13, name: "Mesurer l'efficacité", criteria: "P7", game: "/monde-4/ch13-efficiency", exercise: "/exercice/ch13", type: "quiz", description: "Benchmark temps + mémoire" },
       { num: 14, name: "Trade-offs", criteria: "M5/D4", game: "/monde-4/ch14-tradeoffs", exercise: "/exercice/ch14", type: "quiz", description: "Compromis et indépendance" },
     ],
