@@ -1,5 +1,5 @@
 :root {
-  color-scheme: light only;
+  color-scheme: dark;
 }
 
 * {
@@ -9,8 +9,8 @@
 }
 
 html, body {
-  background: #FAFBFC !important;
-  color: #1B2A4A !important;
+  background: #0B1120 !important;
+  color: #E2E8F0 !important;
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
@@ -25,5 +25,5 @@ button {
 }
 
 input, select, textarea {
-  color-scheme: light;
+  color-scheme: dark;
 }
