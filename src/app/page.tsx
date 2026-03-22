@@ -43,7 +43,7 @@ const WORLDS: World[] = [
     modules: [
       { num: 1, name: "Design Specification", criteria: "P1", game: "/monde-1/ch1-design-spec", exercise: "/exercice/ch1", type: "quiz", description: "Associez les opérations aux bons ADT" },
       { num: 2, name: "Memory Stack", criteria: "P2", game: "/monde-1/ch2-memory-stack", exercise: "/exercice/ch2", type: "simulator", description: "Simulez le call stack pas à pas" },
-      { num: 3, name: "Queue FIFO + Tri", criteria: "M1/M2", game: "/monde-1/ch3-fifo-sorting", exercise: "/exercice/ch3", type: "race", description: "File d'attente + course Bubble vs Quick" },
+      { num: 3, name: "Queue FIFO + Tri", criteria: "M1/M2", game: "/monde-1/ch3-fifo-sorting", exercise: "/exercice/ch3", type: "race", description: "Tri visuel animé, course d'algos, simulateur FIFO" },
       { num: 4, name: "Shortest Path", criteria: "D1", game: "/monde-1/ch4-shortest-path", exercise: "/exercice/ch4", type: "simulator", description: "Trouvez le chemin avec Dijkstra" },
     ],
     boss: { route: "/monde-1/boss-lo1", name: "Boss LO1" },
@@ -63,7 +63,7 @@ const WORLDS: World[] = [
     modules: [
       { num: 8, name: "LinkedList + HashMap", criteria: "P4a", game: "/monde-3/ch8-linkedlist-hashmap", exercise: "/exercice/ch8", type: "simulator", description: "Manipulez les structures en temps réel" },
       { num: 9, name: "Tree + Sorting", criteria: "P4b", game: "/monde-3/ch9-queue-tree-sort", exercise: "/exercice/ch9", type: "simulator", description: "Parcours d'arbre + tri pas à pas" },
-      { num: 10, name: "Exceptions + JUnit", criteria: "P5", game: "/monde-3/ch10-exceptions-junit", exercise: "/exercice/ch10", type: "debug", description: "Chassez les bugs + quiz JUnit 5" },
+      { num: 10, name: "Exceptions + JUnit 5", criteria: "P5", game: "/monde-3/ch10-exceptions-junit", exercise: "/exercice/ch10", type: "debug", description: "Chassez les bugs + quiz JUnit 5" },
       { num: 11, name: "ADT + Big O", criteria: "M4/D3", game: "/monde-3/ch11-adt-bigo", exercise: "/exercice/ch11", type: "quiz", description: "Identifiez la complexité du code" },
     ],
     boss: { route: "/monde-3/boss-lo3", name: "Boss LO3" },
@@ -73,7 +73,7 @@ const WORLDS: World[] = [
     modules: [
       { num: 12, name: "Analyse asymptotique", criteria: "P6", game: "/monde-4/ch12-asymptotic", exercise: "/exercice/ch12", type: "simulator", description: "Classer, Code→O(), Calculateur visuel, Quiz Big O" },
       { num: 13, name: "Mesurer l'efficacité", criteria: "P7", game: "/monde-4/ch13-efficiency", exercise: "/exercice/ch13", type: "quiz", description: "Benchmark temps + mémoire" },
-      { num: 14, name: "Trade-offs", criteria: "M5/D4", game: "/monde-4/ch14-tradeoffs", exercise: "/exercice/ch14", type: "quiz", description: "Compromis et indépendance" },
+      { num: 14, name: "Trade-offs & Benchmarks", criteria: "M5/D4", game: "/monde-4/ch14-tradeoffs", exercise: "/exercice/ch14", type: "simulator", description: "Balance trade-off, benchmark simulé, compromis" },
     ],
     boss: { route: "/monde-4/boss-lo4", name: "Boss LO4" },
   },

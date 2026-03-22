@@ -1,124 +1,209 @@
 "use client";
 import { useState } from "react";
 
-interface CodeBug { id: string; title: string; code: string; bugLine: number; explanation: string; fix: string; concept: string; }
+const BG="#0B1120",CARD="#111827",BORDER="#1E3A5F",TEXT="#E2E8F0",MUTED="#94A3B8",GREEN="#16A34A",RED="#DC2626",ORANGE="#F97316",PURPLE="#7C3AED",TEAL="#0891B2";
 
-const BUGS: CodeBug[] = [
-  { id: "b1", title: "NullPointerException", code: "String nom = null;\nint len = nom.length();", bugLine: 2, explanation: "nom est null, on ne peut pas appeler .length() dessus", fix: "if (nom != null) {\n  int len = nom.length();\n}", concept: "Vérifier null avant d'appeler une méthode" },
-  { id: "b2", title: "ArrayIndexOutOfBoundsException", code: "int[] tab = {1, 2, 3};\nint val = tab[3];", bugLine: 2, explanation: "tab a 3 éléments (index 0-2), tab[3] n'existe pas", fix: "int val = tab[2]; // dernier index valide", concept: "Index max = tableau.length - 1" },
-  { id: "b3", title: "ArithmeticException", code: "int a = 10;\nint b = 0;\nint c = a / b;", bugLine: 3, explanation: "Division par zéro ! b vaut 0", fix: "if (b != 0) {\n  int c = a / b;\n} else {\n  System.out.println(\"Division impossible\");\n}", concept: "Toujours vérifier le diviseur" },
-  { id: "b4", title: "Try-Catch manquant", code: "Scanner sc = new Scanner(System.in);\nint age = sc.nextInt();\n// Si l'utilisateur tape \"abc\" → crash", bugLine: 2, explanation: "nextInt() lance InputMismatchException si l'entrée n'est pas un entier", fix: "try {\n  int age = sc.nextInt();\n} catch (InputMismatchException e) {\n  System.out.println(\"Entrez un nombre !\");\n}", concept: "try-catch pour les entrées utilisateur" },
-  { id: "b5", title: "Throws déclaration", code: "public void lireFichier(String nom) {\n  FileReader fr = new FileReader(nom);\n  // Erreur compilation !\n}", bugLine: 2, explanation: "FileReader lance une checked exception (FileNotFoundException) qu'il faut déclarer ou attraper", fix: "public void lireFichier(String nom)\n    throws FileNotFoundException {\n  FileReader fr = new FileReader(nom);\n}", concept: "throws pour les checked exceptions" },
+// ─── GAME 1: Debug Puzzle with progressive hints ───
+const PUZZLES=[
+  {title:"NullPointerException",code:["String nom = null;","int len = nom.length();","System.out.println(len);"],bugLine:1,hints:["La variable est utilisée avant d'être initialisée...","Que vaut 'nom' à la ligne 1 ?","nom est null ! On ne peut pas appeler .length() sur null"],fix:"if (nom != null) {\n    int len = nom.length();\n}",concept:"Toujours vérifier null"},
+  {title:"ArrayIndexOutOfBounds",code:["int[] notes = {15, 12, 18};","for (int i = 0; i <= notes.length; i++) {","    System.out.println(notes[i]);","}"],bugLine:1,hints:["Le problème est dans la condition de la boucle...","notes.length = 3, mais les index valides sont 0, 1, 2","<= devrait être < ! notes[3] n'existe pas."],fix:"for (int i = 0; i < notes.length; i++) {\n    System.out.println(notes[i]);\n}",concept:"Index max = length - 1"},
+  {title:"Division par zéro",code:["Scanner sc = new Scanner(System.in);","int diviseur = sc.nextInt();","int resultat = 100 / diviseur;","System.out.println(resultat);"],bugLine:2,hints:["Que se passe-t-il si l'utilisateur entre 0 ?","100 / 0 lance ArithmeticException !","Il faut vérifier avant de diviser"],fix:"if (diviseur != 0) {\n    int resultat = 100 / diviseur;\n} else {\n    System.out.println(\"Division impossible !\");\n}",concept:"Valider l'entrée utilisateur"},
+  {title:"try-catch manquant",code:["FileReader fr = new FileReader(\"data.txt\");","BufferedReader br = new BufferedReader(fr);","String ligne = br.readLine();"],bugLine:0,hints:["FileReader est un appel risqué...","C'est une Checked Exception","Le compilateur REFUSE ce code sans try-catch ou throws"],fix:"try {\n    FileReader fr = new FileReader(\"data.txt\");\n    BufferedReader br = new BufferedReader(fr);\n    String ligne = br.readLine();\n} catch (IOException e) {\n    System.out.println(\"Erreur : \" + e.getMessage());\n} finally {\n    // Fermer les ressources\n}",concept:"Checked exception = obligé de gérer"},
+  {title:"throw vs throws",code:["public void retirer(double montant) {","    if (montant > solde)","        System.out.println(\"Pas assez\");","    solde -= montant;","}"],bugLine:2,hints:["Le message s'affiche mais le code continue...","Le retrait se fait quand même ! Pas de return ni throw","Il faut lancer une exception pour ARRÊTER l'exécution"],fix:"public void retirer(double montant) {\n    if (montant > solde)\n        throw new IllegalArgumentException(\"Solde insuffisant\");\n    solde -= montant;\n}",concept:"throw pour arrêter l'exécution"},
 ];
 
-interface JUnitQ { question: string; code?: string; options: string[]; correctIndex: number; explanation: string; }
-
-const JUNIT_QUIZ: JUnitQ[] = [
-  { question: "Quelle annotation JUnit 5 marque une méthode de test ?", options: ["@Test", "@JUnit", "@RunWith", "@Testing"], correctIndex: 0, explanation: "En JUnit 5 (Jupiter), c'est @Test de org.junit.jupiter.api.Test" },
-  { question: "Quelle assertion vérifie qu'une exception est lancée ?", options: ["assertEquals(exception)", "assertThrows(Exception.class, () -> ...)", "try-catch dans le test", "assertException()"], correctIndex: 1, explanation: "assertThrows est la façon JUnit 5 de tester les exceptions. assertThrows(IllegalArgumentException.class, () -> method())" },
-  { question: "À quoi sert @BeforeEach ?", options: ["Exécuter après chaque test", "Exécuter une seule fois avant tous les tests", "Exécuter avant CHAQUE méthode de test", "Ignorer le test"], correctIndex: 2, explanation: "@BeforeEach exécute la méthode avant chaque test — idéal pour initialiser les données de test (setup)." },
-  { code: "@Test\nvoid testAjouter() {\n  GestionStock gs = new GestionStock();\n  gs.ajouter(new Produit(\"P1\", 10));\n  assertEquals(1, gs.getTaille());\n}", question: "Que vérifie ce test ?", options: ["Que le produit a le bon prix", "Qu'après ajout d'un produit, la taille est 1", "Que GestionStock n'est pas null", "Que Produit existe"], correctIndex: 1, explanation: "assertEquals(1, gs.getTaille()) vérifie que la taille est bien 1 après un ajout. C'est un test de postcondition." },
-  { question: "Quelle est la différence entre throw et throws ?", options: ["Aucune différence", "throw LANCE une exception, throws DÉCLARE qu'une méthode peut lancer", "throw est JUnit 4, throws est JUnit 5", "throws lance, throw déclare"], correctIndex: 1, explanation: "throw new Exception() LANCE l'exception. throws Exception dans la signature DÉCLARE que la méthode peut en lancer une." },
-  { question: "Que fait finally dans try-catch-finally ?", options: ["S'exécute uniquement si pas d'exception", "S'exécute TOUJOURS, exception ou pas", "S'exécute uniquement si exception", "Remplace le catch"], correctIndex: 1, explanation: "Le bloc finally s'exécute TOUJOURS — parfait pour fermer des ressources (fichiers, connexions)." },
+// ─── GAME 2: JUnit Code Builder ───
+const JUNIT_BLOCKS=[
+  {id:"import",code:"import org.junit.jupiter.api.*;",order:0,group:"setup"},
+  {id:"import2",code:"import static org.junit.jupiter.api.Assertions.*;",order:1,group:"setup"},
+  {id:"class",code:"class GestionStockTest {",order:2,group:"setup"},
+  {id:"field",code:"    private GestionStock gs;",order:3,group:"setup"},
+  {id:"before",code:"    @BeforeEach",order:4,group:"setup"},
+  {id:"setup",code:"    void setUp() { gs = new GestionStock(); }",order:5,group:"setup"},
+  {id:"test1a",code:"    @Test",order:6,group:"test1"},
+  {id:"test1b",code:"    void testAjouter() {",order:7,group:"test1"},
+  {id:"test1c",code:'        gs.ajouter(new Produit("P1", 10));',order:8,group:"test1"},
+  {id:"test1d",code:"        assertEquals(1, gs.getTaille());",order:9,group:"test1"},
+  {id:"test1e",code:"    }",order:10,group:"test1"},
+  {id:"test2a",code:"    @Test",order:11,group:"test2"},
+  {id:"test2b",code:"    void testSupprimerVide() {",order:12,group:"test2"},
+  {id:"test2c",code:"        assertThrows(IllegalStateException.class,",order:13,group:"test2"},
+  {id:"test2d",code:'            () -> gs.supprimer("P1"));',order:14,group:"test2"},
+  {id:"test2e",code:"    }",order:15,group:"test2"},
+  {id:"close",code:"}",order:16,group:"close"},
 ];
 
-export default function Ch10Game() {
-  const [mode, setMode] = useState<"menu" | "debug" | "junit">("menu");
-  const [bugIdx, setBugIdx] = useState(0);
-  const [showFix, setShowFix] = useState(false);
-  const [quizIdx, setQuizIdx] = useState(0);
-  const [score, setScore] = useState(0);
-  const [selected, setSelected] = useState<number | null>(null);
-  const [showFeedback, setShowFeedback] = useState(false);
+// ─── GAME 3: JUnit Quiz ───
+const JUNIT_QS=[
+  {q:"Quelle annotation JUnit 5 marque un test ?",o:["@Test","@JUnit","@RunWith","@Testing"],c:0,e:"@Test de org.junit.jupiter.api.Test (JUnit 5 Jupiter, pas JUnit 4)."},
+  {q:"assertThrows vérifie :",o:["Qu'il n'y a pas d'exception","Qu'une exception EST lancée","Le type de retour","La performance"],c:1,e:"assertThrows(Exception.class, () -> code()) vérifie que le code lance bien l'exception."},
+  {q:"@BeforeEach s'exécute :",o:["Une seule fois","Avant CHAQUE méthode @Test","Après chaque test","Jamais"],c:1,e:"Avant CHAQUE test = setup frais à chaque fois. Utile pour réinitialiser l'état."},
+  {q:"throw vs throws :",o:["Identiques","throw LANCE, throws DÉCLARE","throw déclare, throws lance","throw = JUnit 4"],c:1,e:"throw new X() LANCE. throws X DÉCLARE dans la signature."},
+  {q:"finally s'exécute :",o:["Seulement si exception","Seulement sans exception","TOUJOURS","Jamais"],c:2,e:"TOUJOURS exécuté. Parfait pour fermer fichiers/connexions."},
+  {q:"Checked exception en Java :",o:["RuntimeException","Doit être catch ou throws (compilateur l'exige)","Optionnelle","N'existe pas en Java"],c:1,e:"IOException, FileNotFoundException = checked. Le compilateur REFUSE si non gérée."},
+  {q:"assertEquals(expected, actual) compare avec :",o:["==","equals()","compareTo()","hashCode()"],c:1,e:"assertEquals utilise equals() pour les objets, == pour les primitifs."},
+  {q:"Quelle est la bonne structure d'un test ?",o:["Test → Assert","Arrange → Act → Assert","Assert → Act → Arrange","Act → Assert → Arrange"],c:1,e:"AAA : Arrange (préparer), Act (exécuter), Assert (vérifier). Pattern standard."},
+];
 
-  if (mode === "menu") return (
-    <div style={{ minHeight: "100vh", background: "#0B1120", color: "#E2E8F0", padding: "2rem 1rem", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
-      <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-        <div style={{ fontSize: 14, color: "#993C1D", fontWeight: 600, letterSpacing: 2, textTransform: "uppercase" as const }}>Monde 3 — Chapitre 10</div>
-        <h1 style={{ fontSize: 32, fontWeight: 700, color: "#1E3A5F", margin: "0.5rem 0" }}>Exceptions + JUnit 5</h1>
-        <p style={{ color: "#64748B", fontSize: 16 }}>Critère P5 — Error handling et tests</p>
-      </div>
-      <div style={{ display: "grid", gap: 16 }}>
-        <button onClick={() => { setMode("debug"); setBugIdx(0); setShowFix(false); }} style={{ padding: "1.5rem", border: "2px solid #DC2626", borderRadius: 12, background: "#DC262615", cursor: "pointer", textAlign: "left" as const }}>
-          <div style={{ fontSize: 20, fontWeight: 600, color: "#DC2626" }}>Jeu 1 — Chasseur de bugs</div>
-          <div style={{ fontSize: 14, color: "#64748B", marginTop: 4 }}>5 bugs classiques Java — trouvez l'erreur et le fix</div>
-        </button>
-        <button onClick={() => { setMode("junit"); setQuizIdx(0); setScore(0); setSelected(null); setShowFeedback(false); }} style={{ padding: "1.5rem", border: "2px solid #7C3AED", borderRadius: 12, background: "#EDE9FE", cursor: "pointer", textAlign: "left" as const }}>
-          <div style={{ fontSize: 20, fontWeight: 600, color: "#7C3AED" }}>Jeu 2 — Quiz JUnit 5</div>
-          <div style={{ fontSize: 14, color: "#64748B", marginTop: 4 }}>6 questions sur @Test, assertThrows, @BeforeEach, throw/throws</div>
-        </button>
+type Phase="menu"|"debug"|"builder"|"quiz";
+
+export default function Ch10Game(){
+  const[phase,setPhase]=useState<Phase>("menu");
+  // Debug
+  const[puzzIdx,setPuzzIdx]=useState(0);const[hintLevel,setHintLevel]=useState(0);
+  const[clickedLine,setClickedLine]=useState<number|null>(null);const[showFix,setShowFix]=useState(false);
+  // Builder
+  const[placed,setPlaced]=useState<string[]>([]);const[available,setAvailable]=useState<typeof JUNIT_BLOCKS>([]);
+  const[builderDone,setBuilderDone]=useState(false);
+  // Quiz
+  const[qIdx,setQIdx]=useState(0);const[qScore,setQScore]=useState(0);
+  const[sel,setSel]=useState<number|null>(null);const[show,setShow]=useState(false);
+
+  const back=<button onClick={()=>setPhase("menu")} style={{fontSize:13,color:MUTED,background:"none",border:"none",cursor:"pointer",marginBottom:12}}>← Retour</button>;
+
+  const initBuilder=()=>{setPlaced([]);setAvailable([...JUNIT_BLOCKS].sort(()=>Math.random()-0.5));setBuilderDone(false)};
+
+  if(phase==="menu")return(
+    <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"2rem 1rem"}}>
+      <div style={{maxWidth:700,margin:"0 auto"}}>
+        <div style={{textAlign:"center",marginBottom:"2rem"}}>
+          <div style={{fontSize:13,color:ORANGE,fontWeight:600,letterSpacing:2,textTransform:"uppercase"}}>Monde 3 — Chapitre 10</div>
+          <h1 style={{fontSize:28,fontWeight:700,margin:"0.5rem 0"}}>Exceptions + JUnit 5</h1>
+          <p style={{color:MUTED,fontSize:15}}>Critère P5 — Error handling et tests</p>
+        </div>
+        <div style={{display:"grid",gap:14}}>
+          {[
+            {p:"debug" as Phase,emoji:"🧩",t:"Puzzle de Débogage",d:"5 bugs Java — trouvez la ligne, avec indices progressifs",c:RED},
+            {p:"builder" as Phase,emoji:"🏗️",t:"Code Builder JUnit",d:"Reconstituez un test JUnit 5 complet en ordonnant les blocs",c:PURPLE},
+            {p:"quiz" as Phase,emoji:"🧠",t:"Quiz JUnit 5 & Exceptions",d:"8 questions : @Test, assertThrows, throw/throws, try-catch-finally",c:GREEN},
+          ].map(g=>(
+            <button key={g.p} onClick={()=>{setPhase(g.p);if(g.p==="debug"){setPuzzIdx(0);setHintLevel(0);setClickedLine(null);setShowFix(false)}if(g.p==="builder")initBuilder();if(g.p==="quiz"){setQIdx(0);setQScore(0);setSel(null);setShow(false)}}}
+              style={{padding:"1.2rem",border:`2px solid ${BORDER}`,borderRadius:12,background:CARD,cursor:"pointer",textAlign:"left"}}>
+              <div style={{fontSize:18,fontWeight:600,color:g.c}}>{g.emoji} {g.t}</div>
+              <div style={{fontSize:13,color:MUTED,marginTop:4}}>{g.d}</div>
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
 
-  if (mode === "debug") {
-    const bug = BUGS[bugIdx];
-    return (
-      <div style={{ minHeight: "100vh", background: "#0B1120", color: "#E2E8F0", padding: "1.5rem 1rem", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
-        <button onClick={() => setMode("menu")} style={{ fontSize: 13, color: "#64748B", background: "none", border: "none", cursor: "pointer", marginBottom: 8 }}>← Retour</button>
-        <div style={{ fontSize: 13, color: "#64748B", marginBottom: 8 }}>Bug {bugIdx + 1}/{BUGS.length}</div>
-        <div style={{ background: "#DC262615", border: "2px solid #DC2626", borderRadius: 10, padding: "10px 14px", marginBottom: 12 }}>
-          <span style={{ fontWeight: 700, color: "#DC2626", fontSize: 16 }}>{bug.title}</span>
-          <span style={{ fontSize: 12, color: "#64748B", marginLeft: 8 }}>({bug.concept})</span>
+  // ─── DEBUG PUZZLE ───
+  if(phase==="debug"){
+    if(puzzIdx>=PUZZLES.length)return(<div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"3rem 1rem"}}><div style={{maxWidth:500,margin:"0 auto",textAlign:"center"}}><div style={{fontSize:48}}>🎉</div><div style={{fontSize:22,fontWeight:700,margin:"0.5rem 0"}}>Tous les bugs trouvés !</div><button onClick={()=>setPhase("menu")} style={{marginTop:16,padding:"10px 24px",background:ORANGE,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>Retour</button></div></div>);
+    const puzz=PUZZLES[puzzIdx];
+    return(
+      <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+        <div style={{maxWidth:700,margin:"0 auto"}}>
+          {back}
+          <div style={{fontSize:13,color:MUTED,marginBottom:8}}>Bug {puzzIdx+1}/{PUZZLES.length}</div>
+          <h2 style={{fontSize:20,fontWeight:700,color:RED,marginBottom:4}}>🧩 {puzz.title}</h2>
+          <p style={{fontSize:13,color:MUTED,marginBottom:12}}>Cliquez sur la ligne qui contient le bug :</p>
+          <div style={{background:"#0D1117",borderRadius:10,padding:"12px",marginBottom:12}}>
+            {puzz.code.map((line,i)=>(
+              <div key={i} onClick={()=>{if(showFix)return;setClickedLine(i);if(i===puzz.bugLine)setShowFix(true);else setHintLevel(h=>Math.min(h+1,puzz.hints.length-1))}}
+                style={{padding:"6px 10px",borderRadius:6,cursor:showFix?"default":"pointer",display:"flex",gap:10,
+                  background:showFix&&i===puzz.bugLine?RED+"20":clickedLine===i&&i!==puzz.bugLine?ORANGE+"15":"transparent",
+                  border:`1px solid ${showFix&&i===puzz.bugLine?RED:clickedLine===i&&i!==puzz.bugLine?ORANGE:"transparent"}`,
+                  transition:"all 0.2s"}}>
+                <span style={{color:MUTED,fontSize:11,minWidth:20,textAlign:"right"}}>{i+1}</span>
+                <code style={{fontSize:13,color:showFix&&i===puzz.bugLine?"#FCA5A5":"#A5F3FC",fontFamily:"Consolas,monospace"}}>{line}</code>
+              </div>
+            ))}
+          </div>
+          {!showFix&&hintLevel>0&&(
+            <div style={{padding:"10px 14px",background:ORANGE+"15",borderRadius:8,marginBottom:8,fontSize:13,color:ORANGE}}>
+              💡 Indice {hintLevel}/{puzz.hints.length} : {puzz.hints[hintLevel-1]}
+            </div>
+          )}
+          {!showFix&&<button onClick={()=>setHintLevel(h=>Math.min(h+1,puzz.hints.length))} style={{padding:"8px 16px",background:CARD,color:ORANGE,border:`1px solid ${ORANGE}`,borderRadius:8,fontSize:12,fontWeight:600,cursor:"pointer"}}>💡 Indice suivant ({hintLevel}/{puzz.hints.length})</button>}
+          {showFix&&(
+            <div style={{marginTop:8}}>
+              <div style={{padding:"10px 14px",background:GREEN+"15",borderRadius:8,marginBottom:8}}>
+                <div style={{fontSize:13,fontWeight:600,color:GREEN,marginBottom:4}}>✅ Bug trouvé ! Concept : {puzz.concept}</div>
+              </div>
+              <div style={{padding:"10px",background:"#0D1117",borderRadius:8,marginBottom:8}}>
+                <div style={{fontSize:11,color:GREEN,fontWeight:600,marginBottom:4}}>FIX :</div>
+                <pre style={{fontSize:12,color:"#A5F3FC",fontFamily:"Consolas,monospace",margin:0,whiteSpace:"pre-wrap"}}>{puzz.fix}</pre>
+              </div>
+              <button onClick={()=>{setPuzzIdx(i=>i+1);setHintLevel(0);setClickedLine(null);setShowFix(false)}}
+                style={{width:"100%",padding:"10px",background:ORANGE,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>Bug suivant →</button>
+            </div>
+          )}
         </div>
-        <div style={{ background: "#1E293B", borderRadius: 8, padding: "12px 14px", marginBottom: 12 }}>
-          {bug.code.split("\n").map((line, i) => (
-            <div key={i} style={{ fontSize: 13, fontFamily: "Consolas, monospace", color: i + 1 === bug.bugLine ? "#F87171" : "#1E3A5F", background: i + 1 === bug.bugLine ? "#7F1D1D44" : "transparent", padding: "2px 4px", borderRadius: 3 }}>
-              <span style={{ color: "#64748B", marginRight: 8, fontSize: 11 }}>{i + 1}</span>{line}
-            </div>
-          ))}
-        </div>
-        {!showFix ? (
-          <button onClick={() => setShowFix(true)} style={{ width: "100%", padding: "10px", background: "#DC2626", color: "white", border: "none", borderRadius: 8, fontWeight: 600, cursor: "pointer", fontSize: 14 }}>Voir l'explication + fix</button>
-        ) : (
-          <>
-            <div style={{ background: "#16A34A15", border: "1px solid #16A34A40", borderRadius: 8, padding: "10px 14px", marginBottom: 8 }}>
-              <div style={{ fontWeight: 600, color: "#16A34A", fontSize: 14, marginBottom: 4 }}>Explication :</div>
-              <div style={{ fontSize: 13, color: "#1E3A5F" }}>{bug.explanation}</div>
-            </div>
-            <div style={{ background: "#1E293B", borderRadius: 8, padding: "10px 14px", marginBottom: 12 }}>
-              <div style={{ fontSize: 11, color: "#16A34A", fontWeight: 600, marginBottom: 4 }}>FIX :</div>
-              <pre style={{ fontSize: 13, color: "#86EFAC", fontFamily: "Consolas, monospace", margin: 0, whiteSpace: "pre-wrap" as const }}>{bug.fix}</pre>
-            </div>
-            <button onClick={() => { if (bugIdx < BUGS.length - 1) { setBugIdx(i => i + 1); setShowFix(false); } else setMode("menu"); }}
-              style={{ width: "100%", padding: "10px", background: "#993C1D", color: "white", border: "none", borderRadius: 8, fontWeight: 600, cursor: "pointer", fontSize: 14 }}>
-              {bugIdx < BUGS.length - 1 ? "Bug suivant →" : "Terminé !"}
-            </button>
-          </>
-        )}
       </div>
     );
   }
 
-  // JUnit quiz
-  if (quizIdx >= JUNIT_QUIZ.length) {
-    return (
-      <div style={{ minHeight: "100vh", background: "#0B1120", color: "#E2E8F0", padding: "3rem 1rem", fontFamily: "'Segoe UI', system-ui, sans-serif", textAlign: "center" as const }}>
-        <div style={{ fontSize: 60, fontWeight: 800, color: score >= 4 ? "#16A34A" : "#F97316" }}>{score}/{JUNIT_QUIZ.length}</div>
-        <button onClick={() => setMode("menu")} style={{ marginTop: 16, padding: "10px 24px", background: "#7C3AED", color: "white", border: "none", borderRadius: 8, fontWeight: 600, cursor: "pointer" }}>Retour</button>
+  // ─── CODE BUILDER ───
+  if(phase==="builder"){
+    const addBlock=(id:string)=>{setPlaced(p=>[...p,id]);setAvailable(a=>a.filter(b=>b.id!==id));};
+    const removeBlock=(id:string)=>{setPlaced(p=>p.filter(x=>x!==id));const block=JUNIT_BLOCKS.find(b=>b.id===id);if(block)setAvailable(a=>[...a,block])};
+    const checkOrder=()=>{const correct=placed.every((id,i)=>{const block=JUNIT_BLOCKS.find(b=>b.id===id);return block&&block.order===i});setBuilderDone(true);return correct};
+    const isCorrect=builderDone&&placed.every((id,i)=>{const block=JUNIT_BLOCKS.find(b=>b.id===id);return block&&block.order===i});
+
+    return(
+      <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+        <div style={{maxWidth:700,margin:"0 auto"}}>
+          {back}
+          <h2 style={{fontSize:20,fontWeight:700,color:PURPLE,marginBottom:4}}>🏗️ Code Builder — Test JUnit 5</h2>
+          <p style={{fontSize:13,color:MUTED,marginBottom:12}}>Cliquez les blocs dans le bon ordre pour reconstituer un test complet :</p>
+          
+          <div style={{marginBottom:16}}>
+            <div style={{fontSize:12,color:MUTED,marginBottom:6}}>Blocs disponibles :</div>
+            <div style={{display:"flex",gap:4,flexWrap:"wrap"}}>
+              {available.map(block=>(
+                <button key={block.id} onClick={()=>addBlock(block.id)}
+                  style={{padding:"4px 10px",background:CARD,border:`1px solid ${BORDER}`,borderRadius:6,fontSize:11,color:"#A5F3FC",fontFamily:"Consolas,monospace",cursor:"pointer",whiteSpace:"nowrap"}}>
+                  {block.code.trim().substring(0,40)}{block.code.length>40?"...":""}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div style={{background:"#0D1117",borderRadius:10,padding:"12px",minHeight:150,marginBottom:12}}>
+            <div style={{fontSize:12,color:MUTED,marginBottom:6}}>Votre code :</div>
+            {placed.length===0?<div style={{color:MUTED,fontStyle:"italic",fontSize:13}}>Cliquez les blocs ci-dessus...</div>:
+              placed.map((id,i)=>{const block=JUNIT_BLOCKS.find(b=>b.id===id);if(!block)return null;
+                const isRight=builderDone&&block.order===i;const isWrong=builderDone&&block.order!==i;
+                return(
+                  <div key={id} onClick={()=>{if(!builderDone)removeBlock(id)}}
+                    style={{padding:"3px 8px",cursor:builderDone?"default":"pointer",borderRadius:4,
+                      background:isRight?GREEN+"15":isWrong?RED+"15":"transparent",
+                      borderLeft:`2px solid ${isRight?GREEN:isWrong?RED:"transparent"}`}}>
+                    <code style={{fontSize:12,color:isRight?"#86EFAC":isWrong?"#FCA5A5":"#A5F3FC",fontFamily:"Consolas,monospace"}}>{block.code}</code>
+                  </div>
+                );
+              })
+            }
+          </div>
+          {!builderDone&&placed.length===JUNIT_BLOCKS.length&&(
+            <button onClick={checkOrder} style={{width:"100%",padding:"10px",background:PURPLE,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>✓ Vérifier l'ordre</button>
+          )}
+          {builderDone&&(
+            <div style={{padding:"12px",background:isCorrect?GREEN+"15":RED+"15",borderRadius:8,textAlign:"center"}}>
+              <div style={{fontSize:16,fontWeight:700,color:isCorrect?GREEN:RED}}>{isCorrect?"✅ Parfait ! Test JUnit 5 complet !":"❌ L'ordre n'est pas correct. Réessayez !"}</div>
+              {!isCorrect&&<button onClick={initBuilder} style={{marginTop:8,padding:"8px 16px",background:PURPLE,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>Réessayer</button>}
+            </div>
+          )}
+        </div>
       </div>
     );
   }
-  const q = JUNIT_QUIZ[quizIdx];
-  return (
-    <div style={{ minHeight: "100vh", background: "#0B1120", color: "#E2E8F0", padding: "1.5rem 1rem", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
-      <button onClick={() => setMode("menu")} style={{ fontSize: 13, color: "#64748B", background: "none", border: "none", cursor: "pointer", marginBottom: 8 }}>← Retour</button>
-      <div style={{ fontSize: 13, color: "#64748B", marginBottom: 8 }}>{quizIdx + 1}/{JUNIT_QUIZ.length} | Score: {score}</div>
-      {q.code && <div style={{ background: "#1E293B", borderRadius: 8, padding: "10px 14px", marginBottom: 12 }}><pre style={{ fontSize: 12, color: "#1E3A5F", fontFamily: "Consolas, monospace", margin: 0, whiteSpace: "pre-wrap" as const }}>{q.code}</pre></div>}
-      <p style={{ fontSize: 16, fontWeight: 600, color: "#1E3A5F", marginBottom: 12 }}>{q.question}</p>
-      <div style={{ display: "grid", gap: 8 }}>
-        {q.options.map((opt, idx) => {
-          let bg = "#111827", border = "#1E3A5F";
-          if (showFeedback) { if (idx === q.correctIndex) { bg = "#F0FDF4"; border = "#16A34A"; } else if (idx === selected) { bg = "#FEF2F2"; border = "#DC2626"; } }
-          return <button key={idx} onClick={() => { if (showFeedback) return; setSelected(idx); setShowFeedback(true); if (idx === q.correctIndex) setScore(s => s + 1); }} disabled={showFeedback} style={{ padding: "10px 14px", border: `2px solid ${border}`, borderRadius: 8, background: bg, cursor: showFeedback ? "default" : "pointer", textAlign: "left" as const, fontSize: 14 }}>{opt}</button>;
-        })}
+
+  // ─── QUIZ ───
+  if(qIdx>=JUNIT_QS.length){const p=Math.round(qScore/JUNIT_QS.length*100);return(<div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"3rem 1rem"}}><div style={{maxWidth:500,margin:"0 auto",textAlign:"center"}}><div style={{fontSize:64,fontWeight:800,color:p>=70?GREEN:ORANGE}}>{qScore}/{JUNIT_QS.length}</div><button onClick={()=>setPhase("menu")} style={{marginTop:16,padding:"10px 24px",background:GREEN,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>Retour</button></div></div>)}
+  const q=JUNIT_QS[qIdx];
+  return(
+    <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+      <div style={{maxWidth:650,margin:"0 auto"}}>
+        {back}
+        <div style={{fontSize:13,color:MUTED,marginBottom:8}}>{qIdx+1}/{JUNIT_QS.length} | Score: {qScore}</div>
+        <div style={{height:4,background:BORDER,borderRadius:2,marginBottom:16}}><div style={{height:4,background:GREEN,borderRadius:2,width:`${(qIdx+1)/JUNIT_QS.length*100}%`}}/></div>
+        <p style={{fontSize:16,fontWeight:600,marginBottom:12}}>{q.q}</p>
+        <div style={{display:"grid",gap:8}}>{q.o.map((o,i)=>{let bg=CARD,bd=BORDER;if(show){if(i===q.c){bg=GREEN+"20";bd=GREEN}else if(i===sel){bg=RED+"20";bd=RED}}return(<button key={i} onClick={()=>{if(show)return;setSel(i);setShow(true);if(i===q.c)setQScore(s=>s+1)}} disabled={show} style={{padding:"10px 14px",border:`2px solid ${bd}`,borderRadius:8,background:bg,cursor:show?"default":"pointer",textAlign:"left",fontSize:14,color:TEXT}}>{o}</button>)})}</div>
+        {show&&<><div style={{marginTop:10,padding:"10px 14px",background:GREEN+"15",borderRadius:8,fontSize:13,color:GREEN}}>{q.e}</div><button onClick={()=>{setQIdx(i=>i+1);setSel(null);setShow(false)}} style={{marginTop:10,width:"100%",padding:"10px",background:GREEN,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>Suivant →</button></>}
       </div>
-      {showFeedback && (
-        <>
-          <div style={{ marginTop: 10, padding: "8px 12px", background: "#16A34A15", borderRadius: 8, fontSize: 13, color: "#16A34A", border: "1px solid #16A34A40" }}>{q.explanation}</div>
-          <button onClick={() => { setQuizIdx(i => i + 1); setSelected(null); setShowFeedback(false); }} style={{ marginTop: 10, width: "100%", padding: "10px", background: "#7C3AED", color: "white", border: "none", borderRadius: 8, fontWeight: 600, cursor: "pointer" }}>Suivant →</button>
-        </>
-      )}
     </div>
   );
 }
