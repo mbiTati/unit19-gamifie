@@ -18,16 +18,16 @@ const WORLDS = [
     ] },
   { id: 3, name: "Monde 3", title: "Implémenter les ADT complexes", lo: "LO3", color: "#993C1D", bgColor: "#FAECE7",
     chapters: [
-      { id: "ch8-linkedlist-hashmap", name: "Ch.8 — LinkedList + HashMap (P4a)", status: "coming" },
-      { id: "ch9-queue-tree-sort", name: "Ch.9 — Queue, Tree, Tri (P4b)", status: "coming" },
-      { id: "ch10-exceptions-junit", name: "Ch.10 — Exceptions + JUnit (P5)", status: "coming" },
-      { id: "ch11-adt-bigo", name: "Ch.11 — ADT et Big O (M4/D3)", status: "coming" },
+      { id: "ch8-linkedlist-hashmap", name: "Ch.8 — LinkedList + HashMap (P4a)", status: "ready" },
+      { id: "ch9-queue-tree-sort", name: "Ch.9 — Queue, Tree, Tri (P4b)", status: "ready" },
+      { id: "ch10-exceptions-junit", name: "Ch.10 — Exceptions + JUnit (P5)", status: "ready" },
+      { id: "ch11-adt-bigo", name: "Ch.11 — ADT et Big O (M4/D3)", status: "ready" },
     ] },
   { id: 4, name: "Monde 4", title: "Évaluer l'efficacité", lo: "LO4", color: "#854F0B", bgColor: "#FAEEDA",
     chapters: [
-      { id: "ch12-asymptotic", name: "Ch.12 — Analyse asymptotique (P6)", status: "coming" },
-      { id: "ch13-efficiency", name: "Ch.13 — Mesurer l'efficacité (P7)", status: "coming" },
-      { id: "ch14-tradeoffs", name: "Ch.14/15 — Trade-offs (M5/D4)", status: "coming" },
+      { id: "ch12-asymptotic", name: "Ch.12 — Analyse asymptotique (P6)", status: "ready" },
+      { id: "ch13-efficiency", name: "Ch.13 — Mesurer l'efficacité (P7)", status: "ready" },
+      { id: "ch14-tradeoffs", name: "Ch.14/15 — Trade-offs (M5/D4)", status: "ready" },
     ] },
 ];
 
