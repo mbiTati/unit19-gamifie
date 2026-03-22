@@ -49,11 +49,12 @@ const WORLDS: World[] = [
     boss: { route: "/monde-1/boss-lo1", name: "Boss LO1" },
   },
   {
-    id: 2, name: "Monde 2", title: "Notation formelle", lo: "LO2", emoji: "📜", color: TEAL, glow: "#0891B230",
+    id: 2, name: "Monde 2", title: "Spécification & Conception", lo: "LO2", emoji: "📜", color: TEAL, glow: "#0891B230",
     modules: [
-      { num: 5, name: "Spec d'un Stack", criteria: "P3", game: "/monde-2/ch5-formal-spec", exercise: "/exercice/ch5", type: "builder", description: "Construisez la spécification formelle" },
-      { num: 6, name: "Encapsulation", criteria: "M3", game: "/monde-2/ch6-encapsulation", exercise: "/exercice/ch6", type: "quiz", description: "Private, public, information hiding" },
-      { num: 7, name: "ADT → POO", criteria: "D2", game: "/monde-2/ch7-adt-oop", type: "quiz", description: "Les 5 arguments : ADT base de la POO" },
+      { num: 5, name: "Spec formelle & VDM/SDL", criteria: "P3", game: "/monde-2/ch5-formal-spec", exercise: "/exercice/ch5", type: "builder", description: "Notation impérative, VDM, SDL, ASN.1 + classifier les conditions" },
+      { num: 6, name: "Encapsulation & Interfaces", criteria: "M3", game: "/monde-2/ch6-encapsulation", exercise: "/exercice/ch6", type: "simulator", description: "Simulateur visuel, info hiding, interfaces, héritage" },
+      { num: 7, name: "ADT → POO & Conditions", criteria: "D2", game: "/monde-2/ch7-adt-oop", exercise: "/exercice/ch7", type: "quiz", description: "5 arguments, pré/post/error conditions" },
+      { num: 8, name: "Design Patterns", criteria: "M3", game: "/monde-2/ch8-design-patterns", exercise: "/exercice/ch8", type: "quiz", description: "Singleton, Factory, Observer, Strategy, Composite" },
     ],
     boss: { route: "/monde-2/boss-lo2", name: "Boss LO2" },
   },

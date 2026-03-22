@@ -1,48 +1,59 @@
 "use client";
 import CodeExercise from "@/components/CodeExercise";
 export default function Ex6() { return <CodeExercise
-  chapter={6} title="Encapsulation — Refactoring" criteria="M3" worldColor="#0891B2" totalPoints={50}
-  intro="Refactorez ce code pour ajouter l'encapsulation correcte."
-  codeTemplate={`// AVANT (mauvais — pas d'encapsulation)
-public class Compte {
-    public String nom;      // → doit être ___blank1___
-    public double solde;    // → doit être ___blank1___
+  chapter={6} title="Encapsulation & Information Hiding" criteria="M3" worldColor="#0891B2" totalPoints={60}
+  intro="Refactorez ce code pour ajouter l'encapsulation, les interfaces et l'information hiding."
+  codeTemplate={`// ═══ INTERFACE (ADT = contrat) ═══
+public ___blank1___ Stockable {
+    void ajouter(String item);
+    String retirer();
+    boolean estVide();
 }
 
-// APRÈS (avec encapsulation)
-public class Compte {
-    ___blank1___ String nom;
-    ___blank1___ double solde;
+// ═══ IMPLÉMENTATION ENCAPSULÉE ═══
+public class Inventaire implements ___blank2___ {
+    ___blank3___ ArrayList<String> items;
 
-    // Getter
-    public String ___blank2___() {
-        return nom;
+    public Inventaire() {
+        items = new ArrayList<>();
+    }
+
+    // Getter — lecture seule
+    public int ___blank4___() {
+        return items.size();
     }
 
     // Setter avec VALIDATION
-    public void deposer(double montant) {
-        if (montant ___blank3___ 0) {
-            this.solde += montant;
+    public void ajouter(String item) {
+        if (item != null && !item.___blank5___()) {
+            items.add(item);
         }
     }
 
-    public boolean retirer(double montant) {
-        if (montant > 0 && montant ___blank4___ solde) {
-            this.solde -= montant;
-            return ___blank5___;
-        }
-        return false;
+    // PRE: !estVide()
+    // ERROR: si vide → exception
+    public String retirer() {
+        if (estVide())
+            throw new ___blank6___("Inventaire vide !");
+        return items.remove(items.size() - 1);
+    }
+
+    public boolean estVide() {
+        return items.___blank7___();
     }
 }`}
   blanks={[
-    {id:"blank1",label:"accès",answer:"private",hint:"Le modificateur le plus restrictif"},
-    {id:"blank2",label:"getter",answer:"getNom",hint:"Convention Java pour les getters"},
-    {id:"blank3",label:"validation",answer:">",hint:"Le montant doit être positif"},
-    {id:"blank4",label:"condition",answer:"<=",hint:"On ne peut pas retirer plus que le solde"},
-    {id:"blank5",label:"succès",answer:"true",hint:"Le retrait a réussi"}
+    {id:"blank1",label:"mot-clé",answer:"interface",hint:"Contrat sans implémentation en Java"},
+    {id:"blank2",label:"implements",answer:"Stockable",hint:"La classe implémente l'interface"},
+    {id:"blank3",label:"accès",answer:"private",hint:"Information hiding : cacher l'implémentation"},
+    {id:"blank4",label:"getter",answer:"getTaille",hint:"Convention Java pour les getters"},
+    {id:"blank5",label:"validation",answer:"isEmpty",hint:"Vérifier que l'item n'est pas vide"},
+    {id:"blank6",label:"exception",answer:"IllegalStateException",hint:"Error-condition → exception"},
+    {id:"blank7",label:"méthode",answer:"isEmpty",hint:"Méthode de ArrayList pour vérifier si vide"}
   ]}
   questions={[
-    {id:"q1",question:"L'avantage principal de l'encapsulation :",options:["Code plus court","Changer l'implémentation sans affecter le client","Programme plus rapide","Obligatoire en Java"],correctIndex:1,explanation:"Changement transparent = la puissance de l'encapsulation."},
-    {id:"q2",question:"Information hiding signifie :",options:["Chiffrer les données","Cacher l'implémentation derrière une interface","Supprimer les commentaires"],correctIndex:1,explanation:"Exposer le QUOI, cacher le COMMENT."}
+    {id:"q1",question:"Pourquoi utiliser une interface Stockable ?",options:["Convention","Séparer le QUOI du COMMENT (ADT)","Performance","Obligatoire"],correctIndex:1,explanation:"Interface = ADT : le contrat public. L'implémentation peut changer sans affecter le client."},
+    {id:"q2",question:"Pourquoi ArrayList est private ?",options:["Bug","On pourrait la remplacer par LinkedList sans changer l'interface","Convention","Performance"],correctIndex:1,explanation:"Information hiding : le client ne connaît pas la structure interne."},
+    {id:"q3",question:"Lien entre error-condition et exception Java :",options:["Aucun","Violation pré-condition → throw exception","Exception remplace l'encapsulation","Condition remplace l'exception"],correctIndex:1,explanation:"La violation d'une pré-condition se traduit par throw exception en Java."}
   ]}
 />; }

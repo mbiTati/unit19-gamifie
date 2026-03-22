@@ -1,44 +1,51 @@
 "use client";
 import CodeExercise from "@/components/CodeExercise";
 export default function Ex8() { return <CodeExercise
-  chapter={8} title="LinkedList + HashMap" criteria="P4a" worldColor="#F97316" totalPoints={60}
-  intro="Implémentez un système de gestion d'employés avec LinkedList et HashMap."
-  codeTemplate={`import java.util.LinkedList;
-import java.util.HashMap;
+  chapter={8} title="Design Patterns — Singleton & Factory" criteria="M3" worldColor="#0891B2" totalPoints={50}
+  intro="Complétez l'implémentation du pattern Singleton et Factory Method."
+  codeTemplate={`// ═══ SINGLETON ═══
+public class Logger {
+    // 1. Attribut statique privé
+    private ___blank1___ Logger instance;
 
-public class GestionEmployes {
-    private ___blank1___<String> noms = new LinkedList<>();
-    private ___blank2___<String, String> annuaire = new HashMap<>();
+    // 2. Constructeur PRIVÉ
+    ___blank2___ Logger() {}
 
-    public void ajouter(String matricule, String nom) {
-        noms.___blank3___(nom);
-        annuaire.___blank4___(matricule, nom);
+    // 3. Méthode d'accès
+    public static Logger ___blank3___() {
+        if (instance == null)
+            instance = new Logger();
+        return instance;
     }
+}
 
-    // Recherche O(1) par matricule
-    public String chercher(String matricule) {
-        return annuaire.___blank5___(matricule);
-    }
+// ═══ FACTORY METHOD ═══
+interface Notification { void envoyer(String msg); }
+class Email implements Notification {
+    public void envoyer(String msg) { /* email */ }
+}
+class SMS implements Notification {
+    public void envoyer(String msg) { /* sms */ }
+}
 
-    public boolean supprimer(String matricule) {
-        String nom = annuaire.___blank6___(matricule);
-        if (nom != null) {
-            noms.remove(nom);
-            return true;
-        }
-        return false;
+class NotificationFactory {
+    public static Notification creer(String ___blank4___) {
+        if (type.equals("email"))
+            return new ___blank5___();
+        if (type.equals("sms"))
+            return new SMS();
+        throw new IllegalArgumentException("Type inconnu");
     }
 }`}
   blanks={[
-    {id:"blank1",label:"type liste",answer:"LinkedList",hint:"Liste chaînée"},
-    {id:"blank2",label:"type map",answer:"HashMap",hint:"Table clé-valeur"},
-    {id:"blank3",label:"ajouter liste",answer:"add",hint:"Ajouter à la LinkedList"},
-    {id:"blank4",label:"ajouter map",answer:"put",hint:"Ajouter à la HashMap"},
-    {id:"blank5",label:"chercher",answer:"get",hint:"Récupérer par clé"},
-    {id:"blank6",label:"supprimer",answer:"remove",hint:"Supprimer et retourner la valeur"}
+    {id:"blank1",label:"mot-clé",answer:"static",hint:"L'instance doit exister sans instancier la classe"},
+    {id:"blank2",label:"accès",answer:"private",hint:"Empêcher l'instanciation externe"},
+    {id:"blank3",label:"méthode",answer:"getInstance",hint:"Convention de nommage Singleton"},
+    {id:"blank4",label:"paramètre",answer:"type",hint:"Le type de notification à créer"},
+    {id:"blank5",label:"classe",answer:"Email",hint:"Si type = email, on crée un..."}
   ]}
   questions={[
-    {id:"q1",question:"Complexité de HashMap.get() en moyenne ?",options:["O(n)","O(log n)","O(1)","O(n²)"],correctIndex:2,explanation:"Hash → accès direct O(1) en moyenne."},
-    {id:"q2",question:"LinkedList.get(index) est O(n) car :",options:["Le tableau est plein","Il faut parcourir noeud par noeud","La mémoire est lente"],correctIndex:1,explanation:"Pas d'accès direct — il faut suivre les pointeurs un par un."}
+    {id:"q1",question:"Pourquoi le constructeur Singleton est privé ?",options:["Convention","Empêcher de créer plusieurs instances","Performance","Sécurité"],correctIndex:1,explanation:"Constructeur privé = impossible de faire new Logger(). Seul getInstance() peut créer l'instance."},
+    {id:"q2",question:"Factory Method est utile quand :",options:["On veut une instance unique","On ne sait pas à l'avance quel type créer","On veut observer","On veut adapter"],correctIndex:1,explanation:"Factory délègue la décision de création. Le code client utilise l'interface sans connaître les classes concrètes."}
   ]}
 />; }
