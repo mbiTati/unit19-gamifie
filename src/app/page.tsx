@@ -70,6 +70,16 @@ export default function Home() {
           </div>
         ))}
       </div>
+
+      <div style={{ marginTop: 24, border: "2px solid #DC2626", borderRadius: 16, overflow: "hidden" }}>
+        <div style={{ background: "linear-gradient(135deg, #DC2626, #F97316)", padding: "1.5rem", textAlign: "center" as const }}>
+          <div style={{ fontSize: 40, lineHeight: 1 }}>&#x1F451;</div>
+          <div style={{ fontSize: 22, fontWeight: 700, color: "white", marginTop: 8 }}>Boss Final — Unit 19 complet</div>
+          <div style={{ fontSize: 14, color: "white", opacity: 0.9, marginTop: 4 }}>15 questions LO1 à LO4 — 4 minutes — Prouvez que vous maîtrisez tout !</div>
+          <Link href="/boss-final" style={{ display: "inline-block", marginTop: 12, padding: "8px 24px", background: "white", color: "#DC2626", borderRadius: 8, fontWeight: 700, fontSize: 16, textDecoration: "none" }}>Affronter le boss</Link>
+        </div>
+      </div>
+
       <div style={{ textAlign: "center", marginTop: "2rem", fontSize: 13, color: "#94A3B8" }}>Mme MBI — Bachelor 2 — Programmation Java</div>
     </div>
   );
