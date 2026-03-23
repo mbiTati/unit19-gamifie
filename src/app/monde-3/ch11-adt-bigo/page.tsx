@@ -53,13 +53,13 @@ export default function Ch11Game(){
         </div>
         <div style={{display:"grid",gap:14}}>
           {[
-            {p:"solver" as Phase,emoji:"",t:"M4 — ADT Problem Solver",d:"5 scénarios d'entreprise : choisissez le bon ADT",c:TEAL},
-            {p:"analyzer" as Phase,emoji:"",t:"D3 — Complexity Analyzer",d:"8 snippets de code Java : évaluez la complexité Big O",c:PURPLE},
-            {p:"quiz" as Phase,emoji:"",t:"Quiz M4 + D3",d:"4 questions de synthèse",c:GREEN},
+            {p:"solver" as Phase,t:"M4 — ADT Problem Solver",d:"5 scénarios d'entreprise : choisissez le bon ADT",c:TEAL},
+            {p:"analyzer" as Phase,t:"D3 — Complexity Analyzer",d:"8 snippets de code Java : évaluez la complexité Big O",c:PURPLE},
+            {p:"quiz" as Phase,t:"Quiz M4 + D3",d:"4 questions de synthèse",c:GREEN},
           ].map(g=>(
             <button key={g.p} onClick={()=>{setPhase(g.p);if(g.p==="solver"){setSIdx(0);setSSel(null);setSShow(false);setSScore(0)}if(g.p==="analyzer"){setAIdx(0);setASel(null);setAShow(false);setAScore(0)}if(g.p==="quiz"){setQIdx(0);setQScore(0);setSel(null);setShow(false)}}}
               style={{padding:"1.2rem",border:`2px solid ${BORDER}`,borderRadius:12,background:CARD,cursor:"pointer",textAlign:"left"}}>
-              <div style={{fontSize:18,fontWeight:600,color:g.c}}>{g.emoji} {g.t}</div>
+              <div style={{fontSize:18,fontWeight:600,color:g.c}}>{g.t}</div>
               <div style={{fontSize:13,color:MUTED,marginTop:4}}>{g.d}</div>
             </button>
           ))}

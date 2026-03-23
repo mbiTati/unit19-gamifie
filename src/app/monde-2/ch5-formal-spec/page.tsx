@@ -60,7 +60,7 @@ export default function Ch5Game(){
 
   const catCol:Record<string,string>={"VDM":"#A78BFA","SDL":"#34D399","ASN.1":"#FB923C"};
   const condCol:Record<string,string>={PRE:ORANGE,POST:GREEN,INVARIANT:TEAL,AXIOM:PURPLE};
-  const condEmoji:Record<string,string>={PRE:"",POST:"",INVARIANT:"",AXIOM:""};
+  const condEmoji:Record<string,string>={PRE:"PRE",POST:"POST",INVARIANT:"INV",AXIOM:"AX"};
 
   const back=<button onClick={()=>setPhase("menu")} style={{fontSize:13,color:MUTED,background:"none",border:"none",cursor:"pointer",marginBottom:12}}>← Retour</button>;
 
@@ -75,14 +75,14 @@ export default function Ch5Game(){
         </div>
         <div style={{display:"grid",gap:14}}>
           {[
-            {p:"builder" as Phase,emoji:"",t:"Construire une spec ADT",d:"8 parties : opérations, conditions, axiomes",c:TEAL},
-            {p:"vdm" as Phase,emoji:"",t:"VDM, SDL & ASN.1",d:"Langages de spécification non exécutables",c:PURPLE},
-            {p:"classify" as Phase,emoji:"",t:"Classifier les conditions",d:"PRE, POST, INVARIANT ou AXIOME ? 10 énoncés",c:ORANGE},
-            {p:"quiz" as Phase,emoji:"",t:"Quiz notation formelle",d:"8 questions sur VDM, SDL, ASN.1 et notation",c:GREEN},
+            {p:"builder" as Phase,t:"Construire une spec ADT",d:"8 parties : opérations, conditions, axiomes",c:TEAL},
+            {p:"vdm" as Phase,t:"VDM, SDL & ASN.1",d:"Langages de spécification non exécutables",c:PURPLE},
+            {p:"classify" as Phase,t:"Classifier les conditions",d:"PRE, POST, INVARIANT ou AXIOME ? 10 énoncés",c:ORANGE},
+            {p:"quiz" as Phase,t:"Quiz notation formelle",d:"8 questions sur VDM, SDL, ASN.1 et notation",c:GREEN},
           ].map(g=>(
             <button key={g.p} onClick={()=>{setPhase(g.p);if(g.p==="builder")setBRevealed(new Array(SPEC.length).fill(false));if(g.p==="vdm"){setVRevealed(new Set());setVFilter("all")}if(g.p==="classify"){setCIdx(0);setCScore(0);setCAns(null);setCShow(false)}if(g.p==="quiz"){setQIdx(0);setQScore(0);setSel(null);setShow(false)}}}
               style={{padding:"1.2rem",border:`2px solid ${BORDER}`,borderRadius:12,background:CARD,cursor:"pointer",textAlign:"left"}}>
-              <div style={{fontSize:18,fontWeight:600,color:g.c}}>{g.emoji} {g.t}</div>
+              <div style={{fontSize:18,fontWeight:600,color:g.c}}>{g.t}</div>
               <div style={{fontSize:13,color:MUTED,marginTop:4}}>{g.d}</div>
             </button>
           ))}
@@ -158,7 +158,7 @@ export default function Ch5Game(){
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
             {cats.map(cat=>{let bg=CARD,bd=BORDER;if(cShow){if(cat===it.cat){bg=GREEN+"20";bd=GREEN}else if(cat===cAns){bg=RED+"20";bd=RED}}
               return(<button key={cat} onClick={()=>{if(cShow)return;setCAns(cat);setCShow(true);if(cat===it.cat)setCScore(s=>s+1)}} disabled={cShow} style={{padding:"14px",border:`2px solid ${bd}`,borderRadius:10,background:bg,cursor:cShow?"default":"pointer",textAlign:"center"}}>
-                <div style={{fontSize:24}}>{condEmoji[cat]}</div>
+                <div style={{fontSize:11,fontWeight:700,color:condCol[cat]}}>{condEmoji[cat]}</div>
                 <div style={{fontSize:14,fontWeight:600,color:condCol[cat],marginTop:4}}>{cat}</div>
               </button>)})}
           </div>

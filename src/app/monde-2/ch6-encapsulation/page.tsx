@@ -61,14 +61,14 @@ export default function Ch6Game(){
         </div>
         <div style={{display:"grid",gap:14}}>
           {[
-            {p:"simulator" as Phase,emoji:"",t:"Simulateur d'Encapsulation",d:"Construisez une classe encapsulée étape par étape",c:TEAL},
-            {p:"hiding" as Phase,emoji:"",t:"Information Hiding — Quiz",d:"6 questions sur les principes du masquage d'information",c:PURPLE},
-            {p:"interfaces" as Phase,emoji:"",t:"Interfaces Java",d:"4 questions : contrats, polymorphisme, lien avec ADT",c:GREEN},
-            {p:"heritage" as Phase,emoji:"",t:"Encapsulation + Héritage & Modularité",d:"Explorez comment l'encapsulation interagit avec l'héritage",c:ORANGE},
+            {p:"simulator" as Phase,t:"Simulateur d'Encapsulation",d:"Construisez une classe encapsulée étape par étape",c:TEAL},
+            {p:"hiding" as Phase,t:"Information Hiding — Quiz",d:"6 questions sur les principes du masquage d'information",c:PURPLE},
+            {p:"interfaces" as Phase,t:"Interfaces Java",d:"4 questions : contrats, polymorphisme, lien avec ADT",c:GREEN},
+            {p:"heritage" as Phase,t:"Encapsulation + Héritage & Modularité",d:"Explorez comment l'encapsulation interagit avec l'héritage",c:ORANGE},
           ].map(g=>(
             <button key={g.p} onClick={()=>{setPhase(g.p);if(g.p==="simulator")setSimStep(0);if(g.p==="hiding"){setHIdx(0);setHScore(0);setHSel(null);setHShow(false)}if(g.p==="interfaces"){setIIdx(0);setIScore(0);setISel(null);setIShow(false)}if(g.p==="heritage")setHerExp(null)}}
               style={{padding:"1.2rem",border:`2px solid ${BORDER}`,borderRadius:12,background:CARD,cursor:"pointer",textAlign:"left"}}>
-              <div style={{fontSize:18,fontWeight:600,color:g.c}}>{g.emoji} {g.t}</div>
+              <div style={{fontSize:18,fontWeight:600,color:g.c}}>{g.t}</div>
               <div style={{fontSize:13,color:MUTED,marginTop:4}}>{g.d}</div>
             </button>
           ))}

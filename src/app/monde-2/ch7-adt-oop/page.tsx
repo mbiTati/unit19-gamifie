@@ -65,13 +65,13 @@ export default function Ch7Game(){
         </div>
         <div style={{display:"grid",gap:14}}>
           {[
-            {p:"args" as Phase,emoji:"",t:"Les 5 arguments ADT → POO",d:"Explorez chaque argument avec exemples Java",c:TEAL},
-            {p:"conditions" as Phase,emoji:"",t:"Pré/Post/Error Conditions",d:"4 questions sur les conditions de création",c:ORANGE},
-            {p:"discussion" as Phase,emoji:"",t:"Quiz Discussion D2",d:"4 questions pour préparer votre argumentation écrite",c:PURPLE},
+            {p:"args" as Phase,t:"Les 5 arguments ADT → POO",d:"Explorez chaque argument avec exemples Java",c:TEAL},
+            {p:"conditions" as Phase,t:"Pré/Post/Error Conditions",d:"4 questions sur les conditions de création",c:ORANGE},
+            {p:"discussion" as Phase,t:"Quiz Discussion D2",d:"4 questions pour préparer votre argumentation écrite",c:PURPLE},
           ].map(g=>(
             <button key={g.p} onClick={()=>{setPhase(g.p);if(g.p==="conditions"){setCIdx(0);setCScore(0);setCSel(null);setCShow(false)}if(g.p==="discussion"){setDIdx(0);setDScore(0);setDSel(null);setDShow(false)}if(g.p==="args")setExpanded(null)}}
               style={{padding:"1.2rem",border:`2px solid ${BORDER}`,borderRadius:12,background:CARD,cursor:"pointer",textAlign:"left"}}>
-              <div style={{fontSize:18,fontWeight:600,color:g.c}}>{g.emoji} {g.t}</div>
+              <div style={{fontSize:18,fontWeight:600,color:g.c}}>{g.t}</div>
               <div style={{fontSize:13,color:MUTED,marginTop:4}}>{g.d}</div>
             </button>
           ))}

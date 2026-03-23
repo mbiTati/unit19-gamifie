@@ -26,11 +26,11 @@ const OPERATIONS: Operation[] = [
 ];
 
 const ADTS: { name: ADTName; color: string; bgColor: string; icon: string; subtitle: string }[] = [
-  { name: "List", color: "#065A82", bgColor: "#E6F1FB", icon: "", subtitle: "Ordonnée, accès par index" },
-  { name: "Stack", color: "#028090", bgColor: "#E1F5EE", icon: "", subtitle: "LIFO — dernier entré, premier sorti" },
-  { name: "Queue", color: "#00A896", bgColor: "#E1F5EE", icon: "", subtitle: "FIFO — premier entré, premier sorti" },
-  { name: "Map", color: "#F97316", bgColor: "#FFF7ED", icon: "", subtitle: "Paires clé → valeur" },
-  { name: "Set", color: "#7C3AED", bgColor: "#EDE9FE", icon: "", subtitle: "Pas de doublons" },
+  { name: "List", color: "#065A82", bgColor: "#E6F1FB", icon: "L", subtitle: "Ordonnée, accès par index" },
+  { name: "Stack", color: "#028090", bgColor: "#E1F5EE", icon: "S", subtitle: "LIFO — dernier entré, premier sorti" },
+  { name: "Queue", color: "#00A896", bgColor: "#E1F5EE", icon: "Q", subtitle: "FIFO — premier entré, premier sorti" },
+  { name: "Map", color: "#F97316", bgColor: "#FFF7ED", icon: "M", subtitle: "Paires clé → valeur" },
+  { name: "Set", color: "#7C3AED", bgColor: "#EDE9FE", icon: "{}",subtitle: "Pas de doublons" },
 ];
 
 interface QuizQuestion {

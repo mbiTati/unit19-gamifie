@@ -72,14 +72,14 @@ export default function Ch12Game(){
         </div>
         <div style={{display:"grid",gap:14}}>
           {[
-            {p:"rank" as Phase,emoji:"",t:"Classer les complexités",d:"Ordonnez du plus rapide au plus lent",c:AMBER},
-            {p:"code" as Phase,emoji:"",t:"Code → Complexité",d:"8 snippets : identifiez la complexité Big O",c:PURPLE},
-            {p:"calculator" as Phase,emoji:"",t:"Calculateur de croissance",d:"Comparez visuellement O(1), O(log n), O(n), O(n²)",c:GREEN},
-            {p:"quiz" as Phase,emoji:"",t:"Quiz Big O",d:"8 questions théoriques sur l'analyse asymptotique",c:ORANGE},
+            {p:"rank" as Phase,t:"Classer les complexités",d:"Ordonnez du plus rapide au plus lent",c:AMBER},
+            {p:"code" as Phase,t:"Code → Complexité",d:"8 snippets : identifiez la complexité Big O",c:PURPLE},
+            {p:"calculator" as Phase,t:"Calculateur de croissance",d:"Comparez visuellement O(1), O(log n), O(n), O(n²)",c:GREEN},
+            {p:"quiz" as Phase,t:"Quiz Big O",d:"8 questions théoriques sur l'analyse asymptotique",c:ORANGE},
           ].map(g=>(
             <button key={g.p} onClick={()=>{setPhase(g.p);if(g.p==="rank"){setRankIdx(0);setRankScore(0);setUserRank([]);setRankShow(false)}if(g.p==="code"){setCodeIdx(0);setCodeScore(0);setCodeSel(null);setCodeShow(false)}if(g.p==="quiz"){setQIdx(0);setQScore(0);setSel(null);setShow(false)}if(g.p==="calculator")setCalcN(1000)}}
               style={{padding:"1.2rem",border:`2px solid ${BORDER}`,borderRadius:12,background:CARD,cursor:"pointer",textAlign:"left"}}>
-              <div style={{fontSize:18,fontWeight:600,color:g.c}}>{g.emoji} {g.t}</div>
+              <div style={{fontSize:18,fontWeight:600,color:g.c}}>{g.t}</div>
               <div style={{fontSize:13,color:MUTED,marginTop:4}}>{g.d}</div>
             </button>
           ))}

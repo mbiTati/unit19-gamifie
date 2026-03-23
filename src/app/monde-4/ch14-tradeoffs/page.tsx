@@ -5,17 +5,17 @@ const BG="#0B1120",CARD="#111827",BORDER="#1E3A5F",TEXT="#E2E8F0",MUTED="#94A3B8
 
 // ─── GAME 1: Trade-off Balance ───
 const TRADEOFFS=[
-  {name:"ArrayList vs LinkedList",left:{label:"ArrayList",emoji:"",pros:["Accès O(1)","Cache-friendly","Moins de mémoire"],cons:["Insertion milieu O(n)","Resize coûteux"]},
-    right:{label:"LinkedList",emoji:"",pros:["Insertion O(1) (avec ref)","Pas de resize"],cons:["Accès O(n)","Plus de mémoire (pointeurs)"]},
+  {name:"ArrayList vs LinkedList",left:{label:"ArrayList",pros:["Accès O(1)","Cache-friendly","Moins de mémoire"],cons:["Insertion milieu O(n)","Resize coûteux"]},
+    right:{label:"LinkedList",pros:["Insertion O(1) (avec ref)","Pas de resize"],cons:["Accès O(n)","Plus de mémoire (pointeurs)"]},
     question:"Pour un système avec beaucoup de LECTURES par index :",answer:"left",explain:"ArrayList : O(1) pour get(index). LinkedList doit parcourir → O(n)."},
-  {name:"HashMap vs TreeMap",left:{label:"HashMap",emoji:"#⃣",pros:["get/put O(1) moyen","Plus rapide"],cons:["Pas d'ordre","Pire cas O(n) (collisions)"]},
-    right:{label:"TreeMap",emoji:"",pros:["Clés triées","O(log n) garanti"],cons:["Plus lent que HashMap","Plus de mémoire"]},
+  {name:"HashMap vs TreeMap",left:{label:"HashMap",pros:["get/put O(1) moyen","Plus rapide"],cons:["Pas d'ordre","Pire cas O(n) (collisions)"]},
+    right:{label:"TreeMap",pros:["Clés triées","O(log n) garanti"],cons:["Plus lent que HashMap","Plus de mémoire"]},
     question:"Pour afficher les étudiants triés par nom :",answer:"right",explain:"TreeMap maintient les clés triées automatiquement. HashMap nécessiterait un tri séparé."},
-  {name:"Temps vs Espace",left:{label:"Plus de mémoire",emoji:"",pros:["Cache/mémoisation","Accès rapide","Pré-calcul"],cons:["RAM limitée","Coût mémoire"]},
-    right:{label:"Plus de calcul",emoji:"⏱",pros:["Peu de mémoire","Scalable"],cons:["Plus lent","CPU intensif"]},
+  {name:"Temps vs Espace",left:{label:"Plus de mémoire",pros:["Cache/mémoisation","Accès rapide","Pré-calcul"],cons:["RAM limitée","Coût mémoire"]},
+    right:{label:"Plus de calcul",pros:["Peu de mémoire","Scalable"],cons:["Plus lent","CPU intensif"]},
     question:"Pour un calcul de Fibonacci(50) appelé 1000 fois :",answer:"left",explain:"Mémoisation : stocker les résultats en mémoire pour éviter les recalculs exponentiels."},
-  {name:"Récursion vs Itération",left:{label:"Récursif",emoji:"",pros:["Code élégant","Naturel pour arbres/graphes"],cons:["Stack overflow","O(n) mémoire pile"]},
-    right:{label:"Itératif",emoji:"",pros:["O(1) mémoire pile","Pas de stack overflow"],cons:["Code parfois complexe","Moins intuitif pour arbres"]},
+  {name:"Récursion vs Itération",left:{label:"Récursif",pros:["Code élégant","Naturel pour arbres/graphes"],cons:["Stack overflow","O(n) mémoire pile"]},
+    right:{label:"Itératif",pros:["O(1) mémoire pile","Pas de stack overflow"],cons:["Code parfois complexe","Moins intuitif pour arbres"]},
     question:"Pour parcourir une liste de 1 million d'éléments :",answer:"right",explain:"Itératif évite le stack overflow. 1M d'appels récursifs dépasserait la taille de la pile."},
 ];
 
@@ -72,13 +72,13 @@ export default function Ch14Game(){
         </div>
         <div style={{display:"grid",gap:14}}>
           {[
-            {p:"balance" as Phase,emoji:"",t:"Trade-off Balance",d:"4 scénarios : choisissez la bonne structure pour chaque cas",c:AMBER},
-            {p:"benchmark" as Phase,emoji:"",t:"Benchmark Simulé",d:"Comparez les performances de 3 algorithmes visuellement",c:BLUE},
-            {p:"quiz" as Phase,emoji:"",t:"Quiz Trade-offs",d:"6 questions sur les compromis temps/espace",c:GREEN},
+            {p:"balance" as Phase,t:"Trade-off Balance",d:"4 scénarios : choisissez la bonne structure pour chaque cas",c:AMBER},
+            {p:"benchmark" as Phase,t:"Benchmark Simulé",d:"Comparez les performances de 3 algorithmes visuellement",c:BLUE},
+            {p:"quiz" as Phase,t:"Quiz Trade-offs",d:"6 questions sur les compromis temps/espace",c:GREEN},
           ].map(g=>(
             <button key={g.p} onClick={()=>{setPhase(g.p);if(g.p==="balance"){setBalIdx(0);setBalChoice(null);setBalShow(false);setBalScore(0)}if(g.p==="benchmark"){setBenchIdx(0);setBenchRunning(false);setBenchProgress([])}if(g.p==="quiz"){setQIdx(0);setQScore(0);setSel(null);setShow(false)}}}
               style={{padding:"1.2rem",border:`2px solid ${BORDER}`,borderRadius:12,background:CARD,cursor:"pointer",textAlign:"left"}}>
-              <div style={{fontSize:18,fontWeight:600,color:g.c}}>{g.emoji} {g.t}</div>
+              <div style={{fontSize:18,fontWeight:600,color:g.c}}>{g.t}</div>
               <div style={{fontSize:13,color:MUTED,marginTop:4}}>{g.d}</div>
             </button>
           ))}
@@ -102,7 +102,7 @@ export default function Ch14Game(){
               return(
                 <div key={side} onClick={()=>{if(balShow)return;setBalChoice(side);setBalShow(true);if(side===t.answer)setBalScore(s2=>s2+1)}}
                   style={{padding:"14px",border:`2px solid ${correct?GREEN:wrong?RED:chosen?AMBER:BORDER}`,borderRadius:10,background:correct?GREEN+"15":wrong?RED+"15":CARD,cursor:balShow?"default":"pointer"}}>
-                  <div style={{textAlign:"center",marginBottom:8}}><span style={{fontSize:28}}>{s.emoji}</span><div style={{fontWeight:700,fontSize:15}}>{s.label}</div></div>
+                  <div style={{textAlign:"center",marginBottom:8}}><div style={{fontWeight:700,fontSize:15}}>{s.label}</div></div>
                   <div style={{fontSize:12}}><div style={{color:GREEN,marginBottom:4}}> {s.pros.join(" • ")}</div><div style={{color:RED}}>Incorrect — {s.cons.join(" • ")}</div></div>
                 </div>
               );

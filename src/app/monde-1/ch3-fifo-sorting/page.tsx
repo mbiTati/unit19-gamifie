@@ -265,14 +265,14 @@ export default function Ch3Game(){
         </div>
         <div style={{display:"grid",gap:14}}>
           {[
-            {p:"sort" as Phase,emoji:"",t:"Simulateur de tri visuel",d:"Regardez Bubble/Quick/Merge trier en temps réel avec barres animées",c:RED},
-            {p:"race" as Phase,emoji:"",t:"Course d'algorithmes",d:"Bubble Sort vs Quick Sort — qui gagne ?",c:PURPLE},
-            {p:"fifo" as Phase,emoji:"",t:"Simulateur FIFO",d:"Enqueue, dequeue, visualisez la file d'attente",c:TEAL},
-            {p:"quiz" as Phase,emoji:"",t:"Quiz Tri & FIFO",d:"6 questions sur les algorithmes de tri et les files",c:GREEN},
+            {p:"sort" as Phase,t:"Simulateur de tri visuel",d:"Regardez Bubble/Quick/Merge trier en temps réel avec barres animées",c:RED},
+            {p:"race" as Phase,t:"Course d'algorithmes",d:"Bubble Sort vs Quick Sort — qui gagne ?",c:PURPLE},
+            {p:"fifo" as Phase,t:"Simulateur FIFO",d:"Enqueue, dequeue, visualisez la file d'attente",c:TEAL},
+            {p:"quiz" as Phase,t:"Quiz Tri & FIFO",d:"6 questions sur les algorithmes de tri et les files",c:GREEN},
           ].map(g=>(
             <button key={g.p} onClick={()=>{setPhase(g.p);if(g.p==="quiz"){setQIdx(0);setQScore(0);setSel(null);setShow(false)}}}
               style={{padding:"1.2rem",border:`2px solid ${BORDER}`,borderRadius:12,background:CARD,cursor:"pointer",textAlign:"left"}}>
-              <div style={{fontSize:18,fontWeight:600,color:g.c}}>{g.emoji} {g.t}</div>
+              <div style={{fontSize:18,fontWeight:600,color:g.c}}>{g.t}</div>
               <div style={{fontSize:13,color:MUTED,marginTop:4}}>{g.d}</div>
             </button>
           ))}

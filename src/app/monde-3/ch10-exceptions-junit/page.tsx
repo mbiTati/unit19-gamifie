@@ -74,13 +74,13 @@ export default function Ch10Game(){
         </div>
         <div style={{display:"grid",gap:14}}>
           {[
-            {p:"debug" as Phase,emoji:"",t:"Puzzle de Débogage",d:"5 bugs Java — trouvez la ligne, avec indices progressifs",c:RED},
-            {p:"builder" as Phase,emoji:"",t:"Code Builder JUnit",d:"Reconstituez un test JUnit 5 complet en ordonnant les blocs",c:PURPLE},
-            {p:"quiz" as Phase,emoji:"",t:"Quiz JUnit 5 & Exceptions",d:"8 questions : @Test, assertThrows, throw/throws, try-catch-finally",c:GREEN},
+            {p:"debug" as Phase,t:"Puzzle de Débogage",d:"5 bugs Java — trouvez la ligne, avec indices progressifs",c:RED},
+            {p:"builder" as Phase,t:"Code Builder JUnit",d:"Reconstituez un test JUnit 5 complet en ordonnant les blocs",c:PURPLE},
+            {p:"quiz" as Phase,t:"Quiz JUnit 5 & Exceptions",d:"8 questions : @Test, assertThrows, throw/throws, try-catch-finally",c:GREEN},
           ].map(g=>(
             <button key={g.p} onClick={()=>{setPhase(g.p);if(g.p==="debug"){setPuzzIdx(0);setHintLevel(0);setClickedLine(null);setShowFix(false)}if(g.p==="builder")initBuilder();if(g.p==="quiz"){setQIdx(0);setQScore(0);setSel(null);setShow(false)}}}
               style={{padding:"1.2rem",border:`2px solid ${BORDER}`,borderRadius:12,background:CARD,cursor:"pointer",textAlign:"left"}}>
-              <div style={{fontSize:18,fontWeight:600,color:g.c}}>{g.emoji} {g.t}</div>
+              <div style={{fontSize:18,fontWeight:600,color:g.c}}>{g.t}</div>
               <div style={{fontSize:13,color:MUTED,marginTop:4}}>{g.d}</div>
             </button>
           ))}
