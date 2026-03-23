@@ -89,7 +89,7 @@ export default function BossLO1() {
       <div style={{ maxWidth: 600, margin: "0 auto", padding: "3rem 1rem", fontFamily: "'Segoe UI', system-ui, sans-serif", textAlign: "center" as const }}>
       <div style={{ fontSize: 60, marginBottom: 16 }}></div>
         <div style={{ fontSize: 14, color: "#DC2626", fontWeight: 600, letterSpacing: 2, textTransform: "uppercase" as const }}>Boss Fight</div>
-        <h1 style={{ fontSize: 32, fontWeight: 700, color: "#1E3A5F", margin: "0.5rem 0" }}>Monde 1 — LO1</h1>
+        <h1 style={{ fontSize: 32, fontWeight: 700, color: "#E2E8F0", margin: "0.5rem 0" }}>Monde 1 — LO1</h1>
         <p style={{ color: "#64748B", fontSize: 16, marginBottom: 24 }}>12 questions couvrant les chapitres 1-4. Temps limité : 3 minutes. Bonus streak !</p>
         <button onClick={startQuiz} style={{ padding: "12px 32px", background: "#DC2626", color: "white", border: "none", borderRadius: 10, fontSize: 18, fontWeight: 700, cursor: "pointer" }}>Commencer le boss</button>
       </div>
@@ -101,9 +101,9 @@ export default function BossLO1() {
     const grade = pct >= 90 ? "S" : pct >= 75 ? "A" : pct >= 60 ? "B" : pct >= 40 ? "C" : "D";
     const gradeColor = pct >= 75 ? "#16A34A" : pct >= 50 ? "#F97316" : "#DC2626";
     return (
-      <div style={{ minHeight: "100vh", background: "#0B1120", color: "#1E3A5F", padding: "3rem 1rem", fontFamily: "'Segoe UI', system-ui, sans-serif", textAlign: "center" as const }}>
+      <div style={{ minHeight: "100vh", background: "#0B1120", color: "#E2E8F0", padding: "3rem 1rem", fontFamily: "'Segoe UI', system-ui, sans-serif", textAlign: "center" as const }}>
         <div style={{ fontSize: 80, fontWeight: 800, color: gradeColor }}>{grade}</div>
-        <div style={{ fontSize: 24, fontWeight: 600, color: "#1E3A5F", margin: "0.5rem 0" }}>{score} points</div>
+        <div style={{ fontSize: 24, fontWeight: 600, color: "#E2E8F0", margin: "0.5rem 0" }}>{score} points</div>
         <div style={{ fontSize: 14, color: "#64748B" }}>Meilleure série : {maxStreak} | Temps restant : {timeLeft}s</div>
         <div style={{ marginTop: 24 }}>
           <button onClick={startQuiz} style={{ padding: "10px 24px", background: "#DC2626", color: "white", border: "none", borderRadius: 8, fontWeight: 600, cursor: "pointer", fontSize: 15 }}>Rejouer</button>
@@ -117,21 +117,21 @@ export default function BossLO1() {
   const sec = timeLeft % 60;
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0B1120", color: "#1E3A5F", padding: "1.5rem 1rem", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: "#0B1120", color: "#E2E8F0", padding: "1.5rem 1rem", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
         <span style={{ fontSize: 13, color: "#64748B" }}>{current + 1}/{questions.length} | {q.chapter}</span>
         <span style={{ fontSize: 13, fontWeight: 600, color: timeLeft < 30 ? "#DC2626" : "#64748B" }}>{min}:{sec.toString().padStart(2, "0")}</span>
         <span style={{ fontSize: 13, color: "#DC2626", fontWeight: 600 }}>{score} pts {streak >= 2 ? `x${streak}` : ""}</span>
       </div>
-      <div style={{ height: 4, background: "#1E3A5F", borderRadius: 2, marginBottom: 16 }}>
+      <div style={{ height: 4, background: "#1E3A5F30", borderRadius: 2, marginBottom: 16 }}>
         <div style={{ height: 4, background: "#DC2626", borderRadius: 2, width: `${((current + 1) / questions.length) * 100}%` }} />
       </div>
       {q.code && (
         <div style={{ background: "#1E293B", borderRadius: 8, padding: "0.75rem 1rem", marginBottom: 12 }}>
-          <pre style={{ fontSize: 13, color: "#1E3A5F", fontFamily: "Consolas, monospace", margin: 0, whiteSpace: "pre-wrap" as const }}>{q.code}</pre>
+          <pre style={{ fontSize: 13, color: "#A5F3FC", fontFamily: "Consolas, monospace", margin: 0, whiteSpace: "pre-wrap" as const }}>{q.code}</pre>
         </div>
       )}
-      <p style={{ fontSize: 16, fontWeight: 600, color: "#1E3A5F", marginBottom: 12, lineHeight: 1.4 }}>{q.question}</p>
+      <p style={{ fontSize: 16, fontWeight: 600, color: "#E2E8F0", marginBottom: 12, lineHeight: 1.4 }}>{q.question}</p>
       <div style={{ display: "grid", gap: 8 }}>
         {q.options.map((opt, idx) => {
           const isCorrect = idx === q.correctIndex;

@@ -1,4 +1,5 @@
 "use client";
+import QuizEngine from "@/components/QuizEngine";
 import Link from "next/link";
 import { useState, useEffect, useRef, useCallback } from "react";
 import TopBar from "@/components/TopBar";
@@ -289,18 +290,14 @@ export default function Ch3Game(){
   if(phase==="fifo")return(<div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}><div style={{maxWidth:700,margin:"0 auto"}}>{back}<h2 style={{fontSize:22,fontWeight:700,color:TEAL,marginBottom:16}}>Simulateur FIFO</h2><FIFOSim/></div></div>);
 
   // QUIZ
-  if(qIdx>=QUIZ.length){const p=Math.round(qScore/QUIZ.length*100);return(<div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"3rem 1rem"}}><div style={{maxWidth:500,margin:"0 auto",textAlign:"center"}}><div style={{fontSize:64,fontWeight:800,color:p>=70?GREEN:ORANGE}}>{qScore}/{QUIZ.length}</div><button onClick={()=>setPhase("menu")} style={{marginTop:16,padding:"10px 24px",background:PURPLE,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>Retour</button></div></div>)}
-  const q=QUIZ[qIdx];
+    // Quiz (rendered by QuizEngine with XP bar, target, streak)
   return(
     <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
       <TopBar/>
       <div style={{maxWidth:650,margin:"0 auto"}}>
         {back}
-        <div style={{fontSize:13,color:MUTED,marginBottom:8}}>{qIdx+1}/{QUIZ.length} | Score: {qScore}</div>
-        <div style={{height:4,background:BORDER,borderRadius:2,marginBottom:16}}><div style={{height:4,background:GREEN,borderRadius:2,width:`${(qIdx+1)/QUIZ.length*100}%`}}/></div>
-        <p style={{fontSize:16,fontWeight:600,marginBottom:12}}>{q.q}</p>
-        <div style={{display:"grid",gap:8}}>{q.o.map((o,i)=>{let bg=CARD,bd=BORDER;if(show){if(i===q.c){bg=GREEN+"20";bd=GREEN}else if(i===sel){bg=RED+"20";bd=RED}}return(<button key={i} onClick={()=>{if(show)return;setSel(i);setShow(true);if(i===q.c)setQScore(s=>s+1)}} disabled={show} style={{padding:"10px 14px",border:`2px solid ${bd}`,borderRadius:8,background:bg,cursor:show?"default":"pointer",textAlign:"left",fontSize:14,color:TEXT}}>{o}</button>)})}</div>
-        {show&&<><div style={{marginTop:10,padding:"10px 14px",background:GREEN+"15",borderRadius:8,fontSize:13,color:GREEN}}>{q.e}</div><button onClick={()=>{setQIdx(i=>i+1);setSel(null);setShow(false)}} style={{marginTop:10,width:"100%",padding:"10px",background:GREEN,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>Suivant →</button></>}
+        <QuizEngine questions={QUIZ} color={GREEN}/>
+        <button onClick={()=>setPhase("menu")} style={{marginTop:16,padding:"10px 20px",background:CARD,color:MUTED,border:"1px solid "+BORDER,borderRadius:8,fontSize:12,cursor:"pointer"}}>Retour au menu</button>
       </div>
     </div>
   );

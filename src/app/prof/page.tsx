@@ -1,4 +1,5 @@
 "use client";
+import { SpinningWheel, Buzzer } from "@/components/GameAnimations";
 import { useState } from "react";
 import Link from "next/link";
 
@@ -44,9 +45,9 @@ export default function ProfPage(){
         </div>
 
         <div style={{display:"flex",gap:6,marginBottom:16}}>
-          {["planning","resources","criteria"].map(function(v){return(
+          {["planning","resources","criteria","tools"].map(function(v){return(
             <button key={v} onClick={function(){setView(v)}} style={{padding:"8px 16px",borderRadius:8,fontSize:13,fontWeight:600,cursor:"pointer",background:view===v?BLUE:"transparent",color:view===v?"white":MUTED,border:"1px solid "+(view===v?"transparent":BORDER)}}>
-              {v==="planning"?"Planning":v==="resources"?"Ressources":"Criteres"}
+              {v==="planning"?"Planning":v==="resources"?"Ressources":v==="criteria"?"Criteres":"Outils classe"}
             </button>
           )})}
         </div>
@@ -146,7 +147,23 @@ export default function ProfPage(){
           </div>
         )}
 
-        <div style={{textAlign:"center",marginTop:"2rem",fontSize:11,color:BORDER}}>Page accessible via /prof</div>
+        
+        {view==="tools"&&(
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20}}>
+            <div style={{padding:"16px",background:"#111827",borderRadius:12,border:"1px solid #1E3A5F"}}>
+              <div style={{fontSize:16,fontWeight:700,color:"#F97316",marginBottom:12}}>Roue du hasard</div>
+              <div style={{fontSize:12,color:"#94A3B8",marginBottom:12}}>Tirage au sort du theme en classe</div>
+              <SpinningWheel segments={[{label:"ADT",color:"#7C3AED"},{label:"HashMap",color:"#0891B2"},{label:"LinkedList",color:"#16A34A"},{label:"Exceptions",color:"#DC2626"},{label:"JUnit",color:"#F97316"},{label:"Big O",color:"#D97706"},{label:"Tri",color:"#3B82F6"},{label:"Patterns",color:"#7C3AED"}]} onResult={function(){}}/>
+            </div>
+            <div style={{padding:"16px",background:"#111827",borderRadius:12,border:"1px solid #1E3A5F",textAlign:"center"}}>
+              <div style={{fontSize:16,fontWeight:700,color:"#16A34A",marginBottom:12}}>Buzzer</div>
+              <div style={{fontSize:12,color:"#94A3B8",marginBottom:20}}>Pour quiz en classe</div>
+              <div style={{display:"flex",justifyContent:"center"}}><Buzzer onBuzz={function(){}} color="#DC2626"/></div>
+            </div>
+          </div>
+        )}
+
+<div style={{textAlign:"center",marginTop:"2rem",fontSize:11,color:BORDER}}>Page accessible via /prof</div>
       </div>
     </div>
   );

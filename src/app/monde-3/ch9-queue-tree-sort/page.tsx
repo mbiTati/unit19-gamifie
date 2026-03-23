@@ -132,10 +132,10 @@ export default function Ch9Game() {
   const [mode, setMode] = useState<"menu" | "tree" | "sort">("menu");
 
   if (mode === "menu") return (
-    <div style={{ minHeight: "100vh", background: "#0B1120", color: "#1E3A5F", padding: "2rem 1rem", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: "#0B1120", color: "#E2E8F0", padding: "2rem 1rem", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
       <div style={{ textAlign: "center", marginBottom: "2rem" }}>
         <div style={{ fontSize: 14, color: "#993C1D", fontWeight: 600, letterSpacing: 2, textTransform: "uppercase" as const }}>Monde 3 — Chapitre 9</div>
-        <h1 style={{ fontSize: 32, fontWeight: 700, color: "#1E3A5F", margin: "0.5rem 0" }}>Tree + Algorithmes de tri</h1>
+        <h1 style={{ fontSize: 32, fontWeight: 700, color: "#E2E8F0", margin: "0.5rem 0" }}>Tree + Algorithmes de tri</h1>
         <p style={{ color: "#64748B", fontSize: 16 }}>Critère P4b</p>
           <a href="/fiches/Ch9_Fiche_Memo_Tree_Sorting.pdf" target="_blank" rel="noopener" style={{display:"inline-block",marginTop:8,padding:"6px 14px",background:"#1E293B",border:"1px solid #1E3A5F",borderRadius:8,fontSize:12,color:"#94A3B8",textDecoration:"none"}}>Fiche memo PDF</a>
       </div>
