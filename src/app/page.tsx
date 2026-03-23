@@ -15,6 +15,7 @@ const RED = "#DC2626";
 const BLUE = "#3B82F6";
 const GREEN = "#16A34A";
 const TEAL = "#0891B2";
+const AMBER = "#D97706";
 
 interface Module {
   num: number;
@@ -182,20 +183,34 @@ export default function Home() {
         ))}
       </div>
 
-      {/* BOSS FINAL */}
-      <Link href="/boss-final" style={{ display: "block", marginTop: 20, borderRadius: 16, overflow: "hidden", border: `1px solid ${RED}`, textDecoration: "none", textAlign: "center" as const, padding: "2rem", background: `linear-gradient(135deg, ${RED}15, ${ORANGE}15)`, boxShadow: `0 0 40px ${RED}25` }}>
-        <div style={{ marginBottom: 4 }}><Crown size={44} color="white" /></div>
-        <div style={{ fontSize: 22, fontWeight: 800, color: "white", marginTop: 8 }}>Boss Final</div>
-        <div style={{ fontSize: 13, color: MUTED, marginTop: 4 }}>20 questions — LO1 à LO4 — 4 minutes — Streak bonus</div>
-        <div style={{ display: "inline-block", marginTop: 14, padding: "10px 28px", background: RED, color: "white", borderRadius: 10, fontWeight: 700, fontSize: 15 }}>Commencer</div>
+            {/* PROJETS INTEGRATEURS */}
+      <Link href="/projets" style={{ display: "block", marginTop: 20, borderRadius: 16, overflow: "hidden", border: `1px solid ${ORANGE}`, textDecoration: "none", padding: "1.5rem", background: `linear-gradient(135deg, ${PURPLE}10, ${TEAL}10, ${ORANGE}10, ${AMBER}10)` }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div>
+            <div style={{ fontSize: 18, fontWeight: 700, color: "white" }}>Projets integrateurs</div>
+            <div style={{ fontSize: 13, color: MUTED, marginTop: 4 }}>1 projet par LO — couvre tous les criteres Pass, Merit, Distinction</div>
+          </div>
+          <div style={{ display: "flex", gap: 6 }}>
+            {[{l:"LO1",c:PURPLE},{l:"LO2",c:TEAL},{l:"LO3",c:ORANGE},{l:"LO4",c:AMBER}].map(lo=>(
+              <span key={lo.l} style={{ padding: "4px 8px", background: lo.c + "20", color: lo.c, borderRadius: 6, fontSize: 11, fontWeight: 700 }}>{lo.l}</span>
+            ))}
+          </div>
+        </div>
       </Link>
 
-      {/* EXERCICES ENTREPRISE */}
-      <Link href="/exercices-entreprise" style={{ display: "block", marginTop: 20, borderRadius: 16, overflow: "hidden", border: `1px solid ${TEAL}`, textDecoration: "none", textAlign: "center" as const, padding: "1.5rem", background: `linear-gradient(135deg, ${TEAL}15, ${PURPLE}15)` }}>
-        <div style={{ marginBottom: 4 }}><Building2 size={36} color="#0891B2" /></div>
-        <div style={{ fontSize: 18, fontWeight: 700, color: "white", marginTop: 6 }}>Exercices Entreprise</div>
-        <div style={{ fontSize: 13, color: MUTED, marginTop: 4 }}>5 cas : Velos, Interventions, Salles, Tickets IT, Pharmacie</div>
-      </Link>
+      {/* BOSS FINAL + EXERCICES */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginTop: 20 }}>
+        <Link href="/boss-final" style={{ borderRadius: 16, overflow: "hidden", border: `1px solid ${RED}`, textDecoration: "none", textAlign: "center" as const, padding: "1.5rem", background: `linear-gradient(135deg, ${RED}15, ${ORANGE}15)`, boxShadow: `0 0 40px ${RED}25` }}>
+          <Crown size={36} color="white" />
+          <div style={{ fontSize: 18, fontWeight: 800, color: "white", marginTop: 6 }}>Boss Final</div>
+          <div style={{ fontSize: 12, color: MUTED, marginTop: 4 }}>15 questions — LO1 a LO4 — Cible + Streak</div>
+        </Link>
+        <Link href="/exercices-entreprise" style={{ borderRadius: 16, overflow: "hidden", border: `1px solid ${TEAL}`, textDecoration: "none", textAlign: "center" as const, padding: "1.5rem", background: `linear-gradient(135deg, ${TEAL}15, ${PURPLE}15)` }}>
+          <Building2 size={36} color="#0891B2" />
+          <div style={{ fontSize: 18, fontWeight: 700, color: "white", marginTop: 6 }}>Exercices Entreprise</div>
+          <div style={{ fontSize: 12, color: MUTED, marginTop: 4 }}>5 cas : Velos, Interventions, Salles, Tickets, Pharmacie</div>
+        </Link>
+      </div>
 
       {/* FOOTER */}
       <div style={{ textAlign: "center" as const, marginTop: "2rem", padding: "1rem", borderTop: `1px solid ${BORDER}` }}>
