@@ -92,7 +92,7 @@ export default function CodeExercise({ chapter, title, criteria, worldColor, int
       const isCorrect = submitted && answers[blank.id]?.trim().toLowerCase() === blank.answer.toLowerCase();
       const isWrong = submitted && !isCorrect;
       return (
-        <span key={i} style={{ display: "inline-block", position: "relative" as const }}>
+        <span key={i} style={{ display: "inline-block", verticalAlign: "top" }}>
           <input
             value={answers[blank.id] || ""}
             onChange={e => setAnswers({ ...answers, [blank.id]: e.target.value })}
@@ -110,7 +110,7 @@ export default function CodeExercise({ chapter, title, criteria, worldColor, int
               outline: "none",
             }}
           />
-          {isWrong && <span style={{ position: "absolute" as const, top: -16, left: 0, fontSize: 10, color: RED }}>{blank.answer}</span>}
+          {isWrong && <div style={{ fontSize: 10, color: "#86EFAC", background: "#16A34A20", borderRadius: 3, padding: "1px 4px", marginTop: 2, fontFamily: "Consolas, monospace" }}>{blank.answer}</div>}
         </span>
       );
     });
