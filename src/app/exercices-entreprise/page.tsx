@@ -1247,18 +1247,10 @@ const EXERCISES=[
 ,
   {id:4,title:"Gestion de Tickets de Support IT",color:"#3B82F6",
     context:"Vous travaillez dans le service informatique d'une entreprise. Votre manager vous demande de developper une application de gestion de tickets de support. Les tickets doivent etre traites par ordre de priorite : les tickets critiques en premier, puis les tickets normaux. L'application utilise un systeme de file d'attente avec priorite.",
-    tasks:[
-      "P4 — Classe Ticket : id, description, priorite (CRITIQUE/NORMAL/FAIBLE), demandeur, resolu + getters/setters + toString()",
-      "P4 — Classe GestionTickets : HashMap<Integer, Ticket> + compteur auto-increment + creerTicket() + resoudreTicket() + ticketsCritiques() + rechercherParDemandeur() + statistiques()",
-      "P4 — Menu interactif : 1.Creer 2.Resoudre 3.Critiques 4.Rechercher 5.Stats 6.Quitter",
-      "P5 — throws : resoudreTicket() declare throws Exception",
-      "P5 — throw : creerTicket() leve IllegalArgumentException si description vide ou priorite invalide",
-      "P5 — try/catch : saisie id ticket a resoudre (NumberFormatException)",
-      "P5 — try/catch/finally : creation ticket, finally affiche le total apres chaque tentative",
-      "P5 — 5 Tests JUnit : testCreerTicketValide, testCreerDescriptionVide, testCreerPrioriteInvalide, testResoudreTicketInexistant, testTicketsCritiques",
-      "M4 — Commentaires : POURQUOI HashMap, COMMENT get() resout le probleme, COMMENT ticketsCritiques() filtre, QUEL avantage HashMap pour recherche par cle",
-      "D3 — Complexite : creerTicket O(1), resoudreTicket O(1) vs LinkedList O(n), ticketsCritiques O(n), rechercherParDemandeur O(n), amelioration HashMap<String, List<Ticket>>"
-    ],
+    p4:["Classe Ticket : id, description, priorite (CRITIQUE/NORMAL/FAIBLE), demandeur, resolu + getters/setters + toString()","GestionTickets : HashMap<Integer, Ticket> + compteur auto-increment","creerTicket(desc, priorite, demandeur) : cree ticket avec id auto-incremente","resoudreTicket(id) : marque resolu=true, signale si id inexistant","ticketsCritiques() : ArrayList des tickets CRITIQUE non resolus","rechercherParDemandeur(nom) : parcourt le HashMap, retourne tous les tickets","statistiques() : total, resolus, ouverts, pourcentage","Menu : 1.Creer 2.Resoudre 3.Critiques 4.Rechercher 5.Stats 6.Quitter"],
+    p5:["throws : resoudreTicket() declare throws Exception (ticket peut ne pas exister)","throw : creerTicket() leve throw new IllegalArgumentException si description vide ou priorite invalide","try/catch : saisie id du ticket (NumberFormatException si texte au lieu de nombre)","try/catch/finally : creation ticket — finally affiche le total de tickets apres chaque tentative","Tests JUnit (5 tests) : testCreerTicketValide, testCreerDescriptionVide, testCreerPrioriteInvalide, testResoudreTicketInexistant, testTicketsCritiques"],
+    m4:["POURQUOI HashMap plutot que LinkedList/ArrayList ?","COMMENT HashMap.get(id) resout le probleme de resolution rapide","COMMENT ticketsCritiques() filtre les elements du HashMap","QUEL avantage du HashMap pour la recherche par cle en support IT"],
+    d3:["creerTicket() : O(1) amorti — HashMap.put()","resoudreTicket() : O(1) par HashMap.get() vs O(n) avec LinkedList","ticketsCritiques() : O(n) — parcourt toutes les valeurs","rechercherParDemandeur() : O(n) — recherche par valeur pas par cle","Amelioration : HashMap<String, List<Ticket>> pour O(1) par demandeur"],
     structure:"HashMap<Integer, Ticket>",
     structureWhy:"HashMap choisi car : acces direct par id en O(1) (essentiel pour resoudreTicket), unicite des cles (pas 2 tickets meme id), ajout O(1) amorti. Avec LinkedList, resoudreTicket serait O(n).",
     classes:[
@@ -1272,19 +1264,10 @@ const EXERCISES=[
     criteria:"P4 (HashMap), P5 (exceptions multiples : IllegalArgument + IllegalState + NumberFormat), M4 (resout un probleme IT), D3 (analyse O(1) vs O(n))"},
   {id:5,title:"Gestion de Stock de Medicaments en Pharmacie",color:"#16A34A",
     context:"Vous etes developpeur dans une pharmacie de quartier. Le pharmacien souhaite une application Java pour gerer son stock de medicaments. L'application doit permettre d'ajouter des medicaments, de rechercher un medicament par nom, de verifier les stocks faibles (quantite < 5) et d'afficher l'ensemble du stock trie par nom.",
-    tasks:[
-      "P4 — Classe Medicament : nom (String), prix (double), quantite (int), dateExpiration (String) + getters/setters + toString()",
-      "P4 — Classe GestionStock : LinkedList<Medicament> + ajouter() + rechercher() + stocksFaibles() + trierParNom() + supprimer()",
-      "P4 — trierParNom() : tri a bulles a implementer (PAS Collections.sort)",
-      "P4 — Menu interactif : 1.Ajouter 2.Rechercher 3.Stocks faibles 4.Afficher tout (trie) 5.Supprimer 6.Quitter",
-      "P5 — throws : rechercher() declare throws Exception dans sa signature",
-      "P5 — throw : ajouter() leve IllegalArgumentException si nom vide ou prix negatif",
-      "P5 — try/catch : Menu gere InputMismatchException et NumberFormatException",
-      "P5 — try/catch/finally : finally affiche un message de fin d'operation apres CHAQUE action",
-      "P5 — 5 Tests JUnit : testAjouterMedicamentValide, testAjouterNomVide, testRechercherExistant, testRechercherInexistant, testStocksFaibles",
-      "M4 — Commentaires : POURQUOI LinkedList (pas tableau/ArrayList), COMMENT trierParNom() fonctionne, COMMENT stocksFaibles() filtre, QUEL avantage pour ajouts/suppressions",
-      "D3 — Complexite : ajouter O(1), rechercher O(n) meilleur/pire cas, stocksFaibles O(n), trierParNom O(n^2) et est-il optimal ?, comparaison ArrayList/HashMap"
-    ],
+    p4:["Classe Medicament : nom (String), prix (double), quantite (int), dateExpiration (String) + getters/setters + toString()","GestionStock : LinkedList<Medicament>","ajouter(Medicament m) : ajoute a la liste","rechercher(String nom) : parcourt et retourne le medicament (ou erreur)","stocksFaibles() : liste des medicaments avec quantite < 5","trierParNom() : tri a bulles par ordre alphabetique (PAS Collections.sort)","supprimer(String nom) : supprime de la liste","Menu : 1.Ajouter 2.Rechercher 3.Stocks faibles 4.Afficher trie 5.Supprimer 6.Quitter"],
+    p5:["throws : rechercher() declare throws Exception dans sa signature","throw : ajouter() leve throw new IllegalArgumentException si nom vide ou prix negatif","try/catch : Menu gere InputMismatchException et NumberFormatException","try/catch/finally : finally affiche message de fin d'operation apres CHAQUE action","Tests JUnit (5 tests) : testAjouterMedicamentValide, testAjouterNomVide, testRechercherExistant, testRechercherInexistant, testStocksFaibles"],
+    m4:["POURQUOI LinkedList plutot qu'un tableau ou ArrayList ?","COMMENT trierParNom() resout le tri (quel algorithme, comment il fonctionne)","COMMENT stocksFaibles() filtre les elements (parcours + condition)","QUEL avantage de la LinkedList pour ajouts/suppressions frequents"],
+    d3:["ajouter() : O(1) — LinkedList.add() en fin","rechercher() : O(n) pire cas, O(1) meilleur cas","stocksFaibles() : O(n) — parcourt tous les elements","trierParNom() : O(n^2) tri a bulles — pas optimal, MergeSort serait O(n log n)","Comparaison : ArrayList O(1) get par index, HashMap O(1) par cle"],
     structure:"LinkedList<Medicament>",
     structureWhy:"LinkedList choisi car : ajouts/suppressions frequents en pharmacie O(1), pas besoin d'acces par index (recherche par nom = parcours), tri a bulles implementable sur LinkedList.",
     classes:[
@@ -1329,10 +1312,36 @@ export default function ExercicesEntreprise(){
                     <div style={{fontSize:13,fontWeight:600,color:ex.color,marginBottom:4}}>Contexte :</div>
                     <div style={{fontSize:14,color:TEXT}}>{ex.context}</div>
                   </div>
-                  <div style={{marginBottom:12}}>
-                    <div style={{fontSize:13,fontWeight:600,color:TEXT,marginBottom:6}}>Fonctionnalites demandees :</div>
-                    {ex.tasks.map((t,i)=>(<div key={i} style={{fontSize:13,color:MUTED,padding:"3px 0"}}>{String.fromCharCode(8226)} {t}</div>))}
-                  </div>
+                  {/* P4 - Implementation */}
+                  {ex.p4&&(<div style={{marginBottom:12}}>
+                    <div style={{padding:"8px 12px",background:"#16A34A15",borderRadius:8,border:"1px solid #16A34A30"}}>
+                      <div style={{fontSize:12,fontWeight:700,color:"#16A34A",marginBottom:6}}>P4 — Implementation ADT + Algorithme</div>
+                      {ex.p4.map((t:string,i:number)=>(<div key={i} style={{fontSize:12,color:TEXT,padding:"2px 0"}}>{String.fromCharCode(8226)} {t}</div>))}
+                    </div>
+                  </div>)}
+                  {/* P5 - Error Handling + Tests */}
+                  {ex.p5&&(<div style={{marginBottom:12}}>
+                    <div style={{padding:"8px 12px",background:"#DC262615",borderRadius:8,border:"1px solid #DC262630"}}>
+                      <div style={{fontSize:12,fontWeight:700,color:"#DC2626",marginBottom:6}}>P5 — Error Handling + Tests JUnit</div>
+                      {ex.p5.map((t:string,i:number)=>(<div key={i} style={{fontSize:12,color:TEXT,padding:"2px 0"}}>{String.fromCharCode(8226)} {t}</div>))}
+                    </div>
+                  </div>)}
+                  {/* M4 + D3 in a grid */}
+                  {ex.m4&&ex.d3&&(<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:12}}>
+                    <div style={{padding:"8px 12px",background:"#3B82F615",borderRadius:8,border:"1px solid #3B82F630"}}>
+                      <div style={{fontSize:12,fontWeight:700,color:"#3B82F6",marginBottom:6}}>M4 — Commentaires (Merit)</div>
+                      {ex.m4.map((t:string,i:number)=>(<div key={i} style={{fontSize:11,color:MUTED,padding:"2px 0"}}>{String.fromCharCode(8226)} {t}</div>))}
+                    </div>
+                    <div style={{padding:"8px 12px",background:"#7C3AED15",borderRadius:8,border:"1px solid #7C3AED30"}}>
+                      <div style={{fontSize:12,fontWeight:700,color:"#7C3AED",marginBottom:6}}>D3 — Complexite (Distinction)</div>
+                      {ex.d3.map((t:string,i:number)=>(<div key={i} style={{fontSize:11,color:MUTED,padding:"2px 0"}}>{String.fromCharCode(8226)} {t}</div>))}
+                    </div>
+                  </div>)}
+                  {/* Fallback for exercises without p4/p5/m4/d3 */}
+                  {ex.tasks&&(<div style={{marginBottom:12}}>
+                    <div style={{fontSize:13,fontWeight:600,color:TEXT,marginBottom:6}}>Fonctionnalites :</div>
+                    {ex.tasks.map((t:string,i:number)=>(<div key={i} style={{fontSize:13,color:MUTED,padding:"3px 0"}}>{String.fromCharCode(8226)} {t}</div>))}
+                  </div>)}
                   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:12}}>
                     <div style={{padding:"10px",background:CARD,borderRadius:8,border:"1px solid "+BORDER}}>
                       <div style={{fontSize:11,fontWeight:600,color:TEAL,textTransform:"uppercase",marginBottom:4}}>Structure de donnees</div>
