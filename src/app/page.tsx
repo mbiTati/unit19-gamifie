@@ -191,6 +191,13 @@ export default function Home() {
         <div style={{ display: "inline-block", marginTop: 14, padding: "10px 28px", background: RED, color: "white", borderRadius: 10, fontWeight: 700, fontSize: 15 }}>Commencer</div>
       </Link>
 
+      {/* EXERCICES ENTREPRISE */}
+      <Link href="/exercices-entreprise" style={{ display: "block", marginTop: 20, borderRadius: 16, overflow: "hidden", border: `1px solid ${TEAL}`, textDecoration: "none", textAlign: "center" as const, padding: "1.5rem", background: `linear-gradient(135deg, ${TEAL}15, ${PURPLE}15)` }}>
+        <div style={{ fontSize: 36 }}>🏢</div>
+        <div style={{ fontSize: 18, fontWeight: 700, color: "white", marginTop: 6 }}>Exercices Entreprise</div>
+        <div style={{ fontSize: 13, color: MUTED, marginTop: 4 }}>3 cas réels : Vélos, Interventions IT, Réservation salles</div>
+      </Link>
+
       {/* FOOTER */}
       <div style={{ textAlign: "center" as const, marginTop: "2rem", padding: "1rem", borderTop: `1px solid ${BORDER}` }}>
         <div style={{ fontSize: 12, color: DIM }}>Mme MBI — Bachelor 2 — Unit 19 : Data Structures & Algorithms</div>
