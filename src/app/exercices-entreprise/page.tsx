@@ -737,6 +737,321 @@ public class Menu {
 }`;
 
 
+const EX5_CODE=`import java.time.LocalDate;
+
+// ===================================================
+// CLASSE METIER : Medicament
+// ===================================================
+public class Medicament {
+    private String code;        // code unique (ex: "MED001")
+    private String nom;
+    private int quantite;
+    private double prixUnitaire;
+    private LocalDate dateExpiration;
+    private String categorie;   // "ANTIBIOTIQUE", "ANTIDOULEUR", "VITAMINE", etc.
+
+    public Medicament(String code, String nom, int quantite, double prixUnitaire,
+                      LocalDate dateExpiration, String categorie) {
+        this.code = code;
+        this.nom = nom;
+        this.quantite = quantite;
+        this.prixUnitaire = prixUnitaire;
+        this.dateExpiration = dateExpiration;
+        this.categorie = categorie;
+    }
+
+    // Getters
+    public String getCode() { return code; }
+    public String getNom() { return nom; }
+    public int getQuantite() { return quantite; }
+    public double getPrixUnitaire() { return prixUnitaire; }
+    public LocalDate getDateExpiration() { return dateExpiration; }
+    public String getCategorie() { return categorie; }
+
+    // Setters
+    public void setQuantite(int quantite) {
+        if (quantite < 0)
+            throw new IllegalArgumentException("Quantite ne peut pas etre negative !");
+        this.quantite = quantite;
+    }
+
+    public boolean estExpire() {
+        return LocalDate.now().isAfter(dateExpiration);
+    }
+
+    public boolean estEnRuptureDeStock() {
+        return quantite == 0;
+    }
+
+    @Override
+    public String toString() {
+        String statut = estExpire() ? " [EXPIRE]" : estEnRuptureDeStock() ? " [RUPTURE]" : "";
+        return "[" + code + "] " + nom + " | " + categorie
+            + " | Qte: " + quantite + " | " + String.format("%.2f", prixUnitaire) + " EUR"
+            + " | Exp: " + dateExpiration + statut;
+    }
+}
+
+// ===================================================
+// CLASSE GESTION (sans Scanner - testable JUnit)
+// ===================================================
+import java.util.HashMap;
+import java.util.ArrayList;
+
+public class GestionStock {
+    private HashMap<String, Medicament> stock; // cle = code medicament
+
+    public GestionStock() {
+        this.stock = new HashMap<>();
+    }
+
+    // CREATE - ajouter un medicament
+    public void ajouter(String code, String nom, int quantite, double prix,
+                        LocalDate dateExp, String categorie) {
+        if (stock.containsKey(code))
+            throw new IllegalArgumentException("Le code " + code + " existe deja !");
+        if (quantite < 0)
+            throw new IllegalArgumentException("Quantite invalide !");
+        if (prix <= 0)
+            throw new IllegalArgumentException("Prix invalide !");
+        Medicament m = new Medicament(code, nom, quantite, prix, dateExp, categorie);
+        stock.put(code, m);
+    }
+
+    // READ - rechercher par code O(1)
+    public Medicament rechercherParCode(String code) {
+        if (!stock.containsKey(code))
+            throw new IllegalArgumentException("Medicament " + code + " introuvable !");
+        return stock.get(code);
+    }
+
+    // READ - rechercher par nom O(n) - parcourt les valeurs
+    public ArrayList<Medicament> rechercherParNom(String nom) {
+        ArrayList<Medicament> resultats = new ArrayList<>();
+        for (Medicament m : stock.values()) {
+            if (m.getNom().toLowerCase().contains(nom.toLowerCase()))
+                resultats.add(m);
+        }
+        return resultats;
+    }
+
+    // UPDATE - approvisionner (ajouter au stock)
+    public void approvisionner(String code, int quantiteAjoutee) {
+        Medicament m = rechercherParCode(code); // leve exception si inexistant
+        if (quantiteAjoutee <= 0)
+            throw new IllegalArgumentException("Quantite a ajouter doit etre > 0");
+        m.setQuantite(m.getQuantite() + quantiteAjoutee);
+    }
+
+    // UPDATE - vendre (retirer du stock)
+    public void vendre(String code, int quantiteVendue) {
+        Medicament m = rechercherParCode(code);
+        if (quantiteVendue <= 0)
+            throw new IllegalArgumentException("Quantite a vendre doit etre > 0");
+        if (quantiteVendue > m.getQuantite())
+            throw new IllegalStateException("Stock insuffisant pour " + m.getNom()
+                + " ! Disponible: " + m.getQuantite() + ", Demande: " + quantiteVendue);
+        m.setQuantite(m.getQuantite() - quantiteVendue);
+    }
+
+    // DELETE - supprimer un medicament
+    public void supprimer(String code) {
+        if (!stock.containsKey(code))
+            throw new IllegalArgumentException("Medicament " + code + " introuvable !");
+        stock.remove(code);
+    }
+
+    // READ - medicaments expires
+    public ArrayList<Medicament> getMedicamentsExpires() {
+        ArrayList<Medicament> expires = new ArrayList<>();
+        for (Medicament m : stock.values()) {
+            if (m.estExpire()) expires.add(m);
+        }
+        return expires;
+    }
+
+    // READ - medicaments en rupture de stock
+    public ArrayList<Medicament> getRupturesDeStock() {
+        ArrayList<Medicament> ruptures = new ArrayList<>();
+        for (Medicament m : stock.values()) {
+            if (m.estEnRuptureDeStock()) ruptures.add(m);
+        }
+        return ruptures;
+    }
+
+    // READ - par categorie
+    public ArrayList<Medicament> getParCategorie(String categorie) {
+        ArrayList<Medicament> resultats = new ArrayList<>();
+        for (Medicament m : stock.values()) {
+            if (m.getCategorie().equalsIgnoreCase(categorie))
+                resultats.add(m);
+        }
+        return resultats;
+    }
+
+    // READ - valeur totale du stock
+    public double getValeurTotaleStock() {
+        double total = 0;
+        for (Medicament m : stock.values()) {
+            total += m.getQuantite() * m.getPrixUnitaire();
+        }
+        return total;
+    }
+
+    // READ - statistiques
+    public String statistiques() {
+        int total = stock.size();
+        int expires = getMedicamentsExpires().size();
+        int ruptures = getRupturesDeStock().size();
+        double valeur = getValeurTotaleStock();
+        return "Medicaments: " + total
+            + " | Expires: " + expires
+            + " | Ruptures: " + ruptures
+            + " | Valeur stock: " + String.format("%.2f", valeur) + " EUR";
+    }
+
+    public int getTaille() { return stock.size(); }
+
+    /* ============================================
+     * M4 : POURQUOI HashMap pour la pharmacie ?
+     * - Recherche par code en O(1) (essentiel en pharmacie)
+     * - Unicite des codes medicaments garantie
+     * - Ajout/suppression en O(1)
+     *
+     * D3 : ANALYSE DE COMPLEXITE
+     * ajouter()             : O(1) - HashMap.put()
+     * rechercherParCode()   : O(1) - HashMap.get()
+     * rechercherParNom()    : O(n) - parcourt les valeurs
+     * approvisionner()      : O(1) - get + setQuantite
+     * vendre()              : O(1) - get + verification + setQuantite
+     * supprimer()           : O(1) - HashMap.remove()
+     * getMedicamentsExpires(): O(n) - parcourt tout
+     * getRupturesDeStock()  : O(n) - parcourt tout
+     * getParCategorie()     : O(n) - parcourt tout
+     * getValeurTotaleStock(): O(n) - parcourt tout
+     * ============================================ */
+}
+
+// ===================================================
+// MENU (Scanner + try/catch + validation)
+// ===================================================
+import java.util.Scanner;
+import java.time.format.DateTimeParseException;
+
+public class Menu {
+    public static void main(String[] args) {
+        GestionStock gestion = new GestionStock();
+        Scanner sc = new Scanner(System.in);
+        int choix;
+
+        do {
+            System.out.println("\n=== PHARMACIE - Gestion Stock ===");
+            System.out.println("1. Ajouter un medicament");
+            System.out.println("2. Rechercher par code");
+            System.out.println("3. Rechercher par nom");
+            System.out.println("4. Approvisionner");
+            System.out.println("5. Vendre");
+            System.out.println("6. Medicaments expires");
+            System.out.println("7. Ruptures de stock");
+            System.out.println("8. Statistiques");
+            System.out.println("0. Quitter");
+            System.out.print("Choix : ");
+
+            try {
+                choix = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Entrez un nombre !");
+                choix = -1; continue;
+            }
+
+            switch (choix) {
+                case 1:
+                    try {
+                        System.out.print("Code (ex: MED001) : ");
+                        String code = sc.nextLine();
+                        System.out.print("Nom : ");
+                        String nom = sc.nextLine();
+                        System.out.print("Quantite : ");
+                        int qte = Integer.parseInt(sc.nextLine());
+                        System.out.print("Prix unitaire : ");
+                        double prix = Double.parseDouble(sc.nextLine());
+                        System.out.print("Date expiration (AAAA-MM-JJ) : ");
+                        LocalDate dateExp = LocalDate.parse(sc.nextLine());
+                        System.out.print("Categorie (ANTIBIOTIQUE/ANTIDOULEUR/VITAMINE) : ");
+                        String cat = sc.nextLine().toUpperCase();
+                        gestion.ajouter(code, nom, qte, prix, dateExp, cat);
+                        System.out.println("Medicament ajoute !");
+                    } catch (DateTimeParseException e) {
+                        System.out.println("Format de date invalide !");
+                    } catch (NumberFormatException e) {
+                        System.out.println("Nombre invalide !");
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Erreur : " + e.getMessage());
+                    }
+                    break;
+                case 2:
+                    try {
+                        System.out.print("Code : ");
+                        System.out.println(gestion.rechercherParCode(sc.nextLine()));
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Erreur : " + e.getMessage());
+                    }
+                    break;
+                case 3:
+                    System.out.print("Nom (ou partie) : ");
+                    var res = gestion.rechercherParNom(sc.nextLine());
+                    if (res.isEmpty()) System.out.println("Aucun resultat.");
+                    else for (var m : res) System.out.println("  " + m);
+                    break;
+                case 4:
+                    try {
+                        System.out.print("Code : ");
+                        String codeAppro = sc.nextLine();
+                        System.out.print("Quantite a ajouter : ");
+                        int qteAppro = Integer.parseInt(sc.nextLine());
+                        gestion.approvisionner(codeAppro, qteAppro);
+                        System.out.println("Stock mis a jour !");
+                    } catch (Exception e) {
+                        System.out.println("Erreur : " + e.getMessage());
+                    }
+                    break;
+                case 5:
+                    try {
+                        System.out.print("Code : ");
+                        String codeVente = sc.nextLine();
+                        System.out.print("Quantite a vendre : ");
+                        int qteVente = Integer.parseInt(sc.nextLine());
+                        gestion.vendre(codeVente, qteVente);
+                        System.out.println("Vente enregistree !");
+                    } catch (IllegalStateException e) {
+                        System.out.println("Stock insuffisant : " + e.getMessage());
+                    } catch (Exception e) {
+                        System.out.println("Erreur : " + e.getMessage());
+                    }
+                    break;
+                case 6:
+                    var expires = gestion.getMedicamentsExpires();
+                    if (expires.isEmpty()) System.out.println("Aucun medicament expire.");
+                    else { System.out.println("Expires (" + expires.size() + ") :");
+                        for (var m : expires) System.out.println("  " + m); }
+                    break;
+                case 7:
+                    var ruptures = gestion.getRupturesDeStock();
+                    if (ruptures.isEmpty()) System.out.println("Aucune rupture.");
+                    else { System.out.println("Ruptures (" + ruptures.size() + ") :");
+                        for (var m : ruptures) System.out.println("  " + m); }
+                    break;
+                case 8:
+                    System.out.println(gestion.statistiques());
+                    break;
+                case 0: System.out.println("Au revoir !"); break;
+                default: System.out.println("Choix invalide.");
+            }
+        } while (choix != 0);
+        sc.close();
+    }
+}`;
+
 const EXERCISES=[
   {id:1,title:"Gestion des emprunts de velos",color:TEAL,
     context:"Vous etes developpeur dans une entreprise proposant un service de pret de velos a ses employes. Vous devez creer un programme Java oriente objet.",
@@ -770,7 +1085,16 @@ const EXERCISES=[
     structureWhy:"Acces direct par id en O(1). Unicite des cles garantie. Bien meilleur que LinkedList qui serait O(n) pour resoudreTicket(id).",
     classes:["Ticket (id, description, priorite, demandeur, resolu) + getters/setters + toString()","GestionTickets (HashMap, compteurId, creerTicket, resoudreTicket, ticketsCritiques, rechercherParDemandeur, statistiques) -- SANS Scanner","Menu (Scanner + switch/case + try/catch multi-exceptions)"],
     code:EX4_CODE,
-    criteria:"P4 (HashMap), P5 (exceptions multiples : IllegalArgument + IllegalState + NumberFormat), M4 (resout un probleme IT), D3 (analyse O(1) vs O(n))"}
+    criteria:"P4 (HashMap), P5 (exceptions multiples : IllegalArgument + IllegalState + NumberFormat), M4 (resout un probleme IT), D3 (analyse O(1) vs O(n))"},
+  {id:5,title:"Gestion du Stock de Medicaments",color:"#16A34A",
+    context:"Une pharmacie souhaite informatiser la gestion de son stock de medicaments. Chaque medicament a un code unique, un nom, une quantite, un prix, une date d'expiration et une categorie. L'application doit gerer les approvisionnements, les ventes, les alertes d'expiration et les ruptures de stock.",
+    tasks:["Ajouter un medicament (code, nom, quantite, prix, date expiration, categorie)","Rechercher par code (O(1)) et par nom (recherche partielle)","Approvisionner (ajouter au stock existant)","Vendre (retirer du stock avec verification)","Supprimer un medicament","Afficher les medicaments expires et les ruptures de stock","Statistiques (total, expires, ruptures, valeur du stock)"],
+    structure:"HashMap<String, Medicament>",
+    structureWhy:"Recherche par code en O(1) essentiel en pharmacie. Unicite des codes garantie. CRUD complet (Create, Read, Update, Delete).",
+    classes:["Medicament (code, nom, quantite, prixUnitaire, dateExpiration, categorie) + getters/setters + estExpire() + estEnRuptureDeStock() + toString()","GestionStock (HashMap, ajouter, rechercherParCode O(1), rechercherParNom O(n), approvisionner, vendre avec validation stock, supprimer, getMedicamentsExpires, getRupturesDeStock, getValeurTotaleStock, statistiques) -- SANS Scanner","Menu (Scanner + switch 9 options + try/catch : DateTimeParseException + NumberFormatException + IllegalArgumentException + IllegalStateException)"],
+    code:EX5_CODE,
+    criteria:"P4 (HashMap CRUD complet), P5 (4 types exceptions + validation metier), M4 (resout probleme pharmacie), D3 (O(1) vs O(n) documente)"}
+
 ];
 
 export default function ExercicesEntreprise(){
@@ -786,7 +1110,7 @@ export default function ExercicesEntreprise(){
         <div style={{textAlign:"center",marginBottom:"2rem"}}>
           <div style={{fontSize:13,color:ORANGE,fontWeight:600,letterSpacing:2,textTransform:"uppercase"}}>Exercices pratiques</div>
           <h1 style={{fontSize:28,fontWeight:700,margin:"0.5rem 0"}}>Cas d'entreprise Java</h1>
-          <p style={{color:MUTED,fontSize:15}}>4 exercices complets avec classes metier, gestion, menu, exceptions</p>
+          <p style={{color:MUTED,fontSize:15}}>5 exercices complets avec classes metier, gestion, menu, exceptions</p>
           <p style={{color:MUTED,fontSize:12,marginTop:4}}>Architecture : Classe metier + Classe Gestion (sans Scanner) + Menu (avec Scanner)</p>
         </div>
         <div style={{display:"grid",gap:16}}>
