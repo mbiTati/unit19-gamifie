@@ -48,4 +48,27 @@ class NotificationFactory {
     {id:"q1",question:"Pourquoi le constructeur Singleton est privé ?",options:["Convention","Empêcher de créer plusieurs instances","Performance","Sécurité"],correctIndex:1,explanation:"Constructeur privé = impossible de faire new Logger(). Seul getInstance() peut créer l'instance."},
     {id:"q2",question:"Factory Method est utile quand :",options:["On veut une instance unique","On ne sait pas à l'avance quel type créer","On veut observer","On veut adapter"],correctIndex:1,explanation:"Factory délègue la décision de création. Le code client utilise l'interface sans connaître les classes concrètes."}
   ]}
+
+  mainCode={`public class Menu {
+    public static void main(String[] args) {
+        // Test Singleton
+        Logger log1 = Logger.getInstance();
+        Logger log2 = Logger.getInstance();
+        System.out.println("Meme instance ? " + (log1 == log2)); // true
+
+        // Test Factory
+        Notification email = NotificationFactory.creer("email");
+        email.envoyer("Bonjour !");
+
+        Notification sms = NotificationFactory.creer("sms");
+        sms.envoyer("Salut !");
+
+        // Test erreur
+        try {
+            NotificationFactory.creer("pigeon");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Erreur : " + e.getMessage());
+        }
+    }
+}`}
 />; }

@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useState } from "react";
 
 const BG="#0B1120",CARD="#111827",BORDER="#1E3A5F",TEXT="#E2E8F0",MUTED="#94A3B8",GREEN="#16A34A",TEAL="#0891B2",PURPLE="#7C3AED",RED="#DC2626",ORANGE="#F97316";
@@ -42,7 +43,8 @@ export default function Ch7Game(){
     const q=qs[idx];
     return(
       <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
-        <div style={{maxWidth:650,margin:"0 auto"}}>
+      <div style={{padding:"8px 16px",borderBottom:"1px solid #1E3A5F"}}><Link href="/" style={{fontSize:12,color:"#94A3B8",textDecoration:"none"}}>Retour accueil</Link></div>
+              <div style={{maxWidth:650,margin:"0 auto"}}>
           {back}
           <div style={{fontSize:13,color:MUTED,marginBottom:8}}>{idx+1}/{qs.length} | Score: {score}</div>
           <div style={{height:4,background:BORDER,borderRadius:2,marginBottom:16}}><div style={{height:4,background:color,borderRadius:2,width:`${(idx+1)/qs.length*100}%`}}/></div>

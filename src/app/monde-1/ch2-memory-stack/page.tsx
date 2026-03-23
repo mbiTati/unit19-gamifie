@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useState } from "react";
 
 interface StackFrame {
@@ -56,6 +57,7 @@ export default function Ch2Game() {
   if (scenarioIdx === null) {
     return (
       <div style={{ maxWidth: 700, margin: "0 auto", padding: "2rem 1rem", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
+      <div style={{padding:"8px 0 0"}}><Link href="/" style={{fontSize:12,color:"#94A3B8",textDecoration:"none"}}>Retour accueil</Link></div>
         <div style={{ textAlign: "center", marginBottom: "2rem" }}>
           <div style={{ fontSize: 14, color: "#2563EB", fontWeight: 600, letterSpacing: 2, textTransform: "uppercase" as const }}>Monde 1 — Chapitre 2</div>
           <h1 style={{ fontSize: 32, fontWeight: 700, color: "#1B2A4A", margin: "0.5rem 0" }}>Memory Stack & Function Calls</h1>

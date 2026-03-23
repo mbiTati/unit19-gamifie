@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useState, useCallback } from "react";
 
 interface Q { q: string; c?: string; o: string[]; ci: number; e: string; lo: string; }
@@ -48,6 +49,7 @@ export default function BossFinal(){
 
   if(!started)return(
     <div style={{maxWidth:600,margin:"0 auto",padding:"3rem 1rem",fontFamily:"'Segoe UI',system-ui,sans-serif",textAlign:"center" as const}}>
+      <div style={{padding:"8px 0 0"}}><Link href="/" style={{fontSize:12,color:"#94A3B8",textDecoration:"none"}}>Retour accueil</Link></div>
       
       <div style={{fontSize:14,color:"#DC2626",fontWeight:600,letterSpacing:3,textTransform:"uppercase" as const,marginTop:8}}>Boss final</div>
       <h1 style={{fontSize:36,fontWeight:800,color:"#1B2A4A",margin:"0.5rem 0"}}>Unit 19 complet</h1>

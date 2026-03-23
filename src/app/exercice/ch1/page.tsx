@@ -48,5 +48,53 @@ public class StudentDirectory {
       { id: "q2", question: "Quelle est la complexité de LinkedList.get(index) ?", options: ["O(1)", "O(n)", "O(log n)", "O(n²)"], correctIndex: 1, explanation: "LinkedList.get(i) parcourt la liste du début → O(n). ArrayList.get(i) serait O(1)." },
       { id: "q3", question: "Qu'est-ce qu'une précondition ?", options: ["Le code qui s'exécute après", "Une condition qui DOIT être vraie AVANT l'appel", "Le constructeur", "Un type de boucle"], correctIndex: 1, explanation: "PRE = ce qui doit être vrai avant d'appeler l'opération. Ex: !isEmpty() pour pop()." },
     ]}
-  />;
+  
+  mainCode={`import java.util.Scanner;
+
+public class Menu {
+    public static void main(String[] args) {
+        StudentDirectory dir = new StudentDirectory();
+        Scanner sc = new Scanner(System.in);
+        int choix;
+        do {
+            System.out.println("\n=== Repertoire Etudiants ===");
+            System.out.println("1. Ajouter un etudiant");
+            System.out.println("2. Afficher un etudiant");
+            System.out.println("3. Supprimer un etudiant");
+            System.out.println("4. Afficher la taille");
+            System.out.println("0. Quitter");
+            System.out.print("Choix : ");
+            try {
+                choix = sc.nextInt(); sc.nextLine();
+            } catch (Exception e) {
+                sc.nextLine(); choix = -1; continue;
+            }
+            switch (choix) {
+                case 1:
+                    System.out.print("Nom : ");
+                    dir.ajouter(sc.nextLine());
+                    System.out.println("Ajoute !");
+                    break;
+                case 2:
+                    System.out.print("Index : ");
+                    try {
+                        System.out.println(dir.getEtudiant(sc.nextInt()));
+                    } catch (Exception e) {
+                        System.out.println("Index invalide !");
+                    }
+                    sc.nextLine();
+                    break;
+                case 3:
+                    System.out.print("Nom : ");
+                    System.out.println(dir.supprimer(sc.nextLine()) ? "Supprime" : "Non trouve");
+                    break;
+                case 4:
+                    System.out.println("Taille : " + dir.getTaille());
+                    break;
+            }
+        } while (choix != 0);
+        sc.close();
+    }
+}`}
+/>;
 }

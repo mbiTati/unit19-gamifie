@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useState } from "react";
 
 function LinkedListTypes() {
@@ -57,6 +58,7 @@ function LinkedListSim() {
     <div>
       <div style={{fontSize:12,color:"#F97316",fontWeight:600,marginBottom:6}}>Score: {score} | Taille: {nodes.length}</div>
       <div style={{display:"flex",gap:4,flexWrap:"wrap" as const,minHeight:40,alignItems:"center",padding:"6px 0"}}>
+      <div style={{padding:"8px 16px",borderBottom:"1px solid #1E3A5F"}}><Link href="/" style={{fontSize:12,color:"#94A3B8",textDecoration:"none"}}>Retour accueil</Link></div>
         {!nodes.length?<span style={{color:"#64748B",fontStyle:"italic",fontSize:13}}>(vide)</span>:nodes.map((n,i)=>(
           <div key={i} style={{display:"flex",alignItems:"center",gap:2}}>
             <div style={{background:i===0?"#993C1D":"#D85A30",color:"white",padding:"5px 10px",borderRadius:6,fontSize:12,fontWeight:600}}>{n}<span style={{fontSize:9,opacity:.7,marginLeft:3}}>[{i}]</span></div>

@@ -47,4 +47,45 @@ public class Stack<E> {
     {id:"q2",question:"L'invariant size() >= 0 est garanti par :",options:["Un test unitaire","La logique interne du code (top commence à -1, incrémenté par push)","Une annotation @Invariant","Le compilateur"],correctIndex:1,explanation:"L'invariant est garanti par le design du code, pas par un mécanisme externe."},
     {id:"q3",question:"Pourquoi ArrayList est private ?",options:["Convention","Encapsulation : cacher l'implémentation interne","Performance","Obligatoire pour les génériques"],correctIndex:1,explanation:"Information hiding : on pourrait remplacer ArrayList par LinkedList sans changer l'interface."}
   ]}
+
+  mainCode={`import java.util.Scanner;
+
+public class Menu {
+    public static void main(String[] args) {
+        Stack<String> stack = new Stack<>();
+        Scanner sc = new Scanner(System.in);
+        int choix;
+        do {
+            System.out.println("\n=== Stack Demo ===");
+            System.out.println("1. Push");
+            System.out.println("2. Pop");
+            System.out.println("3. Afficher taille");
+            System.out.println("0. Quitter");
+            System.out.print("Choix : ");
+            try {
+                choix = sc.nextInt(); sc.nextLine();
+            } catch (Exception e) {
+                sc.nextLine(); choix = -1; continue;
+            }
+            switch (choix) {
+                case 1:
+                    System.out.print("Element : ");
+                    stack.push(sc.nextLine());
+                    System.out.println("Empile !");
+                    break;
+                case 2:
+                    try {
+                        System.out.println("Depile : " + stack.pop());
+                    } catch (Exception e) {
+                        System.out.println("Erreur : " + e.getMessage());
+                    }
+                    break;
+                case 3:
+                    System.out.println("Taille : " + stack.size());
+                    break;
+            }
+        } while (choix != 0);
+        sc.close();
+    }
+}`}
 />; }

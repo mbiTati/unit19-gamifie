@@ -40,13 +40,15 @@ interface Props {
   blanks: CodeBlank[];
   questions: ExQuestion[];
   totalPoints: number;
+  mainCode?: string;
 }
 
-export default function CodeExercise({ chapter, title, criteria, worldColor, intro, codeTemplate, blanks, questions, totalPoints }: Props) {
+export default function CodeExercise({ chapter, title, criteria, worldColor, intro, codeTemplate, blanks, questions, totalPoints, mainCode }: Props) {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [qAnswers, setQAnswers] = useState<Record<string, number | string>>({});
   const [submitted, setSubmitted] = useState(false);
   const [showHints, setShowHints] = useState(false);
+  const [showMain, setShowMain] = useState(false);
 
   const blankScore = blanks.reduce((sum, b) => {
     return sum + (submitted && answers[b.id]?.trim().toLowerCase() === b.answer.toLowerCase() ? Math.floor(totalPoints * 0.6 / blanks.length) : 0);
@@ -212,7 +214,21 @@ export default function CodeExercise({ chapter, title, criteria, worldColor, int
         <div style={{ textAlign: "center" as const, padding: "1.5rem", background: CARD, borderRadius: 12, border: `1px solid ${score >= totalPoints * 0.7 ? GREEN : ORANGE}` }}>
           <div style={{ fontSize: 40, fontWeight: 800, color: score >= totalPoints * 0.7 ? GREEN : ORANGE }}>{score}/{totalPoints}</div>
           <div style={{ fontSize: 14, color: MUTED, marginTop: 4 }}>{score >= totalPoints * 0.7 ? "Excellent ! 🎉" : score >= totalPoints * 0.4 ? "Bien, continuez ! 💪" : "Révisez et réessayez 📖"}</div>
-          <button onClick={() => { setSubmitted(false); setAnswers({}); setQAnswers({}); }} style={{ marginTop: 12, padding: "8px 20px", background: worldColor, color: "white", border: "none", borderRadius: 8, fontWeight: 600, cursor: "pointer", fontSize: 13 }}>Recommencer</button>
+          <button onClick={() => { setSubmitted(false); setAnswers({}); setQAnswers({}); setShowMain(false); }} style={{ marginTop: 12, padding: "8px 20px", background: worldColor, color: "white", border: "none", borderRadius: 8, fontWeight: 600, cursor: "pointer", fontSize: 13 }}>Recommencer</button>
+        </div>
+      )}
+
+      {/* Main / Menu complet */}
+      {mainCode && submitted && (
+        <div style={{ marginTop: 16 }}>
+          <button onClick={() => setShowMain(!showMain)} style={{ width: "100%", padding: "10px", background: showMain ? "#DC262620" : "#16A34A20", border: "1px solid " + (showMain ? "#DC2626" : "#16A34A"), borderRadius: 8, fontSize: 13, fontWeight: 600, color: showMain ? "#DC2626" : "#16A34A", cursor: "pointer" }}>
+            {showMain ? "Cacher le code complet (Main + Menu)" : "Voir le code complet avec Main et Menu"}
+          </button>
+          {showMain && (
+            <div style={{ marginTop: 8, background: "#0D1117", borderRadius: 10, padding: "12px", maxHeight: 400, overflowY: "auto" as const, border: "1px solid #1E3A5F" }}>
+              <pre style={{ fontSize: 11, color: "#A5F3FC", fontFamily: "Consolas, monospace", margin: 0, whiteSpace: "pre-wrap" as const }}>{mainCode}</pre>
+            </div>
+          )}
         </div>
       )}
     </div>

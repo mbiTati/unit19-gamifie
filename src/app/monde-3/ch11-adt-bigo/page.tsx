@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useState } from "react";
 
 const BG="#0B1120",CARD="#111827",BORDER="#1E3A5F",TEXT="#E2E8F0",MUTED="#94A3B8",GREEN="#16A34A",RED="#DC2626",ORANGE="#F97316",PURPLE="#7C3AED",TEAL="#0891B2";
@@ -44,7 +45,8 @@ export default function Ch11Game(){
 
   if(phase==="menu")return(
     <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"2rem 1rem"}}>
-      <div style={{maxWidth:700,margin:"0 auto"}}>
+      <div style={{padding:"8px 16px",borderBottom:"1px solid #1E3A5F"}}><Link href="/" style={{fontSize:12,color:"#94A3B8",textDecoration:"none"}}>Retour accueil</Link></div>
+            <div style={{maxWidth:700,margin:"0 auto"}}>
         <div style={{textAlign:"center",marginBottom:"2rem"}}>
           <div style={{fontSize:13,color:ORANGE,fontWeight:600,letterSpacing:2,textTransform:"uppercase"}}>Monde 3 — Chapitre 11</div>
           <h1 style={{fontSize:28,fontWeight:700,margin:"0.5rem 0"}}>ADT résout un problème & Big O</h1>
