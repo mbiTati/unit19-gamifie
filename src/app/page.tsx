@@ -194,7 +194,7 @@ export default function Home() {
       <Link href="/exercices-entreprise" style={{ display: "block", marginTop: 20, borderRadius: 16, overflow: "hidden", border: `1px solid ${TEAL}`, textDecoration: "none", textAlign: "center" as const, padding: "1.5rem", background: `linear-gradient(135deg, ${TEAL}15, ${PURPLE}15)` }}>
         <div style={{ marginBottom: 4 }}><Building2 size={36} color="#0891B2" /></div>
         <div style={{ fontSize: 18, fontWeight: 700, color: "white", marginTop: 6 }}>Exercices Entreprise</div>
-        <div style={{ fontSize: 13, color: MUTED, marginTop: 4 }}>3 cas réels : Vélos, Interventions IT, Réservation salles</div>
+        <div style={{ fontSize: 13, color: MUTED, marginTop: 4 }}>5 cas : Velos, Interventions, Salles, Tickets IT, Pharmacie</div>
       </Link>
 
       {/* FOOTER */}
