@@ -548,12 +548,10 @@ public class Menu {
     }
 }`;
 
-const EX4_CODE=`import java.util.HashMap;
-import java.util.ArrayList;
+const EX4_CODE=`// ===================================================
+// FICHIER 1 : Ticket.java
+// ===================================================
 
-// ===================================================
-// CLASSE METIER : Ticket
-// ===================================================
 public class Ticket {
     private int id;
     private String description;
@@ -584,9 +582,14 @@ public class Ticket {
     }
 }
 
+
 // ===================================================
-// CLASSE GESTION (sans Scanner - testable JUnit)
+// FICHIER 2 : GestionTickets.java
 // ===================================================
+
+import java.util.HashMap;
+import java.util.ArrayList;
+
 public class GestionTickets {
     private HashMap<Integer, Ticket> tickets;
     private int compteurId;
@@ -596,459 +599,596 @@ public class GestionTickets {
         this.compteurId = 1;
     }
 
-    // CREATE - id auto-increment
+    // P5 : throw si description vide ou priorite invalide
     public Ticket creerTicket(String description, String priorite, String demandeur) {
-        if (description == null || description.trim().isEmpty())
-            throw new IllegalArgumentException("Description vide !");
-        if (!priorite.equals("CRITIQUE") && !priorite.equals("NORMAL") && !priorite.equals("FAIBLE"))
-            throw new IllegalArgumentException("Priorite invalide : " + priorite);
+        if (description == null || description.trim().isEmpty()) {
+            throw new IllegalArgumentException("La description ne peut pas etre vide !");
+        }
+        if (!priorite.equals("CRITIQUE") && !priorite.equals("NORMAL") && !priorite.equals("FAIBLE")) {
+            throw new IllegalArgumentException(
+                "Priorite invalide : " + priorite + " (attendu: CRITIQUE, NORMAL ou FAIBLE)");
+        }
         Ticket t = new Ticket(compteurId, description, priorite, demandeur);
         tickets.put(compteurId, t);
         compteurId++;
         return t;
     }
 
-    // UPDATE - resoudre par id O(1)
-    public void resoudreTicket(int id) {
-        if (!tickets.containsKey(id))
-            throw new IllegalArgumentException("Ticket #" + id + " inexistant !");
+    // P5 : throws Exception (checked) si id inexistant
+    public void resoudreTicket(int id) throws Exception {
+        if (!tickets.containsKey(id)) {
+            throw new Exception("Ticket #" + id + " n'existe pas !");
+        }
         Ticket t = tickets.get(id);
-        if (t.isResolu())
-            throw new IllegalStateException("Ticket #" + id + " deja resolu !");
+        if (t.isResolu()) {
+            throw new IllegalStateException("Ticket #" + id + " est deja resolu !");
+        }
         t.setResolu(true);
     }
 
-    // READ - critiques non resolus O(n)
     public ArrayList<Ticket> ticketsCritiques() {
         ArrayList<Ticket> critiques = new ArrayList<>();
         for (Ticket t : tickets.values()) {
-            if (t.getPriorite().equals("CRITIQUE") && !t.isResolu())
+            if (t.getPriorite().equals("CRITIQUE") && !t.isResolu()) {
                 critiques.add(t);
+            }
         }
         return critiques;
     }
 
-    // READ - par demandeur O(n)
-    public ArrayList<Ticket> rechercherParDemandeur(String demandeur) {
+    public ArrayList<Ticket> rechercherParDemandeur(String nom) {
         ArrayList<Ticket> resultats = new ArrayList<>();
         for (Ticket t : tickets.values()) {
-            if (t.getDemandeur().equalsIgnoreCase(demandeur))
+            if (t.getDemandeur().equalsIgnoreCase(nom)) {
                 resultats.add(t);
+            }
         }
-        if (resultats.isEmpty())
-            throw new IllegalArgumentException("Aucun ticket pour : " + demandeur);
         return resultats;
     }
 
-    // READ - statistiques O(n)
-    public String statistiques() {
+    public void statistiques() {
         int total = tickets.size();
         int resolus = 0;
-        for (Ticket t : tickets.values()) if (t.isResolu()) resolus++;
+        for (Ticket t : tickets.values()) {
+            if (t.isResolu()) resolus++;
+        }
         int ouverts = total - resolus;
         double pourcent = total > 0 ? (resolus * 100.0 / total) : 0;
-        return "Total: " + total + " | Resolus: " + resolus
-            + " | Ouverts: " + ouverts + " | Taux: " + String.format("%.1f", pourcent) + "%";
+        System.out.println("Total: " + total + " | Resolus: " + resolus
+            + " | Ouverts: " + ouverts
+            + " | Taux: " + String.format("%.1f", pourcent) + "%");
     }
 
     public int getTotal() { return tickets.size(); }
+
+    /* ============================================
+     * M4 : POURQUOI HashMap ?
+     * - Acces direct par id : get(id) = O(1)
+     * - Unicite des cles : impossible 2 tickets meme id
+     * - Avec LinkedList, resoudreTicket(id) serait O(n)
+     *
+     * COMMENT ticketsCritiques() filtre :
+     * Parcourt values(), garde priorite=CRITIQUE et !resolu
+     *
+     * Amelioration : HashMap<String, ArrayList<Ticket>>
+     * (cle = demandeur) pour rechercherParDemandeur en O(1)
+     * ============================================ */
+
+    /* ============================================
+     * D3 : COMPLEXITE
+     * creerTicket()            : O(1) amorti - put()
+     * resoudreTicket(id)       : O(1) - get() par cle
+     * ticketsCritiques()       : O(n) - parcourt tout
+     * rechercherParDemandeur() : O(n) - recherche par valeur
+     * statistiques()           : O(n) - parcourt tout
+     *
+     * | Operation        | HashMap | LinkedList |
+     * |----------------- |---------|----------- |
+     * | resoudre par id  | O(1)    | O(n)       |
+     * | creer            | O(1)    | O(1)       |
+     * | filtrer critiques| O(n)    | O(n)       |
+     * ============================================ */
 }
 
+
 // ===================================================
-// MENU (Scanner + try/catch multi-exceptions)
+// FICHIER 3 : Menu.java
 // ===================================================
+
 import java.util.Scanner;
 
 public class Menu {
-    public static void main(String[] args) {
-        GestionTickets gestion = new GestionTickets();
-        Scanner sc = new Scanner(System.in);
-        int choix;
+    private GestionTickets gestion;
 
-        do {
-            System.out.println("\\n=== SUPPORT IT - Tickets ===");
+    public Menu(GestionTickets gestion) {
+        this.gestion = gestion;
+    }
+
+    public void afficherMenu() {
+        Scanner sc = new Scanner(System.in);
+        int choix = 0;
+
+        while (choix != 6) {
+            System.out.println("\n=== SUPPORT IT - Tickets ===");
             System.out.println("1. Creer un ticket");
             System.out.println("2. Resoudre un ticket");
             System.out.println("3. Tickets critiques");
             System.out.println("4. Rechercher par demandeur");
             System.out.println("5. Statistiques");
-            System.out.println("0. Quitter");
-            System.out.print("Choix : ");
+            System.out.println("6. Quitter");
 
+            // P5 : try/catch pour saisie du choix
             try {
+                System.out.print("Choix : ");
                 choix = Integer.parseInt(sc.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("Entrez un nombre !");
-                choix = -1; continue;
-            }
 
-            switch (choix) {
-                case 1:
-                    try {
-                        System.out.print("Description : ");
-                        String desc = sc.nextLine();
-                        System.out.print("Priorite (CRITIQUE/NORMAL/FAIBLE) : ");
-                        String prio = sc.nextLine().toUpperCase();
-                        System.out.print("Demandeur : ");
-                        String dem = sc.nextLine();
-                        Ticket t = gestion.creerTicket(desc, prio, dem);
-                        System.out.println("Ticket cree : " + t);
-                    } catch (IllegalArgumentException e) {
-                        System.out.println("Erreur : " + e.getMessage());
-                    }
-                    break;
-                case 2:
-                    try {
-                        System.out.print("ID du ticket : ");
-                        int id = Integer.parseInt(sc.nextLine());
-                        gestion.resoudreTicket(id);
-                        System.out.println("Ticket #" + id + " resolu !");
-                    } catch (NumberFormatException e) {
-                        System.out.println("ID invalide !");
-                    } catch (IllegalArgumentException | IllegalStateException e) {
-                        System.out.println("Erreur : " + e.getMessage());
-                    }
-                    break;
-                case 3:
-                    var critiques = gestion.ticketsCritiques();
-                    if (critiques.isEmpty()) System.out.println("Aucun ticket critique ouvert.");
-                    else { System.out.println("Critiques (" + critiques.size() + ") :");
-                        for (var tk : critiques) System.out.println("  " + tk); }
-                    break;
-                case 4:
-                    try {
-                        System.out.print("Demandeur : ");
-                        var res = gestion.rechercherParDemandeur(sc.nextLine());
-                        System.out.println("Tickets (" + res.size() + ") :");
-                        for (var tk : res) System.out.println("  " + tk);
-                    } catch (IllegalArgumentException e) {
-                        System.out.println("Erreur : " + e.getMessage());
-                    }
-                    break;
-                case 5:
-                    System.out.println(gestion.statistiques());
-                    break;
-                case 0: System.out.println("Au revoir !"); break;
-                default: System.out.println("Choix invalide.");
+                switch (choix) {
+                    case 1:
+                        // P5 : try/catch/finally
+                        try {
+                            System.out.print("Description : ");
+                            String desc = sc.nextLine();
+                            System.out.print("Priorite (CRITIQUE/NORMAL/FAIBLE) : ");
+                            String prio = sc.nextLine().toUpperCase();
+                            System.out.print("Demandeur : ");
+                            String dem = sc.nextLine();
+                            Ticket t = gestion.creerTicket(desc, prio, dem);
+                            System.out.println("Ticket cree : " + t);
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Erreur : " + e.getMessage());
+                        } finally {
+                            // P5 : finally affiche le total apres chaque tentative
+                            System.out.println("[Total tickets : " + gestion.getTotal() + "]");
+                        }
+                        break;
+
+                    case 2:
+                        // P5 : try/catch pour NumberFormatException + Exception
+                        try {
+                            System.out.print("ID du ticket : ");
+                            int id = Integer.parseInt(sc.nextLine());
+                            gestion.resoudreTicket(id);
+                            System.out.println("Ticket #" + id + " resolu !");
+                        } catch (NumberFormatException e) {
+                            System.out.println("Erreur : entrez un nombre !");
+                        } catch (Exception e) {
+                            System.out.println("Erreur : " + e.getMessage());
+                        }
+                        break;
+
+                    case 3:
+                        var critiques = gestion.ticketsCritiques();
+                        if (critiques.isEmpty()) {
+                            System.out.println("Aucun ticket critique ouvert.");
+                        } else {
+                            System.out.println("Critiques (" + critiques.size() + ") :");
+                            for (var tk : critiques) System.out.println("  " + tk);
+                        }
+                        break;
+
+                    case 4:
+                        System.out.print("Nom du demandeur : ");
+                        var resultats = gestion.rechercherParDemandeur(sc.nextLine());
+                        if (resultats.isEmpty()) {
+                            System.out.println("Aucun ticket pour ce demandeur.");
+                        } else {
+                            System.out.println("Tickets (" + resultats.size() + ") :");
+                            for (var tk : resultats) System.out.println("  " + tk);
+                        }
+                        break;
+
+                    case 5:
+                        gestion.statistiques();
+                        break;
+
+                    case 6:
+                        System.out.println("Au revoir !");
+                        break;
+
+                    default:
+                        System.out.println("Choix invalide.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Erreur : entrez un nombre !");
             }
-        } while (choix != 0);
+        }
         sc.close();
+    }
+}
+
+
+// ===================================================
+// FICHIER 4 : Main.java
+// ===================================================
+
+public class Main {
+    public static void main(String[] args) {
+        GestionTickets gestion = new GestionTickets();
+        Menu menu = new Menu(gestion);
+        menu.afficherMenu();
+    }
+}
+
+
+// ===================================================
+// FICHIER 5 : GestionTicketsTest.java (JUnit 5)
+// ===================================================
+
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+class GestionTicketsTest {
+    private GestionTickets gestion;
+
+    @BeforeEach
+    void setUp() {
+        gestion = new GestionTickets();
+    }
+
+    @Test
+    void testCreerTicketValide() {
+        Ticket t = gestion.creerTicket("Ecran noir", "CRITIQUE", "Alice");
+        assertEquals(1, t.getId());
+        assertEquals("CRITIQUE", t.getPriorite());
+        assertFalse(t.isResolu());
+        assertEquals(1, gestion.getTotal());
+    }
+
+    @Test
+    void testCreerDescriptionVide() {
+        assertThrows(IllegalArgumentException.class,
+            () -> gestion.creerTicket("", "NORMAL", "Bob"));
+    }
+
+    @Test
+    void testCreerPrioriteInvalide() {
+        assertThrows(IllegalArgumentException.class,
+            () -> gestion.creerTicket("Bug", "URGENTE", "Charlie"));
+    }
+
+    @Test
+    void testResoudreTicketInexistant() {
+        assertThrows(Exception.class,
+            () -> gestion.resoudreTicket(999));
+    }
+
+    @Test
+    void testTicketsCritiques() throws Exception {
+        gestion.creerTicket("Serveur down", "CRITIQUE", "Alice");
+        gestion.creerTicket("Imprimante lente", "NORMAL", "Bob");
+        gestion.creerTicket("Virus detecte", "CRITIQUE", "Charlie");
+        assertEquals(2, gestion.ticketsCritiques().size());
+
+        // Resoudre un critique -> ne doit plus apparaitre
+        gestion.resoudreTicket(1);
+        assertEquals(1, gestion.ticketsCritiques().size());
     }
 }`;
 
 
-const EX5_CODE=`import java.time.LocalDate;
+const EX5_CODE=`// ===================================================
+// FICHIER 1 : Medicament.java
+// ===================================================
 
-// ===================================================
-// CLASSE METIER : Medicament
-// ===================================================
 public class Medicament {
-    private String code;        // code unique (ex: "MED001")
     private String nom;
+    private double prix;
     private int quantite;
-    private double prixUnitaire;
-    private LocalDate dateExpiration;
-    private String categorie;   // "ANTIBIOTIQUE", "ANTIDOULEUR", "VITAMINE", etc.
+    private String dateExpiration; // format "JJ/MM/AAAA"
 
-    public Medicament(String code, String nom, int quantite, double prixUnitaire,
-                      LocalDate dateExpiration, String categorie) {
-        this.code = code;
+    public Medicament(String nom, double prix, int quantite, String dateExpiration) {
         this.nom = nom;
+        this.prix = prix;
         this.quantite = quantite;
-        this.prixUnitaire = prixUnitaire;
         this.dateExpiration = dateExpiration;
-        this.categorie = categorie;
     }
 
-    // Getters
-    public String getCode() { return code; }
     public String getNom() { return nom; }
+    public double getPrix() { return prix; }
     public int getQuantite() { return quantite; }
-    public double getPrixUnitaire() { return prixUnitaire; }
-    public LocalDate getDateExpiration() { return dateExpiration; }
-    public String getCategorie() { return categorie; }
+    public String getDateExpiration() { return dateExpiration; }
 
-    // Setters
-    public void setQuantite(int quantite) {
-        if (quantite < 0)
-            throw new IllegalArgumentException("Quantite ne peut pas etre negative !");
-        this.quantite = quantite;
-    }
-
-    public boolean estExpire() {
-        return LocalDate.now().isAfter(dateExpiration);
-    }
-
-    public boolean estEnRuptureDeStock() {
-        return quantite == 0;
-    }
+    public void setNom(String nom) { this.nom = nom; }
+    public void setPrix(double prix) { this.prix = prix; }
+    public void setQuantite(int quantite) { this.quantite = quantite; }
+    public void setDateExpiration(String d) { this.dateExpiration = d; }
 
     @Override
     public String toString() {
-        String statut = estExpire() ? " [EXPIRE]" : estEnRuptureDeStock() ? " [RUPTURE]" : "";
-        return "[" + code + "] " + nom + " | " + categorie
-            + " | Qte: " + quantite + " | " + String.format("%.2f", prixUnitaire) + " EUR"
-            + " | Exp: " + dateExpiration + statut;
+        String alerte = (quantite < 5) ? " [STOCK FAIBLE]" : "";
+        return nom + " | " + String.format("%.2f", prix) + " EUR"
+            + " | Qte: " + quantite + " | Exp: " + dateExpiration + alerte;
     }
 }
 
+
 // ===================================================
-// CLASSE GESTION (sans Scanner - testable JUnit)
+// FICHIER 2 : GestionStock.java
 // ===================================================
-import java.util.HashMap;
+
+import java.util.LinkedList;
 import java.util.ArrayList;
 
 public class GestionStock {
-    private HashMap<String, Medicament> stock; // cle = code medicament
+    private LinkedList<Medicament> medicaments;
 
     public GestionStock() {
-        this.stock = new HashMap<>();
+        this.medicaments = new LinkedList<>();
     }
 
-    // CREATE - ajouter un medicament
-    public void ajouter(String code, String nom, int quantite, double prix,
-                        LocalDate dateExp, String categorie) {
-        if (stock.containsKey(code))
-            throw new IllegalArgumentException("Le code " + code + " existe deja !");
-        if (quantite < 0)
-            throw new IllegalArgumentException("Quantite invalide !");
-        if (prix <= 0)
-            throw new IllegalArgumentException("Prix invalide !");
-        Medicament m = new Medicament(code, nom, quantite, prix, dateExp, categorie);
-        stock.put(code, m);
-    }
-
-    // READ - rechercher par code O(1)
-    public Medicament rechercherParCode(String code) {
-        if (!stock.containsKey(code))
-            throw new IllegalArgumentException("Medicament " + code + " introuvable !");
-        return stock.get(code);
-    }
-
-    // READ - rechercher par nom O(n) - parcourt les valeurs
-    public ArrayList<Medicament> rechercherParNom(String nom) {
-        ArrayList<Medicament> resultats = new ArrayList<>();
-        for (Medicament m : stock.values()) {
-            if (m.getNom().toLowerCase().contains(nom.toLowerCase()))
-                resultats.add(m);
+    // P5 : throw si nom vide ou prix negatif
+    public void ajouter(Medicament m) {
+        if (m.getNom() == null || m.getNom().trim().isEmpty()) {
+            throw new IllegalArgumentException("Le nom du medicament ne peut pas etre vide !");
         }
-        return resultats;
-    }
-
-    // UPDATE - approvisionner (ajouter au stock)
-    public void approvisionner(String code, int quantiteAjoutee) {
-        Medicament m = rechercherParCode(code); // leve exception si inexistant
-        if (quantiteAjoutee <= 0)
-            throw new IllegalArgumentException("Quantite a ajouter doit etre > 0");
-        m.setQuantite(m.getQuantite() + quantiteAjoutee);
-    }
-
-    // UPDATE - vendre (retirer du stock)
-    public void vendre(String code, int quantiteVendue) {
-        Medicament m = rechercherParCode(code);
-        if (quantiteVendue <= 0)
-            throw new IllegalArgumentException("Quantite a vendre doit etre > 0");
-        if (quantiteVendue > m.getQuantite())
-            throw new IllegalStateException("Stock insuffisant pour " + m.getNom()
-                + " ! Disponible: " + m.getQuantite() + ", Demande: " + quantiteVendue);
-        m.setQuantite(m.getQuantite() - quantiteVendue);
-    }
-
-    // DELETE - supprimer un medicament
-    public void supprimer(String code) {
-        if (!stock.containsKey(code))
-            throw new IllegalArgumentException("Medicament " + code + " introuvable !");
-        stock.remove(code);
-    }
-
-    // READ - medicaments expires
-    public ArrayList<Medicament> getMedicamentsExpires() {
-        ArrayList<Medicament> expires = new ArrayList<>();
-        for (Medicament m : stock.values()) {
-            if (m.estExpire()) expires.add(m);
+        if (m.getPrix() < 0) {
+            throw new IllegalArgumentException("Le prix ne peut pas etre negatif !");
         }
-        return expires;
-    }
-
-    // READ - medicaments en rupture de stock
-    public ArrayList<Medicament> getRupturesDeStock() {
-        ArrayList<Medicament> ruptures = new ArrayList<>();
-        for (Medicament m : stock.values()) {
-            if (m.estEnRuptureDeStock()) ruptures.add(m);
+        if (m.getQuantite() < 0) {
+            throw new IllegalArgumentException("La quantite ne peut pas etre negative !");
         }
-        return ruptures;
+        medicaments.add(m);
     }
 
-    // READ - par categorie
-    public ArrayList<Medicament> getParCategorie(String categorie) {
-        ArrayList<Medicament> resultats = new ArrayList<>();
-        for (Medicament m : stock.values()) {
-            if (m.getCategorie().equalsIgnoreCase(categorie))
-                resultats.add(m);
+    // P5 : throws Exception si medicament non trouve
+    public Medicament rechercher(String nom) throws Exception {
+        for (Medicament m : medicaments) {
+            if (m.getNom().equalsIgnoreCase(nom)) {
+                return m;
+            }
         }
-        return resultats;
+        throw new Exception("Medicament '" + nom + "' non trouve dans le stock !");
     }
 
-    // READ - valeur totale du stock
-    public double getValeurTotaleStock() {
-        double total = 0;
-        for (Medicament m : stock.values()) {
-            total += m.getQuantite() * m.getPrixUnitaire();
+    // Retourne les medicaments avec quantite < 5
+    public ArrayList<Medicament> stocksFaibles() {
+        ArrayList<Medicament> faibles = new ArrayList<>();
+        for (Medicament m : medicaments) {
+            if (m.getQuantite() < 5) {
+                faibles.add(m);
+            }
         }
-        return total;
+        return faibles;
     }
 
-    // READ - statistiques
-    public String statistiques() {
-        int total = stock.size();
-        int expires = getMedicamentsExpires().size();
-        int ruptures = getRupturesDeStock().size();
-        double valeur = getValeurTotaleStock();
-        return "Medicaments: " + total
-            + " | Expires: " + expires
-            + " | Ruptures: " + ruptures
-            + " | Valeur stock: " + String.format("%.2f", valeur) + " EUR";
+    // Tri a bulles par nom (PAS Collections.sort)
+    public void trierParNom() {
+        int n = medicaments.size();
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                Medicament a = medicaments.get(j);
+                Medicament b = medicaments.get(j + 1);
+                // Compare par ordre alphabetique (ignore casse)
+                if (a.getNom().compareToIgnoreCase(b.getNom()) > 0) {
+                    // Echanger a et b
+                    medicaments.set(j, b);
+                    medicaments.set(j + 1, a);
+                }
+            }
+        }
     }
 
-    public int getTaille() { return stock.size(); }
+    // Supprimer par nom
+    public boolean supprimer(String nom) {
+        for (int i = 0; i < medicaments.size(); i++) {
+            if (medicaments.get(i).getNom().equalsIgnoreCase(nom)) {
+                medicaments.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public LinkedList<Medicament> getTout() { return medicaments; }
+    public int getTaille() { return medicaments.size(); }
 
     /* ============================================
-     * M4 : POURQUOI HashMap pour la pharmacie ?
-     * - Recherche par code en O(1) (essentiel en pharmacie)
-     * - Unicite des codes medicaments garantie
-     * - Ajout/suppression en O(1)
+     * M4 : POURQUOI LinkedList ?
+     * - Ajouts/suppressions frequents en pharmacie
+     * - add() en fin = O(1), remove() quand on a l'index = O(1)
+     * - Pas besoin d'acces par index (on cherche par nom)
      *
-     * D3 : ANALYSE DE COMPLEXITE
-     * ajouter()             : O(1) - HashMap.put()
-     * rechercherParCode()   : O(1) - HashMap.get()
-     * rechercherParNom()    : O(n) - parcourt les valeurs
-     * approvisionner()      : O(1) - get + setQuantite
-     * vendre()              : O(1) - get + verification + setQuantite
-     * supprimer()           : O(1) - HashMap.remove()
-     * getMedicamentsExpires(): O(n) - parcourt tout
-     * getRupturesDeStock()  : O(n) - parcourt tout
-     * getParCategorie()     : O(n) - parcourt tout
-     * getValeurTotaleStock(): O(n) - parcourt tout
+     * COMMENT trierParNom() resout le tri :
+     * Tri a bulles : compare les voisins, echange si
+     * mauvais ordre, repete jusqu'a ce que trie.
+     *
+     * COMMENT stocksFaibles() filtre :
+     * Parcourt tout, garde ceux avec quantite < 5.
+     * ============================================ */
+
+    /* ============================================
+     * D3 : COMPLEXITE
+     * ajouter()       : O(1) - LinkedList.add() en fin
+     * rechercher()    : O(n) pire cas - parcours sequentiel
+     *                   O(1) meilleur cas (premier element)
+     * stocksFaibles() : O(n) - parcourt tout
+     * trierParNom()   : O(n^2) - tri a bulles (2 boucles)
+     *                   PAS optimal. MergeSort = O(n log n)
+     *                   Mais acceptable pour un petit stock.
+     * supprimer()     : O(n) - parcours + suppression
+     *
+     * | Operation  | LinkedList | ArrayList | HashMap      |
+     * |----------- |----------- |---------- |------------- |
+     * | ajouter    | O(1)       | O(1)*     | O(1)         |
+     * | rechercher | O(n)       | O(n)      | O(1) par cle |
+     * | supprimer  | O(n)       | O(n)      | O(1) par cle |
+     * | trier      | O(n^2)     | O(n^2)    | N/A          |
+     * * ArrayList O(1) amorti (resize parfois)
      * ============================================ */
 }
 
+
 // ===================================================
-// MENU (Scanner + try/catch + validation)
+// FICHIER 3 : Menu.java
 // ===================================================
+
 import java.util.Scanner;
-import java.time.format.DateTimeParseException;
 
 public class Menu {
-    public static void main(String[] args) {
-        GestionStock gestion = new GestionStock();
-        Scanner sc = new Scanner(System.in);
-        int choix;
+    private GestionStock gestion;
 
-        do {
-            System.out.println("\n=== PHARMACIE - Gestion Stock ===");
+    public Menu(GestionStock gestion) {
+        this.gestion = gestion;
+    }
+
+    public void afficherMenu() {
+        Scanner sc = new Scanner(System.in);
+        int choix = 0;
+
+        while (choix != 6) {
+            System.out.println("\n=== PHARMACIE - Stock Medicaments ===");
             System.out.println("1. Ajouter un medicament");
-            System.out.println("2. Rechercher par code");
-            System.out.println("3. Rechercher par nom");
-            System.out.println("4. Approvisionner");
-            System.out.println("5. Vendre");
-            System.out.println("6. Medicaments expires");
-            System.out.println("7. Ruptures de stock");
-            System.out.println("8. Statistiques");
-            System.out.println("0. Quitter");
-            System.out.print("Choix : ");
+            System.out.println("2. Rechercher par nom");
+            System.out.println("3. Stocks faibles (qte < 5)");
+            System.out.println("4. Afficher tout (trie par nom)");
+            System.out.println("5. Supprimer un medicament");
+            System.out.println("6. Quitter");
 
             try {
+                System.out.print("Choix : ");
                 choix = Integer.parseInt(sc.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("Entrez un nombre !");
-                choix = -1; continue;
-            }
 
-            switch (choix) {
-                case 1:
-                    try {
-                        System.out.print("Code (ex: MED001) : ");
-                        String code = sc.nextLine();
-                        System.out.print("Nom : ");
-                        String nom = sc.nextLine();
-                        System.out.print("Quantite : ");
-                        int qte = Integer.parseInt(sc.nextLine());
-                        System.out.print("Prix unitaire : ");
-                        double prix = Double.parseDouble(sc.nextLine());
-                        System.out.print("Date expiration (AAAA-MM-JJ) : ");
-                        LocalDate dateExp = LocalDate.parse(sc.nextLine());
-                        System.out.print("Categorie (ANTIBIOTIQUE/ANTIDOULEUR/VITAMINE) : ");
-                        String cat = sc.nextLine().toUpperCase();
-                        gestion.ajouter(code, nom, qte, prix, dateExp, cat);
-                        System.out.println("Medicament ajoute !");
-                    } catch (DateTimeParseException e) {
-                        System.out.println("Format de date invalide !");
-                    } catch (NumberFormatException e) {
-                        System.out.println("Nombre invalide !");
-                    } catch (IllegalArgumentException e) {
-                        System.out.println("Erreur : " + e.getMessage());
-                    }
-                    break;
-                case 2:
-                    try {
-                        System.out.print("Code : ");
-                        System.out.println(gestion.rechercherParCode(sc.nextLine()));
-                    } catch (IllegalArgumentException e) {
-                        System.out.println("Erreur : " + e.getMessage());
-                    }
-                    break;
-                case 3:
-                    System.out.print("Nom (ou partie) : ");
-                    var res = gestion.rechercherParNom(sc.nextLine());
-                    if (res.isEmpty()) System.out.println("Aucun resultat.");
-                    else for (var m : res) System.out.println("  " + m);
-                    break;
-                case 4:
-                    try {
-                        System.out.print("Code : ");
-                        String codeAppro = sc.nextLine();
-                        System.out.print("Quantite a ajouter : ");
-                        int qteAppro = Integer.parseInt(sc.nextLine());
-                        gestion.approvisionner(codeAppro, qteAppro);
-                        System.out.println("Stock mis a jour !");
-                    } catch (Exception e) {
-                        System.out.println("Erreur : " + e.getMessage());
-                    }
-                    break;
-                case 5:
-                    try {
-                        System.out.print("Code : ");
-                        String codeVente = sc.nextLine();
-                        System.out.print("Quantite a vendre : ");
-                        int qteVente = Integer.parseInt(sc.nextLine());
-                        gestion.vendre(codeVente, qteVente);
-                        System.out.println("Vente enregistree !");
-                    } catch (IllegalStateException e) {
-                        System.out.println("Stock insuffisant : " + e.getMessage());
-                    } catch (Exception e) {
-                        System.out.println("Erreur : " + e.getMessage());
-                    }
-                    break;
-                case 6:
-                    var expires = gestion.getMedicamentsExpires();
-                    if (expires.isEmpty()) System.out.println("Aucun medicament expire.");
-                    else { System.out.println("Expires (" + expires.size() + ") :");
-                        for (var m : expires) System.out.println("  " + m); }
-                    break;
-                case 7:
-                    var ruptures = gestion.getRupturesDeStock();
-                    if (ruptures.isEmpty()) System.out.println("Aucune rupture.");
-                    else { System.out.println("Ruptures (" + ruptures.size() + ") :");
-                        for (var m : ruptures) System.out.println("  " + m); }
-                    break;
-                case 8:
-                    System.out.println(gestion.statistiques());
-                    break;
-                case 0: System.out.println("Au revoir !"); break;
-                default: System.out.println("Choix invalide.");
+                switch (choix) {
+                    case 1:
+                        // P5 : try/catch/finally
+                        try {
+                            System.out.print("Nom : ");
+                            String nom = sc.nextLine();
+                            System.out.print("Prix : ");
+                            double prix = Double.parseDouble(sc.nextLine());
+                            System.out.print("Quantite : ");
+                            int qte = Integer.parseInt(sc.nextLine());
+                            System.out.print("Date expiration (JJ/MM/AAAA) : ");
+                            String dateExp = sc.nextLine();
+                            Medicament m = new Medicament(nom, prix, qte, dateExp);
+                            gestion.ajouter(m);
+                            System.out.println("Medicament ajoute !");
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Erreur : " + e.getMessage());
+                        } catch (NumberFormatException e) {
+                            System.out.println("Erreur de saisie numerique !");
+                        } finally {
+                            // P5 : finally - toujours execute
+                            System.out.println("[Stock : " + gestion.getTaille() + " medicaments]");
+                        }
+                        break;
+
+                    case 2:
+                        // P5 : try/catch pour rechercher (throws Exception)
+                        try {
+                            System.out.print("Nom du medicament : ");
+                            Medicament m = gestion.rechercher(sc.nextLine());
+                            System.out.println("Trouve : " + m);
+                        } catch (Exception e) {
+                            System.out.println("Erreur : " + e.getMessage());
+                        }
+                        break;
+
+                    case 3:
+                        var faibles = gestion.stocksFaibles();
+                        if (faibles.isEmpty()) {
+                            System.out.println("Aucun stock faible.");
+                        } else {
+                            System.out.println("Stocks faibles (" + faibles.size() + ") :");
+                            for (var m : faibles) System.out.println("  " + m);
+                        }
+                        break;
+
+                    case 4:
+                        gestion.trierParNom();
+                        var tout = gestion.getTout();
+                        if (tout.isEmpty()) {
+                            System.out.println("Stock vide.");
+                        } else {
+                            System.out.println("Stock trie par nom :");
+                            for (var m : tout) System.out.println("  " + m);
+                        }
+                        break;
+
+                    case 5:
+                        System.out.print("Nom a supprimer : ");
+                        boolean ok = gestion.supprimer(sc.nextLine());
+                        System.out.println(ok ? "Supprime !" : "Medicament non trouve.");
+                        break;
+
+                    case 6:
+                        System.out.println("Au revoir !");
+                        break;
+
+                    default:
+                        System.out.println("Choix invalide.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Erreur : entrez un nombre !");
             }
-        } while (choix != 0);
+        }
         sc.close();
+    }
+}
+
+
+// ===================================================
+// FICHIER 4 : Main.java
+// ===================================================
+
+public class Main {
+    public static void main(String[] args) {
+        GestionStock gestion = new GestionStock();
+        Menu menu = new Menu(gestion);
+        menu.afficherMenu();
+    }
+}
+
+
+// ===================================================
+// FICHIER 5 : GestionStockTest.java (JUnit 5)
+// ===================================================
+
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+class GestionStockTest {
+    private GestionStock gestion;
+
+    @BeforeEach
+    void setUp() {
+        gestion = new GestionStock();
+    }
+
+    @Test
+    void testAjouterMedicamentValide() {
+        Medicament m = new Medicament("Doliprane", 3.50, 100, "31/12/2025");
+        gestion.ajouter(m);
+        assertEquals(1, gestion.getTaille());
+    }
+
+    @Test
+    void testAjouterNomVide() {
+        Medicament m = new Medicament("", 5.0, 10, "01/01/2026");
+        assertThrows(IllegalArgumentException.class,
+            () -> gestion.ajouter(m));
+    }
+
+    @Test
+    void testRechercherExistant() throws Exception {
+        gestion.ajouter(new Medicament("Aspirine", 2.50, 50, "15/06/2025"));
+        Medicament m = gestion.rechercher("Aspirine");
+        assertEquals("Aspirine", m.getNom());
+        assertEquals(2.50, m.getPrix(), 0.01);
+    }
+
+    @Test
+    void testRechercherInexistant() {
+        assertThrows(Exception.class,
+            () -> gestion.rechercher("Inexistant"));
+    }
+
+    @Test
+    void testStocksFaibles() {
+        gestion.ajouter(new Medicament("Doliprane", 3.50, 100, "31/12/2025"));
+        gestion.ajouter(new Medicament("Aspirine", 2.50, 3, "15/06/2025"));
+        gestion.ajouter(new Medicament("Vitamine C", 5.00, 2, "01/03/2025"));
+        assertEquals(2, gestion.stocksFaibles().size());
     }
 }`;
 
@@ -1078,22 +1218,22 @@ const EXERCISES=[
     code:EX3_CODE,
     criteria:"P4 (HashMap+LinkedList), P5 (exceptions multiples), M4, D3 (Queue+HashMap combines)"},
 ,
-  {id:4,title:"Gestion des Tickets de Support IT",color:"#3B82F6",
+  {id:4,title:"Gestion de Tickets de Support IT",color:"#3B82F6",
     context:"Votre manager vous demande de developper une application de gestion de tickets de support. Les tickets ont un id auto-incremente, une description, une priorite (CRITIQUE/NORMAL/FAIBLE), un demandeur, et un statut resolu/ouvert.",
-    tasks:["Creer un ticket (description, priorite, demandeur) avec id auto-incremente","Resoudre un ticket par son id","Afficher les tickets critiques non resolus","Rechercher les tickets d'un demandeur","Afficher les statistiques (total, resolus, ouverts, taux)"],
+    tasks:["Creer un ticket avec id auto-incremente (throw si description vide ou priorite invalide)","Resoudre un ticket par id (throws Exception si inexistant)","Tickets critiques non resolus + rechercher par demandeur","Statistiques + try/catch/finally dans le Menu","5 tests JUnit 5 : valide, desc vide, priorite invalide, inexistant, critiques"],
     structure:"HashMap<Integer, Ticket>",
     structureWhy:"Acces direct par id en O(1). Unicite des cles garantie. Bien meilleur que LinkedList qui serait O(n) pour resoudreTicket(id).",
-    classes:["Ticket (id, description, priorite, demandeur, resolu) + getters/setters + toString()","GestionTickets (HashMap, compteurId, creerTicket, resoudreTicket, ticketsCritiques, rechercherParDemandeur, statistiques) -- SANS Scanner","Menu (Scanner + switch/case + try/catch multi-exceptions)"],
+    classes:["Ticket (id, description, priorite, demandeur, resolu) + getters/setters + toString()","GestionTickets (HashMap, compteurId) : creerTicket (throw), resoudreTicket (throws Exception), ticketsCritiques, rechercherParDemandeur, statistiques -- SANS Scanner","Menu avec GestionTickets injecte + try/catch/finally + Main separee","GestionTicketsTest : 5 tests JUnit 5 (@Test, @BeforeEach, assertThrows)"],
     code:EX4_CODE,
     criteria:"P4 (HashMap), P5 (exceptions multiples : IllegalArgument + IllegalState + NumberFormat), M4 (resout un probleme IT), D3 (analyse O(1) vs O(n))"},
-  {id:5,title:"Gestion du Stock de Medicaments",color:"#16A34A",
-    context:"Une pharmacie souhaite informatiser la gestion de son stock de medicaments. Chaque medicament a un code unique, un nom, une quantite, un prix, une date d'expiration et une categorie. L'application doit gerer les approvisionnements, les ventes, les alertes d'expiration et les ruptures de stock.",
-    tasks:["Ajouter un medicament (code, nom, quantite, prix, date expiration, categorie)","Rechercher par code (O(1)) et par nom (recherche partielle)","Approvisionner (ajouter au stock existant)","Vendre (retirer du stock avec verification)","Supprimer un medicament","Afficher les medicaments expires et les ruptures de stock","Statistiques (total, expires, ruptures, valeur du stock)"],
-    structure:"HashMap<String, Medicament>",
-    structureWhy:"Recherche par code en O(1) essentiel en pharmacie. Unicite des codes garantie. CRUD complet (Create, Read, Update, Delete).",
-    classes:["Medicament (code, nom, quantite, prixUnitaire, dateExpiration, categorie) + getters/setters + estExpire() + estEnRuptureDeStock() + toString()","GestionStock (HashMap, ajouter, rechercherParCode O(1), rechercherParNom O(n), approvisionner, vendre avec validation stock, supprimer, getMedicamentsExpires, getRupturesDeStock, getValeurTotaleStock, statistiques) -- SANS Scanner","Menu (Scanner + switch 9 options + try/catch : DateTimeParseException + NumberFormatException + IllegalArgumentException + IllegalStateException)"],
+  {id:5,title:"Gestion de Stock de Medicaments en Pharmacie",color:"#16A34A",
+    context:"Vous etes developpeur dans une pharmacie de quartier. Le pharmacien souhaite une application Java pour gerer son stock de medicaments. Ajout, recherche par nom, stocks faibles (quantite < 5), affichage trie par nom. Utilise LinkedList (pas HashMap).",
+    tasks:["Ajouter un medicament (throw si nom vide ou prix negatif)","Rechercher par nom (throws Exception si non trouve)","Stocks faibles : medicaments avec quantite < 5","Trier par nom avec tri a bulles (pas Collections.sort)","Supprimer un medicament + try/catch/finally dans le Menu","5 tests JUnit 5 : valide, nom vide, existant, inexistant, stocks faibles"],
+    structure:"LinkedList<Medicament>",
+    structureWhy:"Ajouts/suppressions frequents en pharmacie. LinkedList O(1) pour ajouter. Tri a bulles a implementer soi-meme (pas Collections.sort).",
+    classes:["Medicament (nom, prix, quantite, dateExpiration String) + getters/setters + toString() avec alerte [STOCK FAIBLE]","GestionStock (LinkedList) : ajouter (throw), rechercher (throws Exception), stocksFaibles, trierParNom (tri a bulles), supprimer -- SANS Scanner","Menu avec GestionStock injecte + try/catch/finally + Main separee","GestionStockTest : 5 tests JUnit 5 (@Test, @BeforeEach, assertThrows)"],
     code:EX5_CODE,
-    criteria:"P4 (HashMap CRUD complet), P5 (4 types exceptions + validation metier), M4 (resout probleme pharmacie), D3 (O(1) vs O(n) documente)"}
+    criteria:"P4 (LinkedList + tri a bulles), P5 (throws Exception + throw + try/catch/finally), M4 (pourquoi LinkedList + comment le tri resout le probleme), D3 (O(n) recherche, O(n^2) tri, comparaison avec ArrayList/HashMap)"}
 
 ];
 
