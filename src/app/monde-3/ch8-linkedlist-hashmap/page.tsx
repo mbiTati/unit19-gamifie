@@ -1,158 +1,150 @@
 "use client";
-import Link from "next/link";
 import { useState } from "react";
+import Link from "next/link";
 
-function LinkedListTypes() {
-  const [listType, setListType] = useState<"simple" | "double" | "circular">("simple");
-  const nodes = ["Alice", "Bob", "Clara"];
-  const info: Record<string, {title:string;color:string;desc:string}> = {
-    simple: {title:"Liste simplement chaînée",color:"#F97316",desc:"Chaque noeud: data + next. Dernier → null. Parcours → sens unique. Opérations: Insérer, Effacer."},
-    double: {title:"Liste doublement chaînée",color:"#0891B2",desc:"Chaque noeud: data + next + prev. Parcours ↔ deux sens. Opérations: Parcourir, Insérer, Effacer. Plus de mémoire (2 pointeurs/noeud)."},
-    circular: {title:"Liste circulaire (Ring Buffer)",color:"#16A34A",desc:"Le dernier noeud pointe vers le premier (pas de null). Forme une boucle. Opérations: Insérer, Effacer."},
-  };
-  const cur = info[listType];
-  return (
-    <div>
-      <div style={{display:"flex",gap:6,marginBottom:12}}>
-        {(["simple","double","circular"] as const).map(t=>(
-          <button key={t} onClick={()=>setListType(t)} style={{padding:"6px 12px",borderRadius:6,border:listType===t?`2px solid ${info[t].color}`:"1px solid #1E3A5F",background:listType===t?`${info[t].color}20`:"#111827",color:listType===t?info[t].color:"#94A3B8",fontWeight:600,fontSize:12,cursor:"pointer"}}>
-            {t==="simple"?"Simple":t==="double"?"Double":"Circulaire"}
-          </button>
-        ))}
-      </div>
-      <svg viewBox="0 0 600 110" style={{width:"100%",background:"#0D1117",borderRadius:10,marginBottom:10}}>
-        <defs>
-          <marker id="ao" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#F97316" strokeWidth="1.5"/></marker>
-          <marker id="ab" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#0891B2" strokeWidth="1.5"/></marker>
-          <marker id="ag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#16A34A" strokeWidth="1.5"/></marker>
-        </defs>
-        {nodes.map((n,i)=>{const x=40+i*180;return(
-          <g key={i}>
-            <rect x={x} y={20} width={120} height={50} rx={8} fill="#1E293B" stroke={cur.color} strokeWidth={1.5}/>
-            <text x={x+60} y={42} fill="#1E3A5F" fontSize={13} fontWeight={600} textAnchor="middle">{n}</text>
-            <text x={x+60} y={58} fill="#64748B" fontSize={9} textAnchor="middle">data | next{listType==="double"?" | prev":""}</text>
-            {i<nodes.length-1&&<line x1={x+120} y1={45} x2={x+180} y2={45} stroke="#F97316" strokeWidth={1.5} markerEnd="url(#ao)"/>}
-            {listType==="double"&&i>0&&<line x1={x} y1={55} x2={x-60} y2={55} stroke="#0891B2" strokeWidth={1} markerEnd="url(#ab)" strokeDasharray="4 2"/>}
-          </g>
-        )})}
-        {listType==="circular"&&<path d={`M ${40+2*180+120} 45 C 580 90, 20 90, 40 45`} fill="none" stroke="#16A34A" strokeWidth={1.5} strokeDasharray="4 2" markerEnd="url(#ag)"/>}
-        {listType==="simple"&&<text x={40+2*180+125} y={50} fill="#DC2626" fontSize={11} fontWeight={600}>null</text>}
-      </svg>
-      <div style={{background:"#1E293B",borderRadius:8,padding:"10px 14px",fontSize:12,color:"#94A3B8"}}>
-        <div style={{color:cur.color,fontWeight:600,marginBottom:4}}>{cur.title}</div>{cur.desc}
-      </div>
-    </div>
-  );
-}
+const BG="#0B1120",CARD="#111827",BORDER="#1E3A5F",TEXT="#E2E8F0",MUTED="#94A3B8",GREEN="#16A34A",RED="#DC2626",ORANGE="#F97316",PURPLE="#7C3AED",TEAL="#0891B2",BLUE="#3B82F6";
 
-function LinkedListSim() {
-  const [nodes, setNodes] = useState(["Alice","Bob","Clara"]);
-  const [input, setInput] = useState("");
-  const [log, setLog] = useState(["Liste initialisée"]);
-  const [score, setScore] = useState(0);
-  const addFirst=()=>{if(!input.trim())return;setNodes([input.trim(),...nodes]);setLog(l=>[...l,`addFirst("${input.trim()}") → O(1)`]);setScore(s=>s+5);setInput("")};
-  const addLast=()=>{if(!input.trim())return;setNodes([...nodes,input.trim()]);setLog(l=>[...l,`addLast("${input.trim()}") → O(1)`]);setScore(s=>s+5);setInput("")};
-  const removeFirst=()=>{if(!nodes.length)return;setLog(l=>[...l,`removeFirst() → "${nodes[0]}" — O(1)`]);setNodes(nodes.slice(1));setScore(s=>s+5)};
-  const removeLast=()=>{if(!nodes.length)return;setLog(l=>[...l,`removeLast() → "${nodes[nodes.length-1]}" — O(n)`]);setNodes(nodes.slice(0,-1));setScore(s=>s+5)};
-  return (
-    <div>
-      <div style={{fontSize:12,color:"#F97316",fontWeight:600,marginBottom:6}}>Score: {score} | Taille: {nodes.length}</div>
-      <div style={{display:"flex",gap:4,flexWrap:"wrap" as const,minHeight:40,alignItems:"center",padding:"6px 0"}}>
-      <div style={{padding:"8px 16px",borderBottom:"1px solid #1E3A5F"}}><Link href="/" style={{fontSize:12,color:"#94A3B8",textDecoration:"none"}}>Retour accueil</Link></div>
-        {!nodes.length?<span style={{color:"#64748B",fontStyle:"italic",fontSize:13}}>(vide)</span>:nodes.map((n,i)=>(
-          <div key={i} style={{display:"flex",alignItems:"center",gap:2}}>
-            <div style={{background:i===0?"#993C1D":"#D85A30",color:"white",padding:"5px 10px",borderRadius:6,fontSize:12,fontWeight:600}}>{n}<span style={{fontSize:9,opacity:.7,marginLeft:3}}>[{i}]</span></div>
-            {i<nodes.length-1&&<span style={{color:"#D85A30",fontSize:14}}>→</span>}
-          </div>
-        ))}
-      </div>
-      <div style={{display:"flex",gap:6,margin:"8px 0",flexWrap:"wrap" as const}}>
-        <input value={input} onChange={e=>setInput(e.target.value)} placeholder="Nom..." style={{flex:1,minWidth:100,padding:"6px 10px",border:"1px solid #1E3A5F",borderRadius:6,fontSize:12,background:"#1E293B",color:"#1E3A5F"}}/>
-        <button onClick={addFirst} style={{padding:"6px 8px",background:"#16A34A",color:"white",border:"none",borderRadius:6,fontSize:11,fontWeight:600,cursor:"pointer"}}>addFirst</button>
-        <button onClick={addLast} style={{padding:"6px 8px",background:"#16A34A",color:"white",border:"none",borderRadius:6,fontSize:11,fontWeight:600,cursor:"pointer"}}>addLast</button>
-        <button onClick={removeFirst} style={{padding:"6px 8px",background:"#DC2626",color:"white",border:"none",borderRadius:6,fontSize:11,fontWeight:600,cursor:"pointer"}}>removeFirst</button>
-        <button onClick={removeLast} style={{padding:"6px 8px",background:"#DC2626",color:"white",border:"none",borderRadius:6,fontSize:11,fontWeight:600,cursor:"pointer"}}>removeLast</button>
-      </div>
-      <div style={{background:"#0D1117",borderRadius:8,padding:"6px 10px",maxHeight:80,overflowY:"auto" as const}}>
-        {log.slice(-4).map((l,i)=><div key={i} style={{fontSize:11,color:"#94A3B8",fontFamily:"Consolas,monospace"}}>{l}</div>)}
-      </div>
-    </div>
-  );
-}
+// ─── GAME 1: Fill-in comparison table ───
+const TABLE_CELLS=[
+  {row:"get(index)",col:"ArrayList",answer:"O(1)",hint:"Acces direct par index"},
+  {row:"get(index)",col:"LinkedList",answer:"O(n)",hint:"Parcours depuis le debut"},
+  {row:"get(index)",col:"HashMap",answer:"N/A",hint:"Pas d'index, acces par cle"},
+  {row:"add(fin)",col:"ArrayList",answer:"O(1)",hint:"Ajoute a la fin du tableau"},
+  {row:"add(fin)",col:"LinkedList",answer:"O(1)",hint:"Reference au dernier noeud"},
+  {row:"add(fin)",col:"HashMap",answer:"O(1)",hint:"Hash puis insertion"},
+  {row:"add(debut)",col:"ArrayList",answer:"O(n)",hint:"Decaler tous les elements"},
+  {row:"add(debut)",col:"LinkedList",answer:"O(1)",hint:"Changer le pointeur head"},
+  {row:"add(debut)",col:"HashMap",answer:"N/A",hint:"Pas de notion d'ordre"},
+  {row:"contains()",col:"ArrayList",answer:"O(n)",hint:"Parcours sequentiel"},
+  {row:"contains()",col:"LinkedList",answer:"O(n)",hint:"Parcours sequentiel"},
+  {row:"contains()",col:"HashMap",answer:"O(1)",hint:"containsKey par hash"},
+  {row:"remove()",col:"ArrayList",answer:"O(n)",hint:"Trouver + decaler"},
+  {row:"remove()",col:"LinkedList",answer:"O(n)",hint:"Trouver + supprimer noeud"},
+  {row:"remove()",col:"HashMap",answer:"O(1)",hint:"Hash puis suppression"},
+];
+const ROWS=["get(index)","add(fin)","add(debut)","contains()","remove()"];
+const COLS=["ArrayList","LinkedList","HashMap"];
+const OPTIONS=["O(1)","O(n)","O(log n)","O(n^2)","N/A"];
 
-function HashMapSim() {
-  const [map, setMap] = useState<Record<string,string>>({alice:"0612345678",bob:"0698765432"});
-  const [key, setKey] = useState("");const [value, setValue] = useState("");
-  const [log, setLog] = useState(["HashMap initialisée"]);
-  const [score, setScore] = useState(0);
-  const hashFn=(k:string)=>{let h=0;for(let i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))%16;return h};
-  const put=()=>{if(!key.trim())return;const h=hashFn(key.trim());setMap({...map,[key.trim()]:value.trim()});setLog(l=>[...l,`put("${key.trim()}") → hash=${h} → bucket[${h}]`]);setScore(s=>s+5);setKey("");setValue("")};
-  const get=()=>{if(!key.trim())return;const v=map[key.trim()];const h=hashFn(key.trim());setLog(l=>[...l,`get("${key.trim()}") → hash=${h} → ${v||"null"}`]);setScore(s=>s+3)};
-  const remove=()=>{if(!key.trim()||!(key.trim()in map))return;const m={...map};delete m[key.trim()];setMap(m);setLog(l=>[...l,`remove("${key.trim()}") → supprimé`]);setScore(s=>s+5);setKey("")};
-  return (
-    <div>
-      <div style={{fontSize:12,color:"#0891B2",fontWeight:600,marginBottom:6}}>Score: {score} | Taille: {Object.keys(map).length}</div>
-      <div style={{background:"#0D1117",borderRadius:8,padding:"8px 10px",marginBottom:8}}>
-        <div style={{fontSize:11,color:"#64748B",marginBottom:4}}>clé → hashCode() % 16 → bucket[index]</div>
-        {Object.entries(map).map(([k,v])=>(
-          <div key={k} style={{display:"flex",gap:4,alignItems:"center",marginBottom:3}}>
-            <span style={{background:"#F97316",color:"white",padding:"2px 8px",borderRadius:4,fontSize:11,fontWeight:600,minWidth:60}}>{k}</span>
-            <span style={{color:"#64748B",fontSize:10}}>→ h={hashFn(k)} →</span>
-            <span style={{background:"#0891B2",color:"white",padding:"2px 8px",borderRadius:4,fontSize:11}}>{v}</span>
-          </div>
-        ))}
-      </div>
-      <div style={{display:"flex",gap:6,marginBottom:6}}>
-        <input value={key} onChange={e=>setKey(e.target.value)} placeholder="Clé..." style={{flex:1,padding:"6px 10px",border:"1px solid #1E3A5F",borderRadius:6,fontSize:12,background:"#1E293B",color:"#1E3A5F"}}/>
-        <input value={value} onChange={e=>setValue(e.target.value)} placeholder="Valeur..." style={{flex:1,padding:"6px 10px",border:"1px solid #1E3A5F",borderRadius:6,fontSize:12,background:"#1E293B",color:"#1E3A5F"}}/>
-      </div>
-      <div style={{display:"flex",gap:6}}>
-        <button onClick={put} style={{padding:"6px 10px",background:"#16A34A",color:"white",border:"none",borderRadius:6,fontSize:11,fontWeight:600,cursor:"pointer"}}>put(k,v)</button>
-        <button onClick={get} style={{padding:"6px 10px",background:"#3B82F6",color:"white",border:"none",borderRadius:6,fontSize:11,fontWeight:600,cursor:"pointer"}}>get(k)</button>
-        <button onClick={remove} style={{padding:"6px 10px",background:"#DC2626",color:"white",border:"none",borderRadius:6,fontSize:11,fontWeight:600,cursor:"pointer"}}>remove(k)</button>
-      </div>
-      <div style={{background:"#0D1117",borderRadius:8,padding:"6px 10px",maxHeight:60,overflowY:"auto" as const,marginTop:6}}>
-        {log.slice(-3).map((l,i)=><div key={i} style={{fontSize:11,color:"#94A3B8",fontFamily:"Consolas,monospace"}}>{l}</div>)}
-      </div>
-    </div>
-  );
-}
+// ─── GAME 2: Quiz ───
+const QUIZ=[
+  {q:"LinkedList stocke les elements dans :",o:["Un tableau contigu","Des noeuds avec pointeurs next/prev","Un arbre binaire","Une table de hachage"],c:1,e:"Chaque noeud contient la donnee + un pointeur vers le noeud suivant (et precedent en double)."},
+  {q:"HashMap utilise quelle technique pour stocker ?",o:["Index sequentiel","Hash function -> index dans un tableau de buckets","Arbre binaire","File d'attente"],c:1,e:"cle.hashCode() % tableSize = index du bucket. Acces O(1) en moyenne."},
+  {q:"Collision dans un HashMap :",o:["Erreur fatale","2 cles donnent le meme index -> chainage","Impossible","Le HashMap se vide"],c:1,e:"Les collisions sont gerees par chainage (LinkedList dans le bucket) ou arbre (Java 8+)."},
+  {q:"Pour un repertoire telephonique (recherche par nom) :",o:["ArrayList","LinkedList","HashMap","Stack"],c:2,e:"Recherche par cle (nom) = HashMap O(1). ArrayList/LinkedList seraient O(n)."},
+  {q:"Pour une file d'attente de clients :",o:["HashMap","ArrayList","LinkedList/Queue","TreeMap"],c:2,e:"FIFO : ajout en fin, retrait au debut. LinkedList/Queue = O(1) pour les deux."},
+  {q:"ArrayList est plus cache-friendly que LinkedList car :",o:["ArrayList est plus rapide","Elements contigus en memoire","ArrayList a moins de methodes","LinkedList est deprecie"],c:1,e:"Elements contigus = le CPU precharge les voisins dans le cache L1. LinkedList a des noeuds eparpilles."},
+];
 
-export default function Ch8Game() {
-  const [mode, setMode] = useState<"menu"|"types"|"linkedlist"|"hashmap">("menu");
-  if(mode==="menu")return(
-    <div style={{maxWidth:700,margin:"0 auto",padding:"2rem 1rem",fontFamily:"'Segoe UI',system-ui,sans-serif",color:"#1E3A5F"}}>
-      <div style={{textAlign:"center" as const,marginBottom:"2rem"}}>
-        <div style={{fontSize:14,color:"#F97316",fontWeight:600,letterSpacing:2,textTransform:"uppercase" as const}}>Monde 3 — Chapitre 8</div>
-        <h1 style={{fontSize:28,fontWeight:700,color:"white",margin:"0.5rem 0"}}>LinkedList + HashMap</h1>
-        <p style={{color:"#94A3B8",fontSize:14}}>Critère P4a — Structures complexes</p>
+type Phase="menu"|"table"|"quiz";
+
+export default function Ch8Game(){
+  const[phase,setPhase]=useState("menu" as Phase);
+  const[answers,setAnswers]=useState({} as Record<string,string>);
+  const[submitted,setSubmitted]=useState(false);
+  const[qIdx,setQIdx]=useState(0);const[qScore,setQScore]=useState(0);const[sel,setSel]=useState(null as number|null);const[show,setShow]=useState(false);
+
+  const back=<button onClick={()=>setPhase("menu")} style={{fontSize:13,color:MUTED,background:"none",border:"none",cursor:"pointer",marginBottom:12}}>Retour</button>;
+
+  const setCell=(row:string,col:string,val:string)=>{if(submitted)return;setAnswers(a=>({...a,[row+"|"+col]:val}))};
+  const getCell=(row:string,col:string)=>answers[row+"|"+col]||"";
+  const getCorrect=(row:string,col:string)=>{const c=TABLE_CELLS.find(c=>c.row===row&&c.col===col);return c?c.answer:""};
+  const getHint=(row:string,col:string)=>{const c=TABLE_CELLS.find(c=>c.row===row&&c.col===col);return c?c.hint:""};
+  const score=TABLE_CELLS.filter(c=>answers[c.row+"|"+c.col]===c.answer).length;
+
+  if(phase==="menu")return(
+    <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"2rem 1rem"}}>
+      <div style={{padding:"8px 16px",borderBottom:"1px solid "+BORDER}}><Link href="/" style={{fontSize:12,color:MUTED,textDecoration:"none"}}>Retour accueil</Link></div>
+      <div style={{maxWidth:700,margin:"0 auto"}}>
+        <div style={{textAlign:"center",marginBottom:"2rem"}}>
+          <div style={{fontSize:13,color:ORANGE,fontWeight:600,letterSpacing:2,textTransform:"uppercase"}}>Monde 3 — Chapitre 8</div>
+          <h1 style={{fontSize:28,fontWeight:700,margin:"0.5rem 0"}}>LinkedList, ArrayList, HashMap</h1>
+          <p style={{color:MUTED,fontSize:15}}>P4a — Structures de donnees concretes</p>
           <a href="/fiches/Ch8_Fiche_Memo_LinkedList_HashMap.pdf" target="_blank" rel="noopener" style={{display:"inline-block",marginTop:8,padding:"6px 14px",background:"#1E293B",border:"1px solid #1E3A5F",borderRadius:8,fontSize:12,color:"#94A3B8",textDecoration:"none"}}>Fiche memo PDF</a>
-      </div>
-      <div style={{display:"grid",gap:12}}>
-        <button onClick={()=>setMode("types")} style={{padding:"1.2rem",border:"1px solid #1E3A5F",borderRadius:10,background:"#111827",cursor:"pointer",textAlign:"left" as const}}>
-          <div style={{fontSize:18,fontWeight:600,color:"#F97316"}}> Types de LinkedList</div>
-          <div style={{fontSize:13,color:"#94A3B8",marginTop:4}}>Simple, doublement chaînée, circulaire — visualisation SVG</div>
-        </button>
-        <button onClick={()=>setMode("linkedlist")} style={{padding:"1.2rem",border:"1px solid #1E3A5F",borderRadius:10,background:"#111827",cursor:"pointer",textAlign:"left" as const}}>
-          <div style={{fontSize:18,fontWeight:600,color:"#D85A30"}}> Simulateur LinkedList</div>
-          <div style={{fontSize:13,color:"#94A3B8",marginTop:4}}>addFirst, addLast, remove — manipulez en temps réel</div>
-        </button>
-        <button onClick={()=>setMode("hashmap")} style={{padding:"1.2rem",border:"1px solid #1E3A5F",borderRadius:10,background:"#111827",cursor:"pointer",textAlign:"left" as const}}>
-          <div style={{fontSize:18,fontWeight:600,color:"#0891B2"}}> Simulateur HashMap</div>
-          <div style={{fontSize:13,color:"#94A3B8",marginTop:4}}>Hash function visible + buckets — voyez le hachage en action</div>
-        </button>
+        </div>
+        <div style={{display:"grid",gap:14}}>
+          <button onClick={()=>{setPhase("table");setAnswers({});setSubmitted(false)}}
+            style={{padding:"1.2rem",border:"2px solid "+BORDER,borderRadius:12,background:CARD,cursor:"pointer",textAlign:"left"}}>
+            <div style={{fontSize:17,fontWeight:600,color:TEAL}}>Tableau comparatif interactif</div>
+            <div style={{fontSize:13,color:MUTED,marginTop:4}}>Completez le tableau Big O : 15 cases a remplir (ArrayList vs LinkedList vs HashMap)</div>
+          </button>
+          <button onClick={()=>{setPhase("quiz");setQIdx(0);setQScore(0);setSel(null);setShow(false)}}
+            style={{padding:"1.2rem",border:"2px solid "+BORDER,borderRadius:12,background:CARD,cursor:"pointer",textAlign:"left"}}>
+            <div style={{fontSize:17,fontWeight:600,color:GREEN}}>Quiz Structures</div>
+            <div style={{fontSize:13,color:MUTED,marginTop:4}}>6 questions : noeuds, hash function, collisions, cas d'usage</div>
+          </button>
+        </div>
       </div>
     </div>
   );
+
+  // ─── COMPARISON TABLE ───
+  if(phase==="table"){
+    return(
+      <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+        <div style={{maxWidth:750,margin:"0 auto"}}>
+          {back}
+          <h2 style={{fontSize:18,fontWeight:700,color:TEAL,marginBottom:12}}>Completez le tableau de complexite</h2>
+          <div style={{overflowX:"auto"}}>
+            <table style={{width:"100%",borderCollapse:"collapse",fontSize:13}}>
+              <thead>
+                <tr>
+                  <th style={{padding:"8px",textAlign:"left",borderBottom:"2px solid "+BORDER,color:MUTED}}>Operation</th>
+                  {COLS.map(c=>(<th key={c} style={{padding:"8px",textAlign:"center",borderBottom:"2px solid "+BORDER,color:c==="ArrayList"?PURPLE:c==="LinkedList"?TEAL:ORANGE,fontWeight:700}}>{c}</th>))}
+                </tr>
+              </thead>
+              <tbody>
+                {ROWS.map(row=>(
+                  <tr key={row}>
+                    <td style={{padding:"8px",borderBottom:"1px solid "+BORDER,color:TEXT,fontFamily:"Consolas,monospace",fontWeight:600}}>{row}</td>
+                    {COLS.map(col=>{
+                      const val=getCell(row,col);const correct=getCorrect(row,col);const isRight=submitted&&val===correct;const isWrong=submitted&&val&&val!==correct;
+                      return(
+                        <td key={col} style={{padding:"4px",borderBottom:"1px solid "+BORDER,textAlign:"center"}}>
+                          <select value={val} onChange={e=>setCell(row,col,e.target.value)} disabled={submitted}
+                            style={{padding:"6px 8px",background:isRight?GREEN+"20":isWrong?RED+"20":CARD,color:isRight?GREEN:isWrong?RED:TEXT,border:"1px solid "+(isRight?GREEN:isWrong?RED:BORDER),borderRadius:6,fontSize:12,cursor:submitted?"default":"pointer"}}>
+                            <option value="">--</option>
+                            {OPTIONS.map(o=>(<option key={o} value={o}>{o}</option>))}
+                          </select>
+                          {submitted&&isWrong&&<div style={{fontSize:10,color:GREEN,marginTop:2}}>{correct}</div>}
+                          {submitted&&isRight&&<div style={{fontSize:10,color:GREEN,marginTop:2}}>{getHint(row,col)}</div>}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {!submitted&&Object.keys(answers).length>=TABLE_CELLS.length&&(
+            <button onClick={()=>setSubmitted(true)} style={{marginTop:16,width:"100%",padding:"10px",background:TEAL,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>Verifier ({Object.keys(answers).length}/{TABLE_CELLS.length} remplis)</button>
+          )}
+          {!submitted&&Object.keys(answers).length<TABLE_CELLS.length&&(
+            <div style={{marginTop:8,fontSize:12,color:MUTED,textAlign:"center"}}>{Object.keys(answers).length}/{TABLE_CELLS.length} cases remplies</div>
+          )}
+          {submitted&&(
+            <div style={{marginTop:16,padding:"14px",background:score>=12?GREEN+"15":ORANGE+"15",borderRadius:8,textAlign:"center"}}>
+              <div style={{fontSize:28,fontWeight:800,color:score>=12?GREEN:ORANGE}}>{score}/{TABLE_CELLS.length}</div>
+              <button onClick={()=>setPhase("menu")} style={{marginTop:8,padding:"8px 20px",background:TEAL,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>Retour</button>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // ─── QUIZ ───
+  if(qIdx>=QUIZ.length){const p=Math.round(qScore/QUIZ.length*100);return(<div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"3rem 1rem"}}><div style={{maxWidth:500,margin:"0 auto",textAlign:"center"}}><div style={{fontSize:64,fontWeight:800,color:p>=70?GREEN:ORANGE}}>{qScore}/{QUIZ.length}</div><button onClick={()=>setPhase("menu")} style={{marginTop:16,padding:"10px 24px",background:GREEN,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>Retour</button></div></div>)}
+  const q=QUIZ[qIdx];
   return(
-    <div style={{maxWidth:700,margin:"0 auto",padding:"1.5rem 1rem",fontFamily:"'Segoe UI',system-ui,sans-serif",color:"#1E3A5F"}}>
-      <button onClick={()=>setMode("menu")} style={{fontSize:13,color:"#64748B",background:"none",border:"none",cursor:"pointer",marginBottom:12}}>← Retour</button>
-      <h2 style={{fontSize:20,fontWeight:700,color:mode==="types"?"#F97316":mode==="linkedlist"?"#D85A30":"#0891B2",marginBottom:12}}>
-        {mode==="types"?" Types de LinkedList":mode==="linkedlist"?" Simulateur LinkedList":" Simulateur HashMap"}
-      </h2>
-      {mode==="types"&&<LinkedListTypes/>}
-      {mode==="linkedlist"&&<LinkedListSim/>}
-      {mode==="hashmap"&&<HashMapSim/>}
+    <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+      <div style={{maxWidth:650,margin:"0 auto"}}>
+        {back}
+        <div style={{fontSize:13,color:MUTED,marginBottom:8}}>{qIdx+1}/{QUIZ.length} | Score: {qScore}</div>
+        <p style={{fontSize:16,fontWeight:600,marginBottom:12}}>{q.q}</p>
+        <div style={{display:"grid",gap:8}}>{q.o.map((o,i)=>{let bg=CARD,bd=BORDER;if(show){if(i===q.c){bg=GREEN+"20";bd=GREEN}else if(i===sel){bg=RED+"20";bd=RED}}return(<button key={i} onClick={()=>{if(show)return;setSel(i);setShow(true);if(i===q.c)setQScore(s=>s+1)}} disabled={show} style={{padding:"10px 14px",border:"2px solid "+bd,borderRadius:8,background:bg,cursor:show?"default":"pointer",textAlign:"left",fontSize:14,color:TEXT}}>{o}</button>)})}</div>
+        {show&&<><div style={{marginTop:10,padding:"10px 14px",background:GREEN+"15",borderRadius:8,fontSize:13,color:GREEN}}>{q.e}</div><button onClick={()=>{setQIdx(i=>i+1);setSel(null);setShow(false)}} style={{marginTop:10,width:"100%",padding:"10px",background:GREEN,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>Suivant</button></>}
+      </div>
     </div>
   );
 }
