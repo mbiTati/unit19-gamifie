@@ -71,6 +71,7 @@ export default function Ch5Game(){
           <div style={{fontSize:13,color:TEAL,fontWeight:600,letterSpacing:2,textTransform:"uppercase"}}>Monde 2 — Chapitre 5</div>
           <h1 style={{fontSize:28,fontWeight:700,margin:"0.5rem 0"}}>Spécification formelle & Notation</h1>
           <p style={{color:MUTED,fontSize:15}}>Critère P3 — ADT, VDM, SDL, ASN.1</p>
+          <a href="/fiches/Ch5_Fiche_Memo_Notation_Formelle.pdf" target="_blank" rel="noopener" style={{display:"inline-block",marginTop:8,padding:"6px 14px",background:"#1E293B",border:"1px solid #1E3A5F",borderRadius:8,fontSize:12,color:"#94A3B8",textDecoration:"none"}}>Fiche memo PDF</a>
         </div>
         <div style={{display:"grid",gap:14}}>
           {[

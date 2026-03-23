@@ -61,6 +61,7 @@ export default function Ch7Game(){
           <div style={{fontSize:13,color:TEAL,fontWeight:600,letterSpacing:2,textTransform:"uppercase"}}>Monde 2 — Chapitre 7</div>
           <h1 style={{fontSize:28,fontWeight:700,margin:"0.5rem 0"}}>ADT → POO & Conditions de Création</h1>
           <p style={{color:MUTED,fontSize:15}}>Critère D2 — Discussion argumentée + Conditions</p>
+          <a href="/fiches/Ch7_Fiche_Memo_ADT_POO.pdf" target="_blank" rel="noopener" style={{display:"inline-block",marginTop:8,padding:"6px 14px",background:"#1E293B",border:"1px solid #1E3A5F",borderRadius:8,fontSize:12,color:"#94A3B8",textDecoration:"none"}}>Fiche memo PDF</a>
         </div>
         <div style={{display:"grid",gap:14}}>
           {[

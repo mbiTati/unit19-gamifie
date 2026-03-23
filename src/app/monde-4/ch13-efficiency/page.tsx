@@ -53,6 +53,7 @@ export default function Ch13Game(){
           <div style={{fontSize:13,color:AMBER,fontWeight:600,letterSpacing:2,textTransform:"uppercase"}}>Monde 4 — Chapitre 13</div>
           <h1 style={{fontSize:28,fontWeight:700,margin:"0.5rem 0"}}>Mesurer l'Efficacité</h1>
           <p style={{color:MUTED,fontSize:15}}>Critère P7 — Benchmark, runtime, resources</p>
+          <a href="/fiches/Ch13_Fiche_Memo_Efficiency.pdf" target="_blank" rel="noopener" style={{display:"inline-block",marginTop:8,padding:"6px 14px",background:"#1E293B",border:"1px solid #1E3A5F",borderRadius:8,fontSize:12,color:"#94A3B8",textDecoration:"none"}}>Fiche memo PDF</a>
         </div>
         <div style={{display:"grid",gap:14}}>
           <button onClick={()=>{setPhase("bench");setBenchIdx(0);setBenchProgress([]);setBenchDone(false);setBenchRunning(false)}}

@@ -70,6 +70,7 @@ export default function Ch10Game(){
           <div style={{fontSize:13,color:ORANGE,fontWeight:600,letterSpacing:2,textTransform:"uppercase"}}>Monde 3 — Chapitre 10</div>
           <h1 style={{fontSize:28,fontWeight:700,margin:"0.5rem 0"}}>Exceptions + JUnit 5</h1>
           <p style={{color:MUTED,fontSize:15}}>Critère P5 — Error handling et tests</p>
+          <a href="/fiches/Ch10_Fiche_Memo_Exceptions_JUnit.pdf" target="_blank" rel="noopener" style={{display:"inline-block",marginTop:8,padding:"6px 14px",background:"#1E293B",border:"1px solid #1E3A5F",borderRadius:8,fontSize:12,color:"#94A3B8",textDecoration:"none"}}>Fiche memo PDF</a>
         </div>
         <div style={{display:"grid",gap:14}}>
           {[

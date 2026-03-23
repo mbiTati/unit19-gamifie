@@ -223,6 +223,7 @@ export default function Ch1Game() {
           <div style={{ fontSize: 14, color: "#028090", fontWeight: 600, letterSpacing: 2, textTransform: "uppercase" as const }}>Monde 1 — Chapitre 1</div>
           <h1 style={{ fontSize: 32, fontWeight: 700, color: "#1B2A4A", margin: "0.5rem 0" }}>Design Specification des ADT</h1>
           <p style={{ color: "#64748B", fontSize: 16 }}>Critère P1 — Mini-jeux interactifs</p>
+          <a href="/fiches/Ch1_Fiche_Memo_ADT.pdf" target="_blank" rel="noopener" style={{display:"inline-block",marginTop:8,padding:"6px 14px",background:"#1E293B",border:"1px solid #1E3A5F",borderRadius:8,fontSize:12,color:"#94A3B8",textDecoration:"none"}}>Fiche memo PDF</a>
         </div>
         <div style={{ display: "grid", gap: 16 }}>
           <button onClick={startQuizADT} style={{ padding: "1.5rem", border: "2px solid #028090", borderRadius: 12, background: "#E1F5EE", cursor: "pointer", textAlign: "left" as const }}>

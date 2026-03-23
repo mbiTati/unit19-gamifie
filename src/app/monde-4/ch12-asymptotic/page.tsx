@@ -68,6 +68,7 @@ export default function Ch12Game(){
           <div style={{fontSize:13,color:AMBER,fontWeight:600,letterSpacing:2,textTransform:"uppercase"}}>Monde 4 — Chapitre 12</div>
           <h1 style={{fontSize:28,fontWeight:700,margin:"0.5rem 0"}}>Analyse Asymptotique & Big O</h1>
           <p style={{color:MUTED,fontSize:15}}>Critère P6 — O, Ω, Θ, complexité temporelle</p>
+          <a href="/fiches/Ch12_Fiche_Memo_Asymptotic.pdf" target="_blank" rel="noopener" style={{display:"inline-block",marginTop:8,padding:"6px 14px",background:"#1E293B",border:"1px solid #1E3A5F",borderRadius:8,fontSize:12,color:"#94A3B8",textDecoration:"none"}}>Fiche memo PDF</a>
         </div>
         <div style={{display:"grid",gap:14}}>
           {[

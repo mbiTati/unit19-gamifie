@@ -120,7 +120,7 @@ export default function Home() {
       <div style={{ textAlign: "center" as const, padding: "2.5rem 1rem 2rem", marginBottom: "1.5rem", borderRadius: 16, background: "linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%)", border: `1px solid ${BORDER}` }}>
         <div style={{ fontSize: 52, lineHeight: 1, marginBottom: 8 }}>🏰</div>
         <div style={{ fontSize: 12, fontWeight: 600, letterSpacing: 3, textTransform: "uppercase" as const, color: ACCENT }}>Unit 19 — Data Structures & Algorithms</div>
-        <h1 style={{ fontSize: 36, fontWeight: 800, margin: "0.5rem 0", color: "white" }}>Aventure Gamifiée</h1>
+        <h1 style={{ fontSize: 36, fontWeight: 800, margin: "0.5rem 0", color: "white" }}>Unit 19 : Data Structures & Algorithms</h1>
         <p style={{ color: MUTED, fontSize: 14, maxWidth: 480, margin: "0.5rem auto 1rem" }}>Explorez 4 mondes, maîtrisez 14 chapitres, affrontez les boss !</p>
 
         {/* Stats */}

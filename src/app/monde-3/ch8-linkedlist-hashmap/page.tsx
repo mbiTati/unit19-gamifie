@@ -124,6 +124,7 @@ export default function Ch8Game() {
         <div style={{fontSize:14,color:"#F97316",fontWeight:600,letterSpacing:2,textTransform:"uppercase" as const}}>Monde 3 — Chapitre 8</div>
         <h1 style={{fontSize:28,fontWeight:700,color:"white",margin:"0.5rem 0"}}>LinkedList + HashMap</h1>
         <p style={{color:"#94A3B8",fontSize:14}}>Critère P4a — Structures complexes</p>
+          <a href="/fiches/Ch8_Fiche_Memo_LinkedList_HashMap.pdf" target="_blank" rel="noopener" style={{display:"inline-block",marginTop:8,padding:"6px 14px",background:"#1E293B",border:"1px solid #1E3A5F",borderRadius:8,fontSize:12,color:"#94A3B8",textDecoration:"none"}}>Fiche memo PDF</a>
       </div>
       <div style={{display:"grid",gap:12}}>
         <button onClick={()=>setMode("types")} style={{padding:"1.2rem",border:"1px solid #1E3A5F",borderRadius:10,background:"#111827",cursor:"pointer",textAlign:"left" as const}}>
