@@ -70,7 +70,7 @@ export default function BossFinal(){
         <div style={{fontSize:28,fontWeight:600,color:"#1B2A4A",margin:"0.5rem 0"}}>{score} points</div>
         <div style={{fontSize:14,color:"#64748B"}}>Série max : {maxStreak} | Temps restant : {timeLeft}s</div>
         <div style={{marginTop:24,display:"flex",gap:12,justifyContent:"center"}}>
-          <button onClick={()=>setStarted(false)} style={{padding:"10px 20px",border:"1px solid #DC2626",borderRadius:8,background:"white",color:"#DC2626",fontWeight:600,cursor:"pointer"}}>Menu</button>
+          <button onClick={()=>setStarted(false)} style={{padding:"10px 20px",border:"1px solid #DC2626",borderRadius:8,background:"#111827",color:"#DC2626",fontWeight:600,cursor:"pointer"}}>Menu</button>
           <button onClick={start} style={{padding:"10px 20px",background:"#DC2626",color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>Rejouer</button>
         </div>
       </div>
@@ -92,9 +92,9 @@ export default function BossFinal(){
       {q.c&&<div style={{background:"#1E293B",borderRadius:8,padding:"10px 14px",marginBottom:12}}><pre style={{fontSize:13,color:"#E2E8F0",fontFamily:"Consolas,monospace",margin:0,whiteSpace:"pre-wrap" as const}}>{q.c}</pre></div>}
       <p style={{fontSize:16,fontWeight:600,color:"#1B2A4A",marginBottom:12}}>{q.q}</p>
       <div style={{display:"grid",gap:8}}>
-        {q.o.map((o,i)=>{let bg="white",bd="#E2E8F0";if(show){if(i===q.ci){bg="#F0FDF4";bd="#16A34A"}else if(i===sel){bg="#FEF2F2";bd="#DC2626"}}return<button key={i} onClick={()=>{if(show)return;setSel(i);setShow(true);if(i===q.ci){const bonus=streak>=2?15:10;setScore(s=>s+bonus);setStreak(s=>{const n=s+1;setMaxStreak(m=>Math.max(m,n));return n})}else{setStreak(0)}}} disabled={show} style={{padding:"10px 14px",border:`2px solid ${bd}`,borderRadius:8,background:bg,cursor:show?"default":"pointer",textAlign:"left" as const,fontSize:14}}>{o}</button>})}
+        {q.o.map((o,i)=>{let bg="#111827",bd="#1E3A5F";if(show){if(i===q.ci){bg="#16A34A20";bd="#16A34A"}else if(i===sel){bg="#DC262620";bd="#DC2626"}}return<button key={i} onClick={()=>{if(show)return;setSel(i);setShow(true);if(i===q.ci){const bonus=streak>=2?15:10;setScore(s=>s+bonus);setStreak(s=>{const n=s+1;setMaxStreak(m=>Math.max(m,n));return n})}else{setStreak(0)}}} disabled={show} style={{padding:"10px 14px",border:`2px solid ${bd}`,borderRadius:8,background:bg,cursor:show?"default":"pointer",textAlign:"left" as const,fontSize:14,color:"#E2E8F0"}}>{o}</button>})}
       </div>
-      {show&&<><div style={{marginTop:10,padding:"8px 12px",background:"#F0FDF4",borderRadius:8,fontSize:13,color:"#166534",border:"1px solid #86EFAC"}}>{q.e}</div><button onClick={()=>{setIdx(i=>i+1);setSel(null);setShow(false)}} style={{marginTop:10,width:"100%",padding:"10px",background:"linear-gradient(135deg,#DC2626,#F97316)",color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>{idx+1<questions.length?"Suivant →":"Résultats"}</button></>}
+      {show&&<><div style={{marginTop:10,padding:"8px 12px",background:"#16A34A20",borderRadius:8,fontSize:13,color:"#16A34A",border:"1px solid #16A34A40"}}>{q.e}</div><button onClick={()=>{setIdx(i=>i+1);setSel(null);setShow(false)}} style={{marginTop:10,width:"100%",padding:"10px",background:"linear-gradient(135deg,#DC2626,#F97316)",color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>{idx+1<questions.length?"Suivant →":"Résultats"}</button></>}
     </div>
   );
 }
