@@ -58,6 +58,9 @@ const COMPILE_CHECKS=[
   {code:'public void lire() throws IOException {\n    BufferedReader r = new BufferedReader(\n        new FileReader("f.txt"));\n    String ligne = r.readLine();\n}',
     compiles:true,problem:true,
     explain:"Compile MAIS probleme : le fichier n'est jamais ferme ! Il manque finally { r.close(); }."},
+  {code:'public class GestionTickets {\n    private int compteurId = 1;\n    public Ticket creerTicket(String desc) {\n        Ticket t = new Ticket(compteurId, desc);\n        compteurId++;\n        return t;\n    }\n}',
+    compiles:true,problem:false,
+    explain:"Compile et fonctionne : auto-increment correct. compteurId commence a 1, chaque appel cree un ticket avec l'id courant puis incremente. Les ids sont 1, 2, 3..."},
 ];
 
 // ─── GAME 3: Debug Puzzle ───

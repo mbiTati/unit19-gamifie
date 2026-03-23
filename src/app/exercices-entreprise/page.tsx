@@ -592,12 +592,36 @@ import java.util.ArrayList;
 
 public class GestionTickets {
     private HashMap<Integer, Ticket> tickets;
-    private int compteurId;
+    private int compteurId; // AUTO-INCREMENT : compteur qui augmente a chaque creation
 
     public GestionTickets() {
         this.tickets = new HashMap<>();
-        this.compteurId = 1;
+        this.compteurId = 1; // Premier ticket aura l'id 1
     }
+
+    /* ============================================
+     * AUTO-INCREMENT en Java :
+     * ============================================
+     * En base de donnees (SQL), l'auto-increment est automatique.
+     * En Java, on le simule avec un COMPTEUR :
+     *
+     * 1. Declarer un attribut : private int compteurId = 1;
+     * 2. Utiliser compteurId comme id du nouvel objet
+     * 3. Incrementer APRES la creation : compteurId++;
+     *
+     * Resultat :
+     *   1er ticket -> id = 1, puis compteurId devient 2
+     *   2eme ticket -> id = 2, puis compteurId devient 3
+     *   etc.
+     *
+     * IMPORTANT : le compteur est dans la classe GESTION
+     * (pas dans Ticket). C'est GestionTickets qui gere
+     * les ids, pas le ticket lui-meme.
+     *
+     * Alternative : on pourrait utiliser tickets.size() + 1
+     * mais cela pose probleme si on supprime un ticket
+     * (l'id serait reutilise).
+     * ============================================ */
 
     // P5 : throw si description vide ou priorite invalide
     public Ticket creerTicket(String description, String priorite, String demandeur) {
@@ -608,8 +632,11 @@ public class GestionTickets {
             throw new IllegalArgumentException(
                 "Priorite invalide : " + priorite + " (attendu: CRITIQUE, NORMAL ou FAIBLE)");
         }
+        // Utiliser le compteur actuel comme id
         Ticket t = new Ticket(compteurId, description, priorite, demandeur);
+        // Stocker dans le HashMap avec l'id comme cle
         tickets.put(compteurId, t);
+        // Incrementer APRES la creation (prochain ticket aura id+1)
         compteurId++;
         return t;
     }
