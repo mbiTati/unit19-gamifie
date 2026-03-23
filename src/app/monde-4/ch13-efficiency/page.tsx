@@ -1,65 +1,116 @@
 "use client";
 import { useState } from "react";
 
-interface Question { question: string; code?: string; options: string[]; correctIndex: number; explanation: string; }
+const BG="#0B1120",CARD="#111827",BORDER="#1E3A5F",TEXT="#E2E8F0",MUTED="#94A3B8",GREEN="#16A34A",RED="#DC2626",ORANGE="#F97316",AMBER="#D97706",BLUE="#3B82F6";
 
-const QUESTIONS: Question[] = [
-  { question: "Quelles sont les deux dimensions pour mesurer l'efficacité d'un algorithme ?", options: ["Vitesse et beauté du code", "Temps d'exécution et espace mémoire", "Nombre de lignes et nombre de fichiers", "CPU et GPU"], correctIndex: 1, explanation: "Les deux mesures fondamentales : complexité temporelle (combien de temps) et complexité spatiale (combien de mémoire)." },
-  { question: "Comment mesurer le temps d'exécution en Java ?", options: ["System.currentTimeMillis()", "System.nanoTime()", "Les deux fonctionnent, nanoTime est plus précis", "On ne peut pas mesurer"], correctIndex: 2, explanation: "Les deux marchent. nanoTime() est plus précis (nanosecondes vs millisecondes). Pour un benchmark fiable, exécuter plusieurs fois et faire la moyenne." },
-  { code: "long start = System.nanoTime();\n// ... algorithme ...\nlong end = System.nanoTime();\nlong duree = (end - start) / 1_000_000; // ms", question: "Que mesure ce code ?", options: ["La complexité Big O", "Le temps réel d'exécution en millisecondes", "Le nombre d'opérations", "La mémoire utilisée"], correctIndex: 1, explanation: "C'est un benchmark : on mesure le temps RÉEL d'exécution. C'est complémentaire à l'analyse Big O (théorique)." },
-  { question: "Pourquoi un algorithme O(n) peut parfois être plus lent qu'un O(n²) ?", options: ["C'est impossible", "Pour de petits n, les constantes cachées peuvent dominer", "Big O est toujours faux", "Ça dépend du langage"], correctIndex: 1, explanation: "Big O ignore les constantes. Un O(n) avec constante 1000 est plus lent qu'un O(n²) pour n < 1000. C'est pourquoi on mesure aussi en pratique !" },
-  { question: "Quelle est la complexité spatiale d'un tableau de n éléments ?", options: ["O(1)", "O(n)", "O(n²)", "O(log n)"], correctIndex: 1, explanation: "Un tableau de n éléments utilise n cases mémoire → O(n) en espace. Un seul entier = O(1)." },
-  { question: "Merge Sort a une meilleure complexité temporelle que Bubble Sort, mais quel est son inconvénient ?", options: ["Il est instable", "Il utilise O(n) mémoire supplémentaire", "Il ne fonctionne qu'avec des entiers", "Il est plus difficile à coder"], correctIndex: 1, explanation: "Merge Sort est O(n log n) en temps mais O(n) en espace (tableaux temporaires). Bubble Sort est O(n²) en temps mais O(1) en espace. C'est un trade-off !" },
-  { question: "Comment mesurer la mémoire utilisée en Java ?", options: ["System.nanoTime()", "Runtime.getRuntime().totalMemory() - freeMemory()", "Memory.used()", "On ne peut pas"], correctIndex: 1, explanation: "Runtime.getRuntime() donne accès aux infos mémoire de la JVM. totalMemory() - freeMemory() = mémoire utilisée." },
-  { question: "Quel est le meilleur moyen de comparer deux algorithmes en pratique ?", options: ["Compter les lignes de code", "Exécuter les deux sur les mêmes données et mesurer le temps", "Demander à un expert", "Regarder la complexité Big O uniquement"], correctIndex: 1, explanation: "Le benchmark empirique (même données, même machine, plusieurs exécutions) complète l'analyse théorique Big O. Les deux ensemble donnent la meilleure image." },
+// ─── GAME 1: Benchmark Simulator ───
+const BENCH_SCENARIOS=[
+  {name:"ArrayList.get(i) vs LinkedList.get(i)",n:100000,
+    algos:[{name:"ArrayList.get()",time:1,color:GREEN,bigO:"O(1)"},{name:"LinkedList.get()",time:50000,color:RED,bigO:"O(n)"}],
+    explain:"ArrayList accède directement par index. LinkedList parcourt du début."},
+  {name:"HashMap.get(key) vs ArrayList.contains()",n:100000,
+    algos:[{name:"HashMap.get()",time:1,color:GREEN,bigO:"O(1)"},{name:"ArrayList.contains()",time:50000,color:RED,bigO:"O(n)"}],
+    explain:"HashMap utilise le hash pour accéder directement. ArrayList parcourt tout."},
+  {name:"Arrays.sort() vs Bubble Sort",n:10000,
+    algos:[{name:"Arrays.sort() (TimSort)",time:130000,color:GREEN,bigO:"O(n log n)"},{name:"Bubble Sort",time:100000000,color:RED,bigO:"O(n²)"}],
+    explain:"TimSort = O(n log n). Bubble Sort = O(n²). Pour n=10000, la différence est ÉNORME."},
 ];
 
-export default function Ch13Game() {
-  const [started, setStarted] = useState(false);
-  const [qIdx, setQIdx] = useState(0);
-  const [score, setScore] = useState(0);
-  const [selected, setSelected] = useState<number | null>(null);
-  const [showFeedback, setShowFeedback] = useState(false);
+// ─── GAME 2: Quiz ───
+const QUIZ=[
+  {q:"Deux façons de mesurer l'efficacité :",o:["Big O et Benchmark","Java et Python","Temps et compilateur","CPU et RAM"],c:0,e:"Big O = analyse théorique. Benchmark = mesure pratique en ms."},
+  {q:"System.nanoTime() en Java sert à :",o:["Mesurer la mémoire","Mesurer le temps d'exécution précis","Compter les opérations","Optimiser le code"],c:1,e:"nanoTime() donne le temps en nanosecondes. Parfait pour benchmarker."},
+  {q:"Pourquoi faire un warm-up avant un benchmark Java ?",o:["Pour chauffer le CPU","Le JIT compiler optimise le code après quelques exécutions","Convention","Pour vider la mémoire"],c:1,e:"Le JIT (Just-In-Time) compiler de la JVM optimise le bytecode après plusieurs passages."},
+  {q:"Le facteur le PLUS impactant sur l'efficacité :",o:["Le matériel","Le langage","La complexité algorithmique","Le compilateur"],c:2,e:"L'algorithme est le facteur principal. Un O(n²) sera lent même sur un super-ordinateur."},
+  {q:"Le Garbage Collector en Java peut :",o:["Accélérer le programme","Causer des pauses imprévisibles","Optimiser l'algorithme","Réduire la complexité"],c:1,e:"Le GC libère la mémoire mais provoque des pauses. Impact sur les benchmarks."},
+  {q:"Pour benchmarker correctement, il faut :",o:["Exécuter 1 seule fois","Exécuter PLUSIEURS fois et faire la MOYENNE","Utiliser System.out.println","Compter les lignes de code"],c:1,e:"Une seule exécution n'est pas fiable (cache, GC, etc.). La moyenne lisse les variations."},
+];
 
-  if (!started) return (
-    <div style={{ minHeight: "100vh", background: "#0B1120", color: "#E2E8F0", padding: "2rem 1rem", fontFamily: "'Segoe UI', system-ui, sans-serif", textAlign: "center" as const }}>
-      <div style={{ fontSize: 14, color: "#854F0B", fontWeight: 600, letterSpacing: 2, textTransform: "uppercase" as const }}>Monde 4 — Chapitre 13</div>
-      <h1 style={{ fontSize: 32, fontWeight: 700, color: "#1E3A5F", margin: "0.5rem 0" }}>Mesurer l'efficacité</h1>
-      <p style={{ color: "#64748B", fontSize: 16, marginBottom: 24 }}>Critère P7 — Temps, espace, benchmarks</p>
-      <button onClick={() => setStarted(true)} style={{ padding: "12px 32px", background: "#854F0B", color: "white", border: "none", borderRadius: 10, fontSize: 16, fontWeight: 600, cursor: "pointer" }}>Commencer</button>
+type Phase="menu"|"bench"|"quiz";
+
+export default function Ch13Game(){
+  const[phase,setPhase]=useState<Phase>("menu");
+  const[benchIdx,setBenchIdx]=useState(0);const[benchRunning,setBenchRunning]=useState(false);const[benchProgress,setBenchProgress]=useState<number[]>([]);const[benchDone,setBenchDone]=useState(false);
+  const[qIdx,setQIdx]=useState(0);const[qScore,setQScore]=useState(0);const[sel,setSel]=useState<number|null>(null);const[show,setShow]=useState(false);
+
+  const back=<button onClick={()=>setPhase("menu")} style={{fontSize:13,color:MUTED,background:"none",border:"none",cursor:"pointer",marginBottom:12}}>← Retour</button>;
+
+  const runBench=async()=>{
+    setBenchRunning(true);setBenchDone(false);const b=BENCH_SCENARIOS[benchIdx];
+    const maxT=Math.max(...b.algos.map(a=>a.time));
+    setBenchProgress(b.algos.map(()=>0));
+    for(let step=0;step<=60;step++){
+      setBenchProgress(b.algos.map(a=>Math.min((step/60)*(maxT/a.time)*100,100)));
+      await new Promise(r=>setTimeout(r,40));
+    }
+    setBenchProgress(b.algos.map(()=>100));setBenchRunning(false);setBenchDone(true);
+  };
+
+  if(phase==="menu")return(
+    <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"2rem 1rem"}}>
+      <div style={{maxWidth:700,margin:"0 auto"}}>
+        <div style={{textAlign:"center",marginBottom:"2rem"}}>
+          <div style={{fontSize:13,color:AMBER,fontWeight:600,letterSpacing:2,textTransform:"uppercase"}}>Monde 4 — Chapitre 13</div>
+          <h1 style={{fontSize:28,fontWeight:700,margin:"0.5rem 0"}}>Mesurer l'Efficacité</h1>
+          <p style={{color:MUTED,fontSize:15}}>Critère P7 — Benchmark, runtime, resources</p>
+        </div>
+        <div style={{display:"grid",gap:14}}>
+          <button onClick={()=>{setPhase("bench");setBenchIdx(0);setBenchProgress([]);setBenchDone(false);setBenchRunning(false)}}
+            style={{padding:"1.2rem",border:`2px solid ${BORDER}`,borderRadius:12,background:CARD,cursor:"pointer",textAlign:"left"}}>
+            <div style={{fontSize:18,fontWeight:600,color:BLUE}}>📊 Benchmark Simulé</div>
+            <div style={{fontSize:13,color:MUTED,marginTop:4}}>3 scénarios : comparez les performances visuellement</div>
+          </button>
+          <button onClick={()=>{setPhase("quiz");setQIdx(0);setQScore(0);setSel(null);setShow(false)}}
+            style={{padding:"1.2rem",border:`2px solid ${BORDER}`,borderRadius:12,background:CARD,cursor:"pointer",textAlign:"left"}}>
+            <div style={{fontSize:18,fontWeight:600,color:GREEN}}>🧠 Quiz Efficacité</div>
+            <div style={{fontSize:13,color:MUTED,marginTop:4}}>6 questions : benchmark, JIT, GC, System.nanoTime()</div>
+          </button>
+        </div>
+      </div>
     </div>
   );
 
-  if (qIdx >= QUESTIONS.length) {
-    const pct = Math.round((score / QUESTIONS.length) * 100);
-    return (
-      <div style={{ minHeight: "100vh", background: "#0B1120", color: "#E2E8F0", padding: "3rem 1rem", fontFamily: "'Segoe UI', system-ui, sans-serif", textAlign: "center" as const }}>
-        <div style={{ fontSize: 60, fontWeight: 800, color: pct >= 70 ? "#16A34A" : "#F97316" }}>{score}/{QUESTIONS.length}</div>
-        <button onClick={() => { setQIdx(0); setScore(0); setStarted(false); }} style={{ marginTop: 16, padding: "10px 24px", background: "#854F0B", color: "white", border: "none", borderRadius: 8, fontWeight: 600, cursor: "pointer" }}>Rejouer</button>
+  if(phase==="bench"){
+    const b=BENCH_SCENARIOS[benchIdx];
+    return(
+      <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+        <div style={{maxWidth:700,margin:"0 auto"}}>
+          {back}
+          <div style={{display:"flex",gap:8,marginBottom:16}}>
+            {BENCH_SCENARIOS.map((_,i)=>(<button key={i} onClick={()=>{setBenchIdx(i);setBenchProgress([]);setBenchDone(false);setBenchRunning(false)}} style={{padding:"6px 14px",borderRadius:20,fontSize:12,fontWeight:600,cursor:"pointer",background:benchIdx===i?BLUE:"transparent",color:benchIdx===i?"white":MUTED,border:`1px solid ${benchIdx===i?"transparent":BORDER}`}}>Test {i+1}</button>))}
+          </div>
+          <h3 style={{fontSize:18,fontWeight:700,color:BLUE,marginBottom:4}}>📊 {b.name}</h3>
+          <p style={{fontSize:12,color:MUTED,marginBottom:12}}>n = {b.n.toLocaleString()} éléments</p>
+          <div style={{display:"grid",gap:12,marginBottom:16}}>
+            {b.algos.map((a,i)=>(<div key={i}>
+              <div style={{display:"flex",justifyContent:"space-between",fontSize:13,marginBottom:4}}>
+                <span style={{color:a.color,fontWeight:600}}>{a.name} ({a.bigO})</span>
+              </div>
+              <div style={{height:24,background:BORDER,borderRadius:6,overflow:"hidden"}}>
+                <div style={{height:24,background:a.color,borderRadius:6,width:`${benchProgress[i]||0}%`,transition:"width 0.1s"}}/>
+              </div>
+            </div>))}
+          </div>
+          {benchDone&&<div style={{padding:"10px 14px",background:GREEN+"15",borderRadius:8,fontSize:13,color:GREEN,marginBottom:12}}>💡 {b.explain}</div>}
+          <button onClick={runBench} disabled={benchRunning} style={{width:"100%",padding:"10px",background:benchRunning?BORDER:BLUE,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:benchRunning?"default":"pointer"}}>{benchRunning?"En cours...":"▶ Lancer le benchmark"}</button>
+        </div>
       </div>
     );
   }
 
-  const q = QUESTIONS[qIdx];
-  return (
-    <div style={{ minHeight: "100vh", background: "#0B1120", color: "#E2E8F0", padding: "1.5rem 1rem", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
-      <div style={{ fontSize: 13, color: "#64748B", marginBottom: 8 }}>{qIdx + 1}/{QUESTIONS.length} | Score: {score}</div>
-      <div style={{ height: 4, background: "#1E3A5F", borderRadius: 2, marginBottom: 16 }}><div style={{ height: 4, background: "#854F0B", borderRadius: 2, width: `${((qIdx + 1) / QUESTIONS.length) * 100}%` }} /></div>
-      {q.code && <div style={{ background: "#1E293B", borderRadius: 8, padding: "10px 14px", marginBottom: 12 }}><pre style={{ fontSize: 13, color: "#1E3A5F", fontFamily: "Consolas, monospace", margin: 0, whiteSpace: "pre-wrap" as const }}>{q.code}</pre></div>}
-      <p style={{ fontSize: 16, fontWeight: 600, color: "#1E3A5F", marginBottom: 12 }}>{q.question}</p>
-      <div style={{ display: "grid", gap: 8 }}>
-        {q.options.map((opt, idx) => {
-          let bg = "#111827", border = "#1E3A5F";
-          if (showFeedback) { if (idx === q.correctIndex) { bg = "#F0FDF4"; border = "#16A34A"; } else if (idx === selected) { bg = "#FEF2F2"; border = "#DC2626"; } }
-          return <button key={idx} onClick={() => { if (showFeedback) return; setSelected(idx); setShowFeedback(true); if (idx === q.correctIndex) setScore(s => s + 1); }} disabled={showFeedback} style={{ padding: "10px 14px", border: `2px solid ${border}`, borderRadius: 8, background: bg, cursor: showFeedback ? "default" : "pointer", textAlign: "left" as const, fontSize: 14 }}>{opt}</button>;
-        })}
+  // Quiz
+  if(qIdx>=QUIZ.length){const p=Math.round(qScore/QUIZ.length*100);return(<div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"3rem 1rem"}}><div style={{maxWidth:500,margin:"0 auto",textAlign:"center"}}><div style={{fontSize:64,fontWeight:800,color:p>=70?GREEN:ORANGE}}>{qScore}/{QUIZ.length}</div><button onClick={()=>setPhase("menu")} style={{marginTop:16,padding:"10px 24px",background:AMBER,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>Retour</button></div></div>)}
+  const q=QUIZ[qIdx];
+  return(
+    <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+      <div style={{maxWidth:650,margin:"0 auto"}}>
+        {back}
+        <div style={{fontSize:13,color:MUTED,marginBottom:8}}>{qIdx+1}/{QUIZ.length} | Score: {qScore}</div>
+        <div style={{height:4,background:BORDER,borderRadius:2,marginBottom:16}}><div style={{height:4,background:GREEN,borderRadius:2,width:`${(qIdx+1)/QUIZ.length*100}%`}}/></div>
+        <p style={{fontSize:16,fontWeight:600,marginBottom:12}}>{q.q}</p>
+        <div style={{display:"grid",gap:8}}>{q.o.map((o,i)=>{let bg=CARD,bd=BORDER;if(show){if(i===q.c){bg=GREEN+"20";bd=GREEN}else if(i===sel){bg=RED+"20";bd=RED}}return(<button key={i} onClick={()=>{if(show)return;setSel(i);setShow(true);if(i===q.c)setQScore(s=>s+1)}} disabled={show} style={{padding:"10px 14px",border:`2px solid ${bd}`,borderRadius:8,background:bg,cursor:show?"default":"pointer",textAlign:"left",fontSize:14,color:TEXT}}>{o}</button>)})}</div>
+        {show&&<><div style={{marginTop:10,padding:"10px 14px",background:GREEN+"15",borderRadius:8,fontSize:13,color:GREEN}}>{q.e}</div><button onClick={()=>{setQIdx(i=>i+1);setSel(null);setShow(false)}} style={{marginTop:10,width:"100%",padding:"10px",background:GREEN,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>Suivant →</button></>}
       </div>
-      {showFeedback && (
-        <>
-          <div style={{ marginTop: 10, padding: "8px 12px", background: "#16A34A15", borderRadius: 8, fontSize: 13, color: "#16A34A", border: "1px solid #16A34A40" }}>{q.explanation}</div>
-          <button onClick={() => { setQIdx(i => i + 1); setSelected(null); setShowFeedback(false); }} style={{ marginTop: 10, width: "100%", padding: "10px", background: "#854F0B", color: "white", border: "none", borderRadius: 8, fontWeight: 600, cursor: "pointer" }}>Suivant →</button>
-        </>
-      )}
     </div>
   );
 }
