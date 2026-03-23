@@ -163,11 +163,11 @@ function AlgoRace(){
 
   return(
     <div>
-      <p style={{fontSize:14,fontWeight:600,marginBottom:12}}>🏎️ Bubble Sort O(n²) vs Quick Sort O(n log n) — n={data.length}</p>
+      <p style={{fontSize:14,fontWeight:600,marginBottom:12}}>Bubble Sort O(n²) vs Quick Sort O(n log n) — n={data.length}</p>
       <div style={{display:"grid",gap:12,marginBottom:16}}>
         <div>
           <div style={{display:"flex",justifyContent:"space-between",fontSize:13,marginBottom:4}}>
-            <span style={{color:RED,fontWeight:600}}>🐢 Bubble Sort</span>
+            <span style={{color:RED,fontWeight:600}}>Bubble Sort</span>
             <span style={{color:MUTED}}>{Math.round(progressA)}%</span>
           </div>
           <div style={{height:24,background:BORDER,borderRadius:6,overflow:"hidden"}}>
@@ -178,7 +178,7 @@ function AlgoRace(){
         </div>
         <div>
           <div style={{display:"flex",justifyContent:"space-between",fontSize:13,marginBottom:4}}>
-            <span style={{color:GREEN,fontWeight:600}}>🐇 Quick Sort</span>
+            <span style={{color:GREEN,fontWeight:600}}>Quick Sort</span>
             <span style={{color:MUTED}}>{Math.round(progressB)}%</span>
           </div>
           <div style={{height:24,background:BORDER,borderRadius:6,overflow:"hidden"}}>
@@ -190,13 +190,13 @@ function AlgoRace(){
       </div>
       {done&&winner&&(
         <div style={{padding:"12px",background:winner==="B"?GREEN+"15":RED+"15",borderRadius:8,textAlign:"center",marginBottom:12}}>
-          <div style={{fontSize:16,fontWeight:700,color:winner==="B"?GREEN:RED}}>🏆 {winner==="B"?"Quick Sort":"Bubble Sort"} gagne !</div>
+          <div style={{fontSize:16,fontWeight:700,color:winner==="B"?GREEN:RED}}>{winner==="B"?"Quick Sort":"Bubble Sort"} gagne !</div>
           <div style={{fontSize:12,color:MUTED,marginTop:4}}>Pour n={data.length}: Bubble fait ~{data.length*data.length} opérations vs Quick ~{Math.round(data.length*Math.log2(data.length))} opérations</div>
         </div>
       )}
       <button onClick={()=>{if(racing){cancelRef.current=true;setRacing(false)}else startRace()}}
         style={{width:"100%",padding:"10px",background:racing?ORANGE:PURPLE,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>
-        {racing?"⏸ Arrêter":"🏁 Lancer la course !"}
+        {racing?"⏸ Arrêter":"Lancer la course !"}
       </button>
     </div>
   );
@@ -265,10 +265,10 @@ export default function Ch3Game(){
         </div>
         <div style={{display:"grid",gap:14}}>
           {[
-            {p:"sort" as Phase,emoji:"⚡",t:"Simulateur de tri visuel",d:"Regardez Bubble/Quick/Merge trier en temps réel avec barres animées",c:RED},
-            {p:"race" as Phase,emoji:"🏎️",t:"Course d'algorithmes",d:"Bubble Sort vs Quick Sort — qui gagne ?",c:PURPLE},
-            {p:"fifo" as Phase,emoji:"🚶",t:"Simulateur FIFO",d:"Enqueue, dequeue, visualisez la file d'attente",c:TEAL},
-            {p:"quiz" as Phase,emoji:"🧠",t:"Quiz Tri & FIFO",d:"6 questions sur les algorithmes de tri et les files",c:GREEN},
+            {p:"sort" as Phase,emoji:"",t:"Simulateur de tri visuel",d:"Regardez Bubble/Quick/Merge trier en temps réel avec barres animées",c:RED},
+            {p:"race" as Phase,emoji:"",t:"Course d'algorithmes",d:"Bubble Sort vs Quick Sort — qui gagne ?",c:PURPLE},
+            {p:"fifo" as Phase,emoji:"",t:"Simulateur FIFO",d:"Enqueue, dequeue, visualisez la file d'attente",c:TEAL},
+            {p:"quiz" as Phase,emoji:"",t:"Quiz Tri & FIFO",d:"6 questions sur les algorithmes de tri et les files",c:GREEN},
           ].map(g=>(
             <button key={g.p} onClick={()=>{setPhase(g.p);if(g.p==="quiz"){setQIdx(0);setQScore(0);setSel(null);setShow(false)}}}
               style={{padding:"1.2rem",border:`2px solid ${BORDER}`,borderRadius:12,background:CARD,cursor:"pointer",textAlign:"left"}}>
@@ -281,9 +281,9 @@ export default function Ch3Game(){
     </div>
   );
 
-  if(phase==="sort")return(<div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}><div style={{maxWidth:700,margin:"0 auto"}}>{back}<h2 style={{fontSize:22,fontWeight:700,color:RED,marginBottom:16}}>⚡ Simulateur de tri visuel</h2><SortVisualizer/></div></div>);
-  if(phase==="race")return(<div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}><div style={{maxWidth:700,margin:"0 auto"}}>{back}<h2 style={{fontSize:22,fontWeight:700,color:PURPLE,marginBottom:16}}>🏎️ Course d'algorithmes</h2><AlgoRace/></div></div>);
-  if(phase==="fifo")return(<div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}><div style={{maxWidth:700,margin:"0 auto"}}>{back}<h2 style={{fontSize:22,fontWeight:700,color:TEAL,marginBottom:16}}>🚶 Simulateur FIFO</h2><FIFOSim/></div></div>);
+  if(phase==="sort")return(<div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}><div style={{maxWidth:700,margin:"0 auto"}}>{back}<h2 style={{fontSize:22,fontWeight:700,color:RED,marginBottom:16}}>Simulateur de tri visuel</h2><SortVisualizer/></div></div>);
+  if(phase==="race")return(<div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}><div style={{maxWidth:700,margin:"0 auto"}}>{back}<h2 style={{fontSize:22,fontWeight:700,color:PURPLE,marginBottom:16}}>Course d'algorithmes</h2><AlgoRace/></div></div>);
+  if(phase==="fifo")return(<div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}><div style={{maxWidth:700,margin:"0 auto"}}>{back}<h2 style={{fontSize:22,fontWeight:700,color:TEAL,marginBottom:16}}>Simulateur FIFO</h2><FIFOSim/></div></div>);
 
   // QUIZ
   if(qIdx>=QUIZ.length){const p=Math.round(qScore/QUIZ.length*100);return(<div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"3rem 1rem"}}><div style={{maxWidth:500,margin:"0 auto",textAlign:"center"}}><div style={{fontSize:64,fontWeight:800,color:p>=70?GREEN:ORANGE}}>{qScore}/{QUIZ.length}</div><button onClick={()=>setPhase("menu")} style={{marginTop:16,padding:"10px 24px",background:PURPLE,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>Retour</button></div></div>)}

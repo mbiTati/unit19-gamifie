@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { Layers, ScrollText, Code2, BarChart3, Brain, Monitor, Zap, Blocks, Bug, Skull, Gamepad2, Pencil, Crown, Building2, GraduationCap } from "lucide-react";
 
 const BG = "#0B1120";
 const CARD = "#111827";
@@ -39,7 +40,7 @@ interface World {
 
 const WORLDS: World[] = [
   {
-    id: 1, name: "Monde 1", title: "Explorer les ADT", lo: "LO1", emoji: "🗺️", color: PURPLE, glow: "#7C3AED30",
+    id: 1, name: "Monde 1", title: "Explorer les ADT", lo: "LO1", emoji: "layers", color: PURPLE, glow: "#7C3AED30",
     modules: [
       { num: 1, name: "Design Specification", criteria: "P1", game: "/monde-1/ch1-design-spec", exercise: "/exercice/ch1", type: "quiz", description: "Associez les opérations aux bons ADT" },
       { num: 2, name: "Memory Stack", criteria: "P2", game: "/monde-1/ch2-memory-stack", exercise: "/exercice/ch2", type: "simulator", description: "Simulez le call stack pas à pas" },
@@ -49,7 +50,7 @@ const WORLDS: World[] = [
     boss: { route: "/monde-1/boss-lo1", name: "Boss LO1" },
   },
   {
-    id: 2, name: "Monde 2", title: "Spécification & Conception", lo: "LO2", emoji: "📜", color: TEAL, glow: "#0891B230",
+    id: 2, name: "Monde 2", title: "Spécification & Conception", lo: "LO2", emoji: "scroll", color: TEAL, glow: "#0891B230",
     modules: [
       { num: 5, name: "Spec formelle & VDM/SDL", criteria: "P3", game: "/monde-2/ch5-formal-spec", exercise: "/exercice/ch5", type: "builder", description: "Notation impérative, VDM, SDL, ASN.1 + classifier les conditions" },
       { num: 6, name: "Encapsulation & Interfaces", criteria: "M3", game: "/monde-2/ch6-encapsulation", exercise: "/exercice/ch6", type: "simulator", description: "Simulateur visuel, info hiding, interfaces, héritage" },
@@ -59,7 +60,7 @@ const WORLDS: World[] = [
     boss: { route: "/monde-2/boss-lo2", name: "Boss LO2" },
   },
   {
-    id: 3, name: "Monde 3", title: "Implémenter", lo: "LO3", emoji: "⚙️", color: ORANGE, glow: "#F9731630",
+    id: 3, name: "Monde 3", title: "Implémenter", lo: "LO3", emoji: "code", color: ORANGE, glow: "#F9731630",
     modules: [
       { num: 8, name: "LinkedList + HashMap", criteria: "P4a", game: "/monde-3/ch8-linkedlist-hashmap", exercise: "/exercice/ch8", type: "simulator", description: "Manipulez les structures en temps réel" },
       { num: 9, name: "Tree + Sorting", criteria: "P4b", game: "/monde-3/ch9-queue-tree-sort", exercise: "/exercice/ch9", type: "simulator", description: "Parcours d'arbre + tri pas à pas" },
@@ -69,7 +70,7 @@ const WORLDS: World[] = [
     boss: { route: "/monde-3/boss-lo3", name: "Boss LO3" },
   },
   {
-    id: 4, name: "Monde 4", title: "Évaluer l'efficacité", lo: "LO4", emoji: "📊", color: GREEN, glow: "#16A34A30",
+    id: 4, name: "Monde 4", title: "Évaluer l'efficacité", lo: "LO4", emoji: "chart", color: GREEN, glow: "#16A34A30",
     modules: [
       { num: 12, name: "Analyse asymptotique", criteria: "P6", game: "/monde-4/ch12-asymptotic", exercise: "/exercice/ch12", type: "simulator", description: "Classer, Code→O(), Calculateur visuel, Quiz Big O" },
       { num: 13, name: "Mesurer l'efficacité", criteria: "P7", game: "/monde-4/ch13-efficiency", exercise: "/exercice/ch13", type: "quiz", description: "Benchmark temps + mémoire" },
@@ -79,9 +80,7 @@ const WORLDS: World[] = [
   },
 ];
 
-const typeIcons: Record<string, string> = {
-  quiz: "❓", simulator: "🔬", race: "🏁", builder: "🔧", debug: "🐛", boss: "👾",
-};
+// Type icons rendered as Lucide below
 const typeLabels: Record<string, string> = {
   quiz: "Quiz", simulator: "Simulateur", race: "Course", builder: "Constructeur", debug: "Debugging", boss: "Boss",
 };
@@ -90,7 +89,7 @@ function ModuleCard({ m, color }: { m: Module; color: string }) {
   return (
     <div style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 12, padding: "14px 16px" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
-        <span style={{ width: 32, height: 32, borderRadius: 8, background: `${color}20`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16 }}>{typeIcons[m.type]}</span>
+        <span style={{ width: 32, height: 32, borderRadius: 8, background: `${color}20`, display: "flex", alignItems: "center", justifyContent: "center" }}>{m.type==="quiz"?<Brain size={16} color={color}/>:m.type==="simulator"?<Monitor size={16} color={color}/>:m.type==="race"?<Zap size={16} color={color}/>:m.type==="builder"?<Blocks size={16} color={color}/>:m.type==="debug"?<Bug size={16} color={color}/>:<Skull size={16} color={color}/>}</span>
         <div style={{ flex: 1 }}>
           <div style={{ fontSize: 14, fontWeight: 600, color: TEXT }}>Ch.{m.num} — {m.name}</div>
           <div style={{ fontSize: 11, color: DIM, marginTop: 1 }}>
@@ -101,11 +100,11 @@ function ModuleCard({ m, color }: { m: Module; color: string }) {
       <div style={{ fontSize: 12, color: MUTED, lineHeight: 1.4, marginBottom: 10 }}>{m.description}</div>
       <div style={{ display: "flex", gap: 6 }}>
         <Link href={m.game} style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 4, padding: "8px", borderRadius: 8, background: `${color}15`, border: `1px solid ${color}30`, color, fontWeight: 600, fontSize: 12, textDecoration: "none" }}>
-          🎮 Mini-jeu
+          Mini-jeu
         </Link>
         {m.exercise && (
           <Link href={m.exercise} style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 4, padding: "8px", borderRadius: 8, background: `${TEAL}15`, border: `1px solid ${TEAL}30`, color: TEAL, fontWeight: 600, fontSize: 12, textDecoration: "none" }}>
-            ✏️ Exercice
+            Exercice
           </Link>
         )}
       </div>
@@ -118,10 +117,10 @@ export default function Home() {
     <div style={{ maxWidth: 900, margin: "0 auto", padding: "1.5rem 1rem", fontFamily: "'Segoe UI', system-ui, sans-serif", color: TEXT }}>
       {/* HERO */}
       <div style={{ textAlign: "center" as const, padding: "2.5rem 1rem 2rem", marginBottom: "1.5rem", borderRadius: 16, background: "linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%)", border: `1px solid ${BORDER}` }}>
-        <div style={{ fontSize: 52, lineHeight: 1, marginBottom: 8 }}>🏰</div>
+        <div style={{ marginBottom: 8 }}><GraduationCap size={48} color="#00A896" /></div>
         <div style={{ fontSize: 12, fontWeight: 600, letterSpacing: 3, textTransform: "uppercase" as const, color: ACCENT }}>Unit 19 — Data Structures & Algorithms</div>
         <h1 style={{ fontSize: 36, fontWeight: 800, margin: "0.5rem 0", color: "white" }}>Unit 19 : Data Structures & Algorithms</h1>
-        <p style={{ color: MUTED, fontSize: 14, maxWidth: 480, margin: "0.5rem auto 1rem" }}>Explorez 4 mondes, maîtrisez 14 chapitres, affrontez les boss !</p>
+        <p style={{ color: MUTED, fontSize: 14, maxWidth: 480, margin: "0.5rem auto 1rem" }}>4 mondes, 14 chapitres, des mini-jeux interactifs</p>
 
         {/* Stats */}
         <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" as const, marginTop: 16 }}>
@@ -142,12 +141,12 @@ export default function Home() {
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginBottom: "1.5rem", flexWrap: "wrap" as const, fontSize: 12 }}>
         {WORLDS.map((w, i) => (
           <span key={w.id} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <span style={{ background: `${w.color}20`, color: w.color, padding: "3px 10px", borderRadius: 6, fontWeight: 600, fontSize: 11 }}>{w.emoji} {w.lo}</span>
+            <span style={{ background: `${w.color}20`, color: w.color, padding: "3px 10px", borderRadius: 6, fontWeight: 600, fontSize: 11 }}>{w.lo}</span>
             {i < WORLDS.length - 1 && <span style={{ color: DIM }}>→</span>}
           </span>
         ))}
         <span style={{ color: DIM }}>→</span>
-        <span style={{ background: `${RED}20`, color: RED, padding: "3px 10px", borderRadius: 6, fontWeight: 600, fontSize: 11 }}>👑 Final</span>
+        <span style={{ background: `${RED}20`, color: RED, padding: "3px 10px", borderRadius: 6, fontWeight: 600, fontSize: 11 }}>Final</span>
       </div>
 
       {/* WORLDS */}
@@ -157,7 +156,7 @@ export default function Home() {
             {/* World header */}
             <div style={{ padding: "16px 18px", background: `linear-gradient(135deg, ${w.color}10, ${w.color}05)`, borderBottom: `1px solid ${BORDER}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <span style={{ fontSize: 28 }}>{w.emoji}</span>
+                {w.emoji==="layers"?<Layers size={28} color={w.color}/>:w.emoji==="scroll"?<ScrollText size={28} color={w.color}/>:w.emoji==="code"?<Code2 size={28} color={w.color}/>:<BarChart3 size={28} color={w.color}/>}
                 <div>
                   <div style={{ fontSize: 16, fontWeight: 700, color: w.color }}>{w.name}</div>
                   <div style={{ fontSize: 12, color: MUTED }}>{w.title} — {w.lo}</div>
@@ -176,7 +175,7 @@ export default function Home() {
             {/* Boss button */}
             <div style={{ padding: "0 14px 14px" }}>
               <Link href={w.boss.route} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "12px", borderRadius: 10, background: `linear-gradient(135deg, ${w.color}15, ${w.color}08)`, border: `1px dashed ${w.color}50`, textDecoration: "none", color: w.color, fontWeight: 700, fontSize: 14, transition: "background 0.2s" }}>
-                <span style={{ fontSize: 20 }}>👾</span> {w.boss.name} — Affronter le boss
+                <Skull size={18} style={{display:"inline"}}/> {w.boss.name}
               </Link>
             </div>
           </div>
@@ -185,7 +184,7 @@ export default function Home() {
 
       {/* BOSS FINAL */}
       <Link href="/boss-final" style={{ display: "block", marginTop: 20, borderRadius: 16, overflow: "hidden", border: `1px solid ${RED}`, textDecoration: "none", textAlign: "center" as const, padding: "2rem", background: `linear-gradient(135deg, ${RED}15, ${ORANGE}15)`, boxShadow: `0 0 40px ${RED}25` }}>
-        <div style={{ fontSize: 48 }}>👑</div>
+        <div style={{ marginBottom: 4 }}><Crown size={44} color="white" /></div>
         <div style={{ fontSize: 22, fontWeight: 800, color: "white", marginTop: 8 }}>Boss Final</div>
         <div style={{ fontSize: 13, color: MUTED, marginTop: 4 }}>20 questions — LO1 à LO4 — 4 minutes — Streak bonus</div>
         <div style={{ display: "inline-block", marginTop: 14, padding: "10px 28px", background: RED, color: "white", borderRadius: 10, fontWeight: 700, fontSize: 15 }}>Commencer</div>
@@ -193,7 +192,7 @@ export default function Home() {
 
       {/* EXERCICES ENTREPRISE */}
       <Link href="/exercices-entreprise" style={{ display: "block", marginTop: 20, borderRadius: 16, overflow: "hidden", border: `1px solid ${TEAL}`, textDecoration: "none", textAlign: "center" as const, padding: "1.5rem", background: `linear-gradient(135deg, ${TEAL}15, ${PURPLE}15)` }}>
-        <div style={{ fontSize: 36 }}>🏢</div>
+        <div style={{ marginBottom: 4 }}><Building2 size={36} color="#0891B2" /></div>
         <div style={{ fontSize: 18, fontWeight: 700, color: "white", marginTop: 6 }}>Exercices Entreprise</div>
         <div style={{ fontSize: 13, color: MUTED, marginTop: 4 }}>3 cas réels : Vélos, Interventions IT, Réservation salles</div>
       </Link>

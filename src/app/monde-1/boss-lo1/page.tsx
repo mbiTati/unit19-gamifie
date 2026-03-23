@@ -85,7 +85,7 @@ export default function BossLO1() {
   if (!started) {
     return (
       <div style={{ maxWidth: 600, margin: "0 auto", padding: "3rem 1rem", fontFamily: "'Segoe UI', system-ui, sans-serif", textAlign: "center" as const }}>
-        <div style={{ fontSize: 60, marginBottom: 16 }}>&#x1F47E;</div>
+        <div style={{ fontSize: 60, marginBottom: 16 }}></div>
         <div style={{ fontSize: 14, color: "#DC2626", fontWeight: 600, letterSpacing: 2, textTransform: "uppercase" as const }}>Boss Fight</div>
         <h1 style={{ fontSize: 32, fontWeight: 700, color: "#1E3A5F", margin: "0.5rem 0" }}>Monde 1 — LO1</h1>
         <p style={{ color: "#64748B", fontSize: 16, marginBottom: 24 }}>12 questions couvrant les chapitres 1-4. Temps limité : 3 minutes. Bonus streak !</p>

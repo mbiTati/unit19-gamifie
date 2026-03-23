@@ -74,9 +74,9 @@ export default function Ch10Game(){
         </div>
         <div style={{display:"grid",gap:14}}>
           {[
-            {p:"debug" as Phase,emoji:"🧩",t:"Puzzle de Débogage",d:"5 bugs Java — trouvez la ligne, avec indices progressifs",c:RED},
-            {p:"builder" as Phase,emoji:"🏗️",t:"Code Builder JUnit",d:"Reconstituez un test JUnit 5 complet en ordonnant les blocs",c:PURPLE},
-            {p:"quiz" as Phase,emoji:"🧠",t:"Quiz JUnit 5 & Exceptions",d:"8 questions : @Test, assertThrows, throw/throws, try-catch-finally",c:GREEN},
+            {p:"debug" as Phase,emoji:"",t:"Puzzle de Débogage",d:"5 bugs Java — trouvez la ligne, avec indices progressifs",c:RED},
+            {p:"builder" as Phase,emoji:"",t:"Code Builder JUnit",d:"Reconstituez un test JUnit 5 complet en ordonnant les blocs",c:PURPLE},
+            {p:"quiz" as Phase,emoji:"",t:"Quiz JUnit 5 & Exceptions",d:"8 questions : @Test, assertThrows, throw/throws, try-catch-finally",c:GREEN},
           ].map(g=>(
             <button key={g.p} onClick={()=>{setPhase(g.p);if(g.p==="debug"){setPuzzIdx(0);setHintLevel(0);setClickedLine(null);setShowFix(false)}if(g.p==="builder")initBuilder();if(g.p==="quiz"){setQIdx(0);setQScore(0);setSel(null);setShow(false)}}}
               style={{padding:"1.2rem",border:`2px solid ${BORDER}`,borderRadius:12,background:CARD,cursor:"pointer",textAlign:"left"}}>
@@ -91,14 +91,14 @@ export default function Ch10Game(){
 
   // ─── DEBUG PUZZLE ───
   if(phase==="debug"){
-    if(puzzIdx>=PUZZLES.length)return(<div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"3rem 1rem"}}><div style={{maxWidth:500,margin:"0 auto",textAlign:"center"}}><div style={{fontSize:48}}>🎉</div><div style={{fontSize:22,fontWeight:700,margin:"0.5rem 0"}}>Tous les bugs trouvés !</div><button onClick={()=>setPhase("menu")} style={{marginTop:16,padding:"10px 24px",background:ORANGE,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>Retour</button></div></div>);
+    if(puzzIdx>=PUZZLES.length)return(<div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"3rem 1rem"}}><div style={{maxWidth:500,margin:"0 auto",textAlign:"center"}}><div style={{fontSize:48}}></div><div style={{fontSize:22,fontWeight:700,margin:"0.5rem 0"}}>Tous les bugs trouvés !</div><button onClick={()=>setPhase("menu")} style={{marginTop:16,padding:"10px 24px",background:ORANGE,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>Retour</button></div></div>);
     const puzz=PUZZLES[puzzIdx];
     return(
       <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
         <div style={{maxWidth:700,margin:"0 auto"}}>
           {back}
           <div style={{fontSize:13,color:MUTED,marginBottom:8}}>Bug {puzzIdx+1}/{PUZZLES.length}</div>
-          <h2 style={{fontSize:20,fontWeight:700,color:RED,marginBottom:4}}>🧩 {puzz.title}</h2>
+          <h2 style={{fontSize:20,fontWeight:700,color:RED,marginBottom:4}}>{puzz.title}</h2>
           <p style={{fontSize:13,color:MUTED,marginBottom:12}}>Cliquez sur la ligne qui contient le bug :</p>
           <div style={{background:"#0D1117",borderRadius:10,padding:"12px",marginBottom:12}}>
             {puzz.code.map((line,i)=>(
@@ -114,14 +114,14 @@ export default function Ch10Game(){
           </div>
           {!showFix&&hintLevel>0&&(
             <div style={{padding:"10px 14px",background:ORANGE+"15",borderRadius:8,marginBottom:8,fontSize:13,color:ORANGE}}>
-              💡 Indice {hintLevel}/{puzz.hints.length} : {puzz.hints[hintLevel-1]}
+              Indice {hintLevel}/{puzz.hints.length} : {puzz.hints[hintLevel-1]}
             </div>
           )}
-          {!showFix&&<button onClick={()=>setHintLevel(h=>Math.min(h+1,puzz.hints.length))} style={{padding:"8px 16px",background:CARD,color:ORANGE,border:`1px solid ${ORANGE}`,borderRadius:8,fontSize:12,fontWeight:600,cursor:"pointer"}}>💡 Indice suivant ({hintLevel}/{puzz.hints.length})</button>}
+          {!showFix&&<button onClick={()=>setHintLevel(h=>Math.min(h+1,puzz.hints.length))} style={{padding:"8px 16px",background:CARD,color:ORANGE,border:`1px solid ${ORANGE}`,borderRadius:8,fontSize:12,fontWeight:600,cursor:"pointer"}}>Indice suivant ({hintLevel}/{puzz.hints.length})</button>}
           {showFix&&(
             <div style={{marginTop:8}}>
               <div style={{padding:"10px 14px",background:GREEN+"15",borderRadius:8,marginBottom:8}}>
-                <div style={{fontSize:13,fontWeight:600,color:GREEN,marginBottom:4}}>✅ Bug trouvé ! Concept : {puzz.concept}</div>
+                <div style={{fontSize:13,fontWeight:600,color:GREEN,marginBottom:4}}> Bug trouvé ! Concept : {puzz.concept}</div>
               </div>
               <div style={{padding:"10px",background:"#0D1117",borderRadius:8,marginBottom:8}}>
                 <div style={{fontSize:11,color:GREEN,fontWeight:600,marginBottom:4}}>FIX :</div>
@@ -147,7 +147,7 @@ export default function Ch10Game(){
       <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
         <div style={{maxWidth:700,margin:"0 auto"}}>
           {back}
-          <h2 style={{fontSize:20,fontWeight:700,color:PURPLE,marginBottom:4}}>🏗️ Code Builder — Test JUnit 5</h2>
+          <h2 style={{fontSize:20,fontWeight:700,color:PURPLE,marginBottom:4}}>Code Builder — Test JUnit 5</h2>
           <p style={{fontSize:13,color:MUTED,marginBottom:12}}>Cliquez les blocs dans le bon ordre pour reconstituer un test complet :</p>
           
           <div style={{marginBottom:16}}>
@@ -179,11 +179,11 @@ export default function Ch10Game(){
             }
           </div>
           {!builderDone&&placed.length===JUNIT_BLOCKS.length&&(
-            <button onClick={checkOrder} style={{width:"100%",padding:"10px",background:PURPLE,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>✓ Vérifier l'ordre</button>
+            <button onClick={checkOrder} style={{width:"100%",padding:"10px",background:PURPLE,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}> Vérifier l'ordre</button>
           )}
           {builderDone&&(
             <div style={{padding:"12px",background:isCorrect?GREEN+"15":RED+"15",borderRadius:8,textAlign:"center"}}>
-              <div style={{fontSize:16,fontWeight:700,color:isCorrect?GREEN:RED}}>{isCorrect?"✅ Parfait ! Test JUnit 5 complet !":"❌ L'ordre n'est pas correct. Réessayez !"}</div>
+              <div style={{fontSize:16,fontWeight:700,color:isCorrect?GREEN:RED}}>{isCorrect?" Parfait ! Test JUnit 5 complet !":"Incorrect — L'ordre n'est pas correct. Réessayez !"}</div>
               {!isCorrect&&<button onClick={initBuilder} style={{marginTop:8,padding:"8px 16px",background:PURPLE,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>Réessayer</button>}
             </div>
           )}

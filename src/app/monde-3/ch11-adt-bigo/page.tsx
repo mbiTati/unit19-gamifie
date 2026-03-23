@@ -53,9 +53,9 @@ export default function Ch11Game(){
         </div>
         <div style={{display:"grid",gap:14}}>
           {[
-            {p:"solver" as Phase,emoji:"🎯",t:"M4 — ADT Problem Solver",d:"5 scénarios d'entreprise : choisissez le bon ADT",c:TEAL},
-            {p:"analyzer" as Phase,emoji:"📊",t:"D3 — Complexity Analyzer",d:"8 snippets de code Java : évaluez la complexité Big O",c:PURPLE},
-            {p:"quiz" as Phase,emoji:"🧠",t:"Quiz M4 + D3",d:"4 questions de synthèse",c:GREEN},
+            {p:"solver" as Phase,emoji:"",t:"M4 — ADT Problem Solver",d:"5 scénarios d'entreprise : choisissez le bon ADT",c:TEAL},
+            {p:"analyzer" as Phase,emoji:"",t:"D3 — Complexity Analyzer",d:"8 snippets de code Java : évaluez la complexité Big O",c:PURPLE},
+            {p:"quiz" as Phase,emoji:"",t:"Quiz M4 + D3",d:"4 questions de synthèse",c:GREEN},
           ].map(g=>(
             <button key={g.p} onClick={()=>{setPhase(g.p);if(g.p==="solver"){setSIdx(0);setSSel(null);setSShow(false);setSScore(0)}if(g.p==="analyzer"){setAIdx(0);setASel(null);setAShow(false);setAScore(0)}if(g.p==="quiz"){setQIdx(0);setQScore(0);setSel(null);setShow(false)}}}
               style={{padding:"1.2rem",border:`2px solid ${BORDER}`,borderRadius:12,background:CARD,cursor:"pointer",textAlign:"left"}}>
@@ -78,7 +78,7 @@ export default function Ch11Game(){
           {back}
           <div style={{fontSize:13,color:MUTED,marginBottom:8}}>Scénario {sIdx+1}/{SCENARIOS.length} | Score: {sScore}</div>
           <div style={{padding:"14px",background:TEAL+"15",borderRadius:10,marginBottom:12}}>
-            <div style={{fontSize:16,fontWeight:700,color:TEAL,marginBottom:4}}>🏢 {sc.problem}</div>
+            <div style={{fontSize:16,fontWeight:700,color:TEAL,marginBottom:4}}>{sc.problem}</div>
             <div style={{fontSize:13,color:MUTED}}>{sc.context}</div>
           </div>
           <p style={{fontSize:15,fontWeight:600,marginBottom:12}}>Quel ADT choisir ?</p>
@@ -90,7 +90,7 @@ export default function Ch11Game(){
           {sShow&&(
             <>
               <div style={{marginTop:10,padding:"10px 14px",background:sSel===sc.correct?GREEN+"15":RED+"15",borderRadius:8,fontSize:13,color:sSel===sc.correct?GREEN:RED}}>
-                {sSel===sc.correct?"✅ ":"❌ "}{sc.explain}
+                {sSel===sc.correct?" ":"Incorrect — "}{sc.explain}
               </div>
               <div style={{marginTop:6,padding:"8px 12px",background:"#0D1117",borderRadius:6,fontSize:12,color:"#A5F3FC",fontFamily:"Consolas,monospace"}}>Opérations : {sc.ops}</div>
               <button onClick={()=>{setSIdx(i=>i+1);setSSel(null);setSShow(false)}} style={{marginTop:10,width:"100%",padding:"10px",background:TEAL,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>Suivant →</button>

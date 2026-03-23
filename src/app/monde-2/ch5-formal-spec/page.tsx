@@ -60,7 +60,7 @@ export default function Ch5Game(){
 
   const catCol:Record<string,string>={"VDM":"#A78BFA","SDL":"#34D399","ASN.1":"#FB923C"};
   const condCol:Record<string,string>={PRE:ORANGE,POST:GREEN,INVARIANT:TEAL,AXIOM:PURPLE};
-  const condEmoji:Record<string,string>={PRE:"⚠️",POST:"✅",INVARIANT:"🔒",AXIOM:"📐"};
+  const condEmoji:Record<string,string>={PRE:"",POST:"",INVARIANT:"",AXIOM:""};
 
   const back=<button onClick={()=>setPhase("menu")} style={{fontSize:13,color:MUTED,background:"none",border:"none",cursor:"pointer",marginBottom:12}}>← Retour</button>;
 
@@ -75,10 +75,10 @@ export default function Ch5Game(){
         </div>
         <div style={{display:"grid",gap:14}}>
           {[
-            {p:"builder" as Phase,emoji:"🏗️",t:"Construire une spec ADT",d:"8 parties : opérations, conditions, axiomes",c:TEAL},
-            {p:"vdm" as Phase,emoji:"📐",t:"VDM, SDL & ASN.1",d:"Langages de spécification non exécutables",c:PURPLE},
-            {p:"classify" as Phase,emoji:"🏷️",t:"Classifier les conditions",d:"PRE, POST, INVARIANT ou AXIOME ? 10 énoncés",c:ORANGE},
-            {p:"quiz" as Phase,emoji:"🧠",t:"Quiz notation formelle",d:"8 questions sur VDM, SDL, ASN.1 et notation",c:GREEN},
+            {p:"builder" as Phase,emoji:"",t:"Construire une spec ADT",d:"8 parties : opérations, conditions, axiomes",c:TEAL},
+            {p:"vdm" as Phase,emoji:"",t:"VDM, SDL & ASN.1",d:"Langages de spécification non exécutables",c:PURPLE},
+            {p:"classify" as Phase,emoji:"",t:"Classifier les conditions",d:"PRE, POST, INVARIANT ou AXIOME ? 10 énoncés",c:ORANGE},
+            {p:"quiz" as Phase,emoji:"",t:"Quiz notation formelle",d:"8 questions sur VDM, SDL, ASN.1 et notation",c:GREEN},
           ].map(g=>(
             <button key={g.p} onClick={()=>{setPhase(g.p);if(g.p==="builder")setBRevealed(new Array(SPEC.length).fill(false));if(g.p==="vdm"){setVRevealed(new Set());setVFilter("all")}if(g.p==="classify"){setCIdx(0);setCScore(0);setCAns(null);setCShow(false)}if(g.p==="quiz"){setQIdx(0);setQScore(0);setSel(null);setShow(false)}}}
               style={{padding:"1.2rem",border:`2px solid ${BORDER}`,borderRadius:12,background:CARD,cursor:"pointer",textAlign:"left"}}>
@@ -95,7 +95,7 @@ export default function Ch5Game(){
     <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
       <div style={{maxWidth:700,margin:"0 auto"}}>
         {back}
-        <h2 style={{fontSize:22,fontWeight:700,color:TEAL,marginBottom:16}}>🏗️ Spec complète d'un Stack</h2>
+        <h2 style={{fontSize:22,fontWeight:700,color:TEAL,marginBottom:16}}>Spec complète d'un Stack</h2>
         <div style={{display:"grid",gap:10}}>
           {SPEC.map((p,i)=>(
             <div key={p.id} style={{border:`1px solid ${bRevealed[i]?TEAL:BORDER}`,borderRadius:10,padding:"12px 16px",background:bRevealed[i]?TEAL+"15":CARD}}>
@@ -103,12 +103,12 @@ export default function Ch5Game(){
                 <span style={{fontWeight:600,fontSize:14,color:bRevealed[i]?TEAL:TEXT}}>{p.label}</span>
                 {!bRevealed[i]&&<button onClick={()=>{const r=[...bRevealed];r[i]=true;setBRevealed(r)}} style={{padding:"4px 14px",background:TEAL,color:"white",border:"none",borderRadius:6,fontSize:12,fontWeight:600,cursor:"pointer"}}>Révéler</button>}
               </div>
-              {!bRevealed[i]&&<div style={{fontSize:12,color:MUTED,marginTop:4,fontStyle:"italic"}}>💡 {p.hint}</div>}
+              {!bRevealed[i]&&<div style={{fontSize:12,color:MUTED,marginTop:4,fontStyle:"italic"}}>{p.hint}</div>}
               {bRevealed[i]&&<div style={{marginTop:6,padding:"8px 10px",background:"#0D1117",borderRadius:6}}><code style={{fontSize:13,color:"#A5F3FC",fontFamily:"Consolas,monospace",whiteSpace:"pre-wrap"}}>{p.content}</code></div>}
             </div>
           ))}
         </div>
-        {bRevealed.every(Boolean)&&<div style={{marginTop:16,padding:"1rem",background:GREEN+"20",borderRadius:10,textAlign:"center"}}><div style={{fontSize:15,fontWeight:600,color:GREEN}}>✅ Spécification complète !</div></div>}
+        {bRevealed.every(Boolean)&&<div style={{marginTop:16,padding:"1rem",background:GREEN+"20",borderRadius:10,textAlign:"center"}}><div style={{fontSize:15,fontWeight:600,color:GREEN}}> Spécification complète !</div></div>}
       </div>
     </div>
   );
@@ -119,7 +119,7 @@ export default function Ch5Game(){
       <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
         <div style={{maxWidth:700,margin:"0 auto"}}>
           {back}
-          <h2 style={{fontSize:22,fontWeight:700,color:PURPLE,marginBottom:4}}>📐 Langages de spécification</h2>
+          <h2 style={{fontSize:22,fontWeight:700,color:PURPLE,marginBottom:4}}>Langages de spécification</h2>
           <p style={{color:MUTED,fontSize:13,marginBottom:12}}>Langages non exécutables : décrivent le comportement sans générer de code.</p>
           <div style={{display:"flex",gap:8,marginBottom:16,flexWrap:"wrap"}}>
             {(["all","VDM","SDL","ASN.1"] as const).map(f=>(
@@ -162,7 +162,7 @@ export default function Ch5Game(){
                 <div style={{fontSize:14,fontWeight:600,color:condCol[cat],marginTop:4}}>{cat}</div>
               </button>)})}
           </div>
-          {cShow&&<><div style={{marginTop:12,padding:"10px 14px",background:cAns===it.cat?GREEN+"20":RED+"20",borderRadius:8,fontSize:13,color:cAns===it.cat?GREEN:RED}}>{cAns===it.cat?"✅ Correct !":"❌ C'est un(e) "+it.cat}</div>
+          {cShow&&<><div style={{marginTop:12,padding:"10px 14px",background:cAns===it.cat?GREEN+"20":RED+"20",borderRadius:8,fontSize:13,color:cAns===it.cat?GREEN:RED}}>{cAns===it.cat?"Correct !":"Incorrect — C'est un(e) "+it.cat}</div>
             <button onClick={()=>{setCIdx(i=>i+1);setCAns(null);setCShow(false)}} style={{marginTop:10,width:"100%",padding:"10px",background:TEAL,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>Suivant →</button></>}
         </div>
       </div>

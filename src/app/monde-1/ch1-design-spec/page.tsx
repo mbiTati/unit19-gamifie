@@ -26,11 +26,11 @@ const OPERATIONS: Operation[] = [
 ];
 
 const ADTS: { name: ADTName; color: string; bgColor: string; icon: string; subtitle: string }[] = [
-  { name: "List", color: "#065A82", bgColor: "#E6F1FB", icon: "📋", subtitle: "Ordonnée, accès par index" },
-  { name: "Stack", color: "#028090", bgColor: "#E1F5EE", icon: "📚", subtitle: "LIFO — dernier entré, premier sorti" },
-  { name: "Queue", color: "#00A896", bgColor: "#E1F5EE", icon: "🚶‍♂️", subtitle: "FIFO — premier entré, premier sorti" },
-  { name: "Map", color: "#F97316", bgColor: "#FFF7ED", icon: "🗺️", subtitle: "Paires clé → valeur" },
-  { name: "Set", color: "#7C3AED", bgColor: "#EDE9FE", icon: "🎯", subtitle: "Pas de doublons" },
+  { name: "List", color: "#065A82", bgColor: "#E6F1FB", icon: "", subtitle: "Ordonnée, accès par index" },
+  { name: "Stack", color: "#028090", bgColor: "#E1F5EE", icon: "", subtitle: "LIFO — dernier entré, premier sorti" },
+  { name: "Queue", color: "#00A896", bgColor: "#E1F5EE", icon: "", subtitle: "FIFO — premier entré, premier sorti" },
+  { name: "Map", color: "#F97316", bgColor: "#FFF7ED", icon: "", subtitle: "Paires clé → valeur" },
+  { name: "Set", color: "#7C3AED", bgColor: "#EDE9FE", icon: "", subtitle: "Pas de doublons" },
 ];
 
 interface QuizQuestion {
@@ -248,7 +248,7 @@ export default function Ch1Game() {
         <div style={{ fontSize: 80, fontWeight: 800, color: grade.color, lineHeight: 1 }}>{grade.label}</div>
         <div style={{ fontSize: 24, fontWeight: 600, color: "#1B2A4A", margin: "1rem 0" }}>{score} / {totalAnswered} correct ({pct}%)</div>
         <div style={{ fontSize: 16, color: "#64748B", marginBottom: "2rem" }}>
-          Meilleure série : {maxStreak} {maxStreak > 3 ? "🔥" : ""}
+          Meilleure série : {maxStreak} {maxStreak > 3 ? "" : ""}
         </div>
         <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
           <button onClick={() => setPhase("menu")} style={{ padding: "0.75rem 1.5rem", border: "2px solid #028090", borderRadius: 8, background: "#111827", color: "#028090", fontWeight: 600, cursor: "pointer", fontSize: 15 }}>Retour au menu</button>
@@ -267,7 +267,7 @@ export default function Ch1Game() {
       <div style={{ maxWidth: 600, margin: "0 auto", padding: "1.5rem 1rem", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
           <span style={{ fontSize: 13, color: "#64748B" }}>Question {currentQ + 1}/{total}</span>
-          <span style={{ fontSize: 13, color: "#028090", fontWeight: 600 }}>Score: {score} {streak >= 3 ? `🔥x${streak}` : ""}</span>
+          <span style={{ fontSize: 13, color: "#028090", fontWeight: 600 }}>Score: {score} {streak >= 3 ? `x${streak}` : ""}</span>
         </div>
         <div style={{ height: 4, background: "#E2E8F0", borderRadius: 2, marginBottom: "1.5rem" }}>
           <div style={{ height: 4, background: "#028090", borderRadius: 2, width: `${((currentQ + 1) / total) * 100}%`, transition: "width 0.3s" }} />
@@ -297,8 +297,8 @@ export default function Ch1Game() {
                   <div style={{ fontWeight: 600, color: adt.color, fontSize: 16 }}>{adt.name}</div>
                   <div style={{ fontSize: 12, color: "#64748B" }}>{adt.subtitle}</div>
                 </div>
-                {showFeedback && isCorrect && <span style={{ marginLeft: "auto", fontSize: 20 }}>✓</span>}
-                {showFeedback && isSelected && !isCorrect && <span style={{ marginLeft: "auto", fontSize: 20 }}>✗</span>}
+                {showFeedback && isCorrect && <span style={{ marginLeft: "auto", fontSize: 20 }}></span>}
+                {showFeedback && isSelected && !isCorrect && <span style={{ marginLeft: "auto", fontSize: 20 }}></span>}
               </button>
             );
           })}
@@ -347,8 +347,8 @@ export default function Ch1Game() {
                 style={{ padding: "0.75rem 1rem", border: `2px solid ${borderColor}`, borderRadius: 10, background: bg, cursor: showFeedback ? "default" : "pointer", textAlign: "left" as const, fontSize: 15, color: "#E2E8F0", transition: "all 0.2s" }}>
                 <span style={{ fontWeight: 500, marginRight: 8, color: "#7C3AED" }}>{String.fromCharCode(65 + idx)}.</span>
                 {opt}
-                {showFeedback && isCorrect && <span style={{ float: "right" as const, color: "#16A34A" }}>✓</span>}
-                {showFeedback && isSelected && !isCorrect && <span style={{ float: "right" as const, color: "#DC2626" }}>✗</span>}
+                {showFeedback && isCorrect && <span style={{ float: "right" as const, color: "#16A34A" }}></span>}
+                {showFeedback && isSelected && !isCorrect && <span style={{ float: "right" as const, color: "#DC2626" }}></span>}
               </button>
             );
           })}

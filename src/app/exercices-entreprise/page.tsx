@@ -4,19 +4,19 @@ import { useState } from "react";
 const BG="#0B1120",CARD="#111827",BORDER="#1E3A5F",TEXT="#E2E8F0",MUTED="#94A3B8",GREEN="#16A34A",RED="#DC2626",ORANGE="#F97316",PURPLE="#7C3AED",TEAL="#0891B2",BLUE="#3B82F6";
 
 const EXERCISES=[
-  {id:1,title:"Gestion des emprunts de vélos",emoji:"🚲",color:TEAL,context:"Entreprise proposant un service de prêt de vélos à ses employés.",
+  {id:1,title:"Gestion des emprunts de vélos",emoji:"",color:TEAL,context:"Entreprise proposant un service de prêt de vélos à ses employés.",
     tasks:["Ajouter un nouvel emprunt (nom employé, type de vélo, date début)","Terminer un emprunt (date de retour)","Afficher les emprunts en cours"],
     structure:"LinkedList",structureWhy:"Les emprunts sont ajoutés/retirés fréquemment → LinkedList excelle en insertion/suppression.",
     classes:["Emprunt (nom, typeVelo, dateDebut, dateRetour)","GestionVelos (LinkedList<Emprunt>, ajouter, terminer, afficherEnCours)","Menu (Scanner, switch/case)"],
     code:"public class Emprunt {\n    private String nomEmploye;\n    private String typeVelo;\n    private LocalDate dateDebut;\n    private LocalDate dateRetour;\n    // constructeur + getters + setters\n}\n\npublic class GestionVelos {\n    private LinkedList<Emprunt> emprunts;\n    \n    public void ajouterEmprunt(Emprunt e) {\n        emprunts.add(e);\n    }\n    \n    public void terminerEmprunt(String nom) {\n        for (Emprunt e : emprunts) {\n            if (e.getNomEmploye().equals(nom)\n                && e.getDateRetour() == null) {\n                e.setDateRetour(LocalDate.now());\n                return;\n            }\n        }\n        throw new IllegalArgumentException(\n            \"Emprunt non trouvé\");\n    }\n}",
     criteria:"P4 (implémentation), P5 (exceptions), M4 (résout un problème)"},
-  {id:2,title:"Suivi des interventions techniques",emoji:"🔧",color:ORANGE,context:"Société d'infogérance enregistrant les interventions chez ses clients.",
+  {id:2,title:"Suivi des interventions techniques",emoji:"",color:ORANGE,context:"Société d'infogérance enregistrant les interventions chez ses clients.",
     tasks:["Ajouter une intervention (nom client, problème, technicien)","Rechercher les interventions d'un client donné","Afficher toutes les interventions"],
     structure:"HashMap<String, ArrayList<Intervention>>",structureWhy:"Recherche par client = recherche par clé → HashMap O(1). Chaque client peut avoir plusieurs interventions → ArrayList comme valeur.",
     classes:["Intervention (nomClient, probleme, technicien, date)","GestionInterventions (HashMap, ajouter, rechercherParClient, afficherTout)","Menu (Scanner + try/catch)"],
     code:"public class GestionInterventions {\n    private HashMap<String, ArrayList<Intervention>>\n        interventions;\n    \n    public void ajouter(Intervention i) {\n        String client = i.getNomClient();\n        if (!interventions.containsKey(client))\n            interventions.put(client,\n                new ArrayList<>());\n        interventions.get(client).add(i);\n    }\n    \n    public ArrayList<Intervention>\n        rechercherParClient(String nom) {\n        if (!interventions.containsKey(nom))\n            throw new IllegalArgumentException(\n                \"Client inconnu : \" + nom);\n        return interventions.get(nom);\n    }\n}",
     criteria:"P4, P5 (try/catch saisie), M4, D3 (complexité HashMap vs ArrayList)"},
-  {id:3,title:"Réservation de salles de réunion",emoji:"🏢",color:PURPLE,context:"Application interne permettant aux employés de réserver des salles.",
+  {id:3,title:"Réservation de salles de réunion",emoji:"",color:PURPLE,context:"Application interne permettant aux employés de réserver des salles.",
     tasks:["Réserver une salle (nom employé, date, heure, salle)","Annuler une réservation","Vérifier les disponibilités d'une salle pour un jour"],
     structure:"HashMap<String, Queue<Reservation>>",structureWhy:"Recherche par salle = HashMap O(1). Les créneaux sont en ordre chronologique = Queue FIFO.",
     classes:["Reservation (nomEmploye, date, heure, salle)","GestionSalles (HashMap, reserver, annuler, verifierDisponibilite)","Menu (Scanner + validation doublons)"],
@@ -75,7 +75,7 @@ export default function ExercicesEntreprise(){
                   </div>
                   <button onClick={()=>toggleCode(ex.id)}
                     style={{padding:"8px 16px",background:showCode.has(ex.id)?RED+"20":GREEN+"20",border:`1px solid ${showCode.has(ex.id)?RED:GREEN}`,borderRadius:8,fontSize:12,fontWeight:600,color:showCode.has(ex.id)?RED:GREEN,cursor:"pointer"}}>
-                    {showCode.has(ex.id)?"🙈 Cacher la correction":"👀 Voir la correction"}
+                    {showCode.has(ex.id)?"Cacher la correction":"Voir la correction"}
                   </button>
                   {showCode.has(ex.id)&&(
                     <div style={{marginTop:10,background:"#0D1117",borderRadius:10,padding:"12px"}}>

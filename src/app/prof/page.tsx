@@ -98,17 +98,17 @@ export default function ProfPage(){
           <div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginBottom:20}}>
               <div style={{padding:"14px",background:CARD,borderRadius:10,border:"1px solid "+BORDER,textAlign:"center"}}>
-                <div style={{fontSize:32}}>📊</div>
+                <div style={{fontSize:32}}></div>
                 <div style={{fontSize:20,fontWeight:700,color:TEXT}}>25</div>
                 <div style={{fontSize:12,color:MUTED}}>PPTX (principaux + supplements)</div>
               </div>
               <div style={{padding:"14px",background:CARD,borderRadius:10,border:"1px solid "+BORDER,textAlign:"center"}}>
-                <div style={{fontSize:32}}>📄</div>
+                <div style={{fontSize:32}}></div>
                 <div style={{fontSize:20,fontWeight:700,color:TEXT}}>15</div>
                 <div style={{fontSize:12,color:MUTED}}>Fiches memo PDF</div>
               </div>
               <div style={{padding:"14px",background:CARD,borderRadius:10,border:"1px solid "+BORDER,textAlign:"center"}}>
-                <div style={{fontSize:32}}>🎮</div>
+                <div style={{fontSize:32}}></div>
                 <div style={{fontSize:20,fontWeight:700,color:TEXT}}>33+</div>
                 <div style={{fontSize:12,color:MUTED}}>Mini-jeux interactifs</div>
               </div>

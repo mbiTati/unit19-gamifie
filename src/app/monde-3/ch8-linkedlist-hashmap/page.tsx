@@ -128,15 +128,15 @@ export default function Ch8Game() {
       </div>
       <div style={{display:"grid",gap:12}}>
         <button onClick={()=>setMode("types")} style={{padding:"1.2rem",border:"1px solid #1E3A5F",borderRadius:10,background:"#111827",cursor:"pointer",textAlign:"left" as const}}>
-          <div style={{fontSize:18,fontWeight:600,color:"#F97316"}}>🔗 Types de LinkedList</div>
+          <div style={{fontSize:18,fontWeight:600,color:"#F97316"}}> Types de LinkedList</div>
           <div style={{fontSize:13,color:"#94A3B8",marginTop:4}}>Simple, doublement chaînée, circulaire — visualisation SVG</div>
         </button>
         <button onClick={()=>setMode("linkedlist")} style={{padding:"1.2rem",border:"1px solid #1E3A5F",borderRadius:10,background:"#111827",cursor:"pointer",textAlign:"left" as const}}>
-          <div style={{fontSize:18,fontWeight:600,color:"#D85A30"}}>📝 Simulateur LinkedList</div>
+          <div style={{fontSize:18,fontWeight:600,color:"#D85A30"}}> Simulateur LinkedList</div>
           <div style={{fontSize:13,color:"#94A3B8",marginTop:4}}>addFirst, addLast, remove — manipulez en temps réel</div>
         </button>
         <button onClick={()=>setMode("hashmap")} style={{padding:"1.2rem",border:"1px solid #1E3A5F",borderRadius:10,background:"#111827",cursor:"pointer",textAlign:"left" as const}}>
-          <div style={{fontSize:18,fontWeight:600,color:"#0891B2"}}>🗃️ Simulateur HashMap</div>
+          <div style={{fontSize:18,fontWeight:600,color:"#0891B2"}}> Simulateur HashMap</div>
           <div style={{fontSize:13,color:"#94A3B8",marginTop:4}}>Hash function visible + buckets — voyez le hachage en action</div>
         </button>
       </div>
@@ -146,7 +146,7 @@ export default function Ch8Game() {
     <div style={{maxWidth:700,margin:"0 auto",padding:"1.5rem 1rem",fontFamily:"'Segoe UI',system-ui,sans-serif",color:"#1E3A5F"}}>
       <button onClick={()=>setMode("menu")} style={{fontSize:13,color:"#64748B",background:"none",border:"none",cursor:"pointer",marginBottom:12}}>← Retour</button>
       <h2 style={{fontSize:20,fontWeight:700,color:mode==="types"?"#F97316":mode==="linkedlist"?"#D85A30":"#0891B2",marginBottom:12}}>
-        {mode==="types"?"🔗 Types de LinkedList":mode==="linkedlist"?"📝 Simulateur LinkedList":"🗃️ Simulateur HashMap"}
+        {mode==="types"?" Types de LinkedList":mode==="linkedlist"?" Simulateur LinkedList":" Simulateur HashMap"}
       </h2>
       {mode==="types"&&<LinkedListTypes/>}
       {mode==="linkedlist"&&<LinkedListSim/>}

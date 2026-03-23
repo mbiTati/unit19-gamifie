@@ -72,10 +72,10 @@ export default function Ch12Game(){
         </div>
         <div style={{display:"grid",gap:14}}>
           {[
-            {p:"rank" as Phase,emoji:"📊",t:"Classer les complexités",d:"Ordonnez du plus rapide au plus lent",c:AMBER},
-            {p:"code" as Phase,emoji:"💻",t:"Code → Complexité",d:"8 snippets : identifiez la complexité Big O",c:PURPLE},
-            {p:"calculator" as Phase,emoji:"🔢",t:"Calculateur de croissance",d:"Comparez visuellement O(1), O(log n), O(n), O(n²)",c:GREEN},
-            {p:"quiz" as Phase,emoji:"🧠",t:"Quiz Big O",d:"8 questions théoriques sur l'analyse asymptotique",c:ORANGE},
+            {p:"rank" as Phase,emoji:"",t:"Classer les complexités",d:"Ordonnez du plus rapide au plus lent",c:AMBER},
+            {p:"code" as Phase,emoji:"",t:"Code → Complexité",d:"8 snippets : identifiez la complexité Big O",c:PURPLE},
+            {p:"calculator" as Phase,emoji:"",t:"Calculateur de croissance",d:"Comparez visuellement O(1), O(log n), O(n), O(n²)",c:GREEN},
+            {p:"quiz" as Phase,emoji:"",t:"Quiz Big O",d:"8 questions théoriques sur l'analyse asymptotique",c:ORANGE},
           ].map(g=>(
             <button key={g.p} onClick={()=>{setPhase(g.p);if(g.p==="rank"){setRankIdx(0);setRankScore(0);setUserRank([]);setRankShow(false)}if(g.p==="code"){setCodeIdx(0);setCodeScore(0);setCodeSel(null);setCodeShow(false)}if(g.p==="quiz"){setQIdx(0);setQScore(0);setSel(null);setShow(false)}if(g.p==="calculator")setCalcN(1000)}}
               style={{padding:"1.2rem",border:`2px solid ${BORDER}`,borderRadius:12,background:CARD,cursor:"pointer",textAlign:"left"}}>
@@ -99,7 +99,7 @@ export default function Ch12Game(){
           {back}
           <div style={{fontSize:13,color:MUTED,marginBottom:8}}>Round {rankIdx+1}/{RANK_ROUNDS.length}</div>
           <p style={{fontSize:16,fontWeight:600,marginBottom:4}}>Classez du plus RAPIDE au plus LENT :</p>
-          <p style={{fontSize:13,color:MUTED,marginBottom:12}}>💡 {round.hint}</p>
+          <p style={{fontSize:13,color:MUTED,marginBottom:12}}>{round.hint}</p>
           <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:16}}>
             {round.items.map(item=>(<button key={item} onClick={()=>addToRank(item)} disabled={userRank.includes(item)||rankShow} style={{padding:"8px 16px",borderRadius:8,border:`2px solid ${userRank.includes(item)?MUTED:AMBER}`,background:userRank.includes(item)?BORDER:CARD,color:userRank.includes(item)?MUTED:TEXT,fontWeight:600,cursor:userRank.includes(item)||rankShow?"default":"pointer",fontSize:14}}>{item}</button>))}
           </div>
@@ -108,7 +108,7 @@ export default function Ch12Game(){
             <div style={{display:"flex",gap:6}}>{userRank.map((item,i)=>{const isCorrect=rankShow&&item===round.correct[i];const isWrong=rankShow&&item!==round.correct[i];return(<div key={i} style={{padding:"6px 12px",borderRadius:6,background:isCorrect?GREEN+"20":isWrong?RED+"20":AMBER+"20",border:`1px solid ${isCorrect?GREEN:isWrong?RED:AMBER}`,fontSize:13,fontWeight:600,color:isCorrect?GREEN:isWrong?RED:AMBER}}>{i+1}. {item}</div>)})}</div>
           </div>
           {rankShow&&<>
-            {JSON.stringify(userRank)===JSON.stringify(round.correct)?<div style={{marginTop:10,padding:"10px",background:GREEN+"15",borderRadius:8,color:GREEN,fontSize:13}}>✅ Correct !</div>:<div style={{marginTop:10,padding:"10px",background:RED+"15",borderRadius:8,color:RED,fontSize:13}}>❌ Correct : {round.correct.join(" → ")}</div>}
+            {JSON.stringify(userRank)===JSON.stringify(round.correct)?<div style={{marginTop:10,padding:"10px",background:GREEN+"15",borderRadius:8,color:GREEN,fontSize:13}}>Correct !</div>:<div style={{marginTop:10,padding:"10px",background:RED+"15",borderRadius:8,color:RED,fontSize:13}}>Incorrect — Correct : {round.correct.join(" → ")}</div>}
             <button onClick={()=>{setRankIdx(i=>i+1);setUserRank([]);setRankShow(false)}} style={{marginTop:10,width:"100%",padding:"10px",background:AMBER,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>Suivant →</button>
           </>}
         </div>
@@ -142,7 +142,7 @@ export default function Ch12Game(){
       <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
         <div style={{maxWidth:700,margin:"0 auto"}}>
           {back}
-          <h2 style={{fontSize:22,fontWeight:700,color:GREEN,marginBottom:4}}>🔢 Calculateur de croissance</h2>
+          <h2 style={{fontSize:22,fontWeight:700,color:GREEN,marginBottom:4}}>Calculateur de croissance</h2>
           <p style={{color:MUTED,fontSize:13,marginBottom:16}}>Comparez le nombre d'opérations pour différentes valeurs de n :</p>
           <div style={{display:"flex",gap:6,marginBottom:16,flexWrap:"wrap"}}>
             {ns.map(n=>(<button key={n} onClick={()=>setCalcN(n)} style={{padding:"6px 14px",borderRadius:20,fontSize:13,fontWeight:600,cursor:"pointer",background:calcN===n?AMBER:"transparent",color:calcN===n?"white":MUTED,border:`1px solid ${calcN===n?"transparent":BORDER}`}}>n={n.toLocaleString()}</button>))}
@@ -166,7 +166,7 @@ export default function Ch12Game(){
             })}
           </div>
           <div style={{marginTop:12,padding:"10px 14px",background:CARD,borderRadius:8,fontSize:12,color:MUTED}}>
-            💡 Pour n={calcN.toLocaleString()} : O(n²) fait {GROWTHS[4].fn(calcN).toLocaleString()} opérations contre {Math.round(GROWTHS[2].fn(calcN)).toLocaleString()} pour O(n). C'est {Math.round(GROWTHS[4].fn(calcN)/GROWTHS[2].fn(calcN))}× plus !
+            Pour n={calcN.toLocaleString()} : O(n²) fait {GROWTHS[4].fn(calcN).toLocaleString()} opérations contre {Math.round(GROWTHS[2].fn(calcN)).toLocaleString()} pour O(n). C'est {Math.round(GROWTHS[4].fn(calcN)/GROWTHS[2].fn(calcN))}× plus !
           </div>
         </div>
       </div>

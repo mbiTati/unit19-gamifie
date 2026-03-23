@@ -58,12 +58,12 @@ export default function Ch13Game(){
         <div style={{display:"grid",gap:14}}>
           <button onClick={()=>{setPhase("bench");setBenchIdx(0);setBenchProgress([]);setBenchDone(false);setBenchRunning(false)}}
             style={{padding:"1.2rem",border:`2px solid ${BORDER}`,borderRadius:12,background:CARD,cursor:"pointer",textAlign:"left"}}>
-            <div style={{fontSize:18,fontWeight:600,color:BLUE}}>📊 Benchmark Simulé</div>
+            <div style={{fontSize:18,fontWeight:600,color:BLUE}}>Benchmark Simulé</div>
             <div style={{fontSize:13,color:MUTED,marginTop:4}}>3 scénarios : comparez les performances visuellement</div>
           </button>
           <button onClick={()=>{setPhase("quiz");setQIdx(0);setQScore(0);setSel(null);setShow(false)}}
             style={{padding:"1.2rem",border:`2px solid ${BORDER}`,borderRadius:12,background:CARD,cursor:"pointer",textAlign:"left"}}>
-            <div style={{fontSize:18,fontWeight:600,color:GREEN}}>🧠 Quiz Efficacité</div>
+            <div style={{fontSize:18,fontWeight:600,color:GREEN}}>Quiz Efficacité</div>
             <div style={{fontSize:13,color:MUTED,marginTop:4}}>6 questions : benchmark, JIT, GC, System.nanoTime()</div>
           </button>
         </div>
@@ -80,7 +80,7 @@ export default function Ch13Game(){
           <div style={{display:"flex",gap:8,marginBottom:16}}>
             {BENCH_SCENARIOS.map((_,i)=>(<button key={i} onClick={()=>{setBenchIdx(i);setBenchProgress([]);setBenchDone(false);setBenchRunning(false)}} style={{padding:"6px 14px",borderRadius:20,fontSize:12,fontWeight:600,cursor:"pointer",background:benchIdx===i?BLUE:"transparent",color:benchIdx===i?"white":MUTED,border:`1px solid ${benchIdx===i?"transparent":BORDER}`}}>Test {i+1}</button>))}
           </div>
-          <h3 style={{fontSize:18,fontWeight:700,color:BLUE,marginBottom:4}}>📊 {b.name}</h3>
+          <h3 style={{fontSize:18,fontWeight:700,color:BLUE,marginBottom:4}}>{b.name}</h3>
           <p style={{fontSize:12,color:MUTED,marginBottom:12}}>n = {b.n.toLocaleString()} éléments</p>
           <div style={{display:"grid",gap:12,marginBottom:16}}>
             {b.algos.map((a,i)=>(<div key={i}>
@@ -92,7 +92,7 @@ export default function Ch13Game(){
               </div>
             </div>))}
           </div>
-          {benchDone&&<div style={{padding:"10px 14px",background:GREEN+"15",borderRadius:8,fontSize:13,color:GREEN,marginBottom:12}}>💡 {b.explain}</div>}
+          {benchDone&&<div style={{padding:"10px 14px",background:GREEN+"15",borderRadius:8,fontSize:13,color:GREEN,marginBottom:12}}>{b.explain}</div>}
           <button onClick={runBench} disabled={benchRunning} style={{width:"100%",padding:"10px",background:benchRunning?BORDER:BLUE,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:benchRunning?"default":"pointer"}}>{benchRunning?"En cours...":"▶ Lancer le benchmark"}</button>
         </div>
       </div>

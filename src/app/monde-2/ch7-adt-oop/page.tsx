@@ -65,9 +65,9 @@ export default function Ch7Game(){
         </div>
         <div style={{display:"grid",gap:14}}>
           {[
-            {p:"args" as Phase,emoji:"🏛️",t:"Les 5 arguments ADT → POO",d:"Explorez chaque argument avec exemples Java",c:TEAL},
-            {p:"conditions" as Phase,emoji:"⚡",t:"Pré/Post/Error Conditions",d:"4 questions sur les conditions de création",c:ORANGE},
-            {p:"discussion" as Phase,emoji:"💬",t:"Quiz Discussion D2",d:"4 questions pour préparer votre argumentation écrite",c:PURPLE},
+            {p:"args" as Phase,emoji:"",t:"Les 5 arguments ADT → POO",d:"Explorez chaque argument avec exemples Java",c:TEAL},
+            {p:"conditions" as Phase,emoji:"",t:"Pré/Post/Error Conditions",d:"4 questions sur les conditions de création",c:ORANGE},
+            {p:"discussion" as Phase,emoji:"",t:"Quiz Discussion D2",d:"4 questions pour préparer votre argumentation écrite",c:PURPLE},
           ].map(g=>(
             <button key={g.p} onClick={()=>{setPhase(g.p);if(g.p==="conditions"){setCIdx(0);setCScore(0);setCSel(null);setCShow(false)}if(g.p==="discussion"){setDIdx(0);setDScore(0);setDSel(null);setDShow(false)}if(g.p==="args")setExpanded(null)}}
               style={{padding:"1.2rem",border:`2px solid ${BORDER}`,borderRadius:12,background:CARD,cursor:"pointer",textAlign:"left"}}>
@@ -84,7 +84,7 @@ export default function Ch7Game(){
     <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
       <div style={{maxWidth:700,margin:"0 auto"}}>
         {back}
-        <h2 style={{fontSize:22,fontWeight:700,color:TEAL,marginBottom:16}}>🏛️ 5 arguments : ADT → POO</h2>
+        <h2 style={{fontSize:22,fontWeight:700,color:TEAL,marginBottom:16}}>5 arguments : ADT → POO</h2>
         <div style={{display:"grid",gap:10}}>
           {ARGS.map(arg=>(
             <div key={arg.id} style={{border:`1px solid ${expanded===arg.id?TEAL:BORDER}`,borderRadius:10,overflow:"hidden"}}>

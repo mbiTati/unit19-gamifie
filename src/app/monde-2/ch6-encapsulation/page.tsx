@@ -5,11 +5,11 @@ const BG="#0B1120",CARD="#111827",BORDER="#1E3A5F",TEXT="#E2E8F0",MUTED="#94A3B8
 
 // ─── GAME 1: Visual Encapsulation Simulator ───
 const ENCAP_STEPS=[
-  {title:"1. Classe sans encapsulation",code:"public class CompteBancaire {\n    public String titulaire;\n    public double solde;\n    public String motDePasse;\n}",problem:"⚠️ DANGER : tout est public ! N'importe qui peut modifier le solde directement.",fix:""},
-  {title:"2. Attributs privés (Information Hiding)",code:"public class CompteBancaire {\n    private String titulaire;\n    private double solde;\n    private String motDePasse;\n}",problem:"",fix:"✅ Les données sont cachées. Mais comment y accéder ?"},
-  {title:"3. Getters (accès contrôlé)",code:"    // Getter — lecture seule\n    public String getTitulaire() {\n        return this.titulaire;\n    }\n    public double getSolde() {\n        return this.solde;\n    }\n    // PAS de getMotDePasse() !",problem:"",fix:"✅ On expose le titulaire et solde, mais PAS le mot de passe."},
-  {title:"4. Setters avec validation",code:"    public void deposer(double montant) {\n        if (montant > 0) {\n            this.solde += montant;\n        }\n    }\n    public boolean retirer(double montant) {\n        if (montant > 0 && montant <= solde) {\n            this.solde -= montant;\n            return true;\n        }\n        return false;\n    }",problem:"",fix:"✅ Validation intégrée : impossible de déposer négatif ou retirer plus que le solde."},
-  {title:"5. Changement d'implémentation transparent",code:"// Version 1 : double solde\nprivate double solde;\n\n// Version 2 : BigDecimal (plus précis)\nprivate BigDecimal solde;\n\n// L'interface publique NE CHANGE PAS !\n// deposer() et retirer() fonctionnent pareil",problem:"",fix:"✅ Puissance de l'encapsulation : changer l'interne sans casser le code client !"},
+  {title:"1. Classe sans encapsulation",code:"public class CompteBancaire {\n    public String titulaire;\n    public double solde;\n    public String motDePasse;\n}",problem:" DANGER : tout est public ! N'importe qui peut modifier le solde directement.",fix:""},
+  {title:"2. Attributs privés (Information Hiding)",code:"public class CompteBancaire {\n    private String titulaire;\n    private double solde;\n    private String motDePasse;\n}",problem:"",fix:" Les données sont cachées. Mais comment y accéder ?"},
+  {title:"3. Getters (accès contrôlé)",code:"    // Getter — lecture seule\n    public String getTitulaire() {\n        return this.titulaire;\n    }\n    public double getSolde() {\n        return this.solde;\n    }\n    // PAS de getMotDePasse() !",problem:"",fix:" On expose le titulaire et solde, mais PAS le mot de passe."},
+  {title:"4. Setters avec validation",code:"    public void deposer(double montant) {\n        if (montant > 0) {\n            this.solde += montant;\n        }\n    }\n    public boolean retirer(double montant) {\n        if (montant > 0 && montant <= solde) {\n            this.solde -= montant;\n            return true;\n        }\n        return false;\n    }",problem:"",fix:" Validation intégrée : impossible de déposer négatif ou retirer plus que le solde."},
+  {title:"5. Changement d'implémentation transparent",code:"// Version 1 : double solde\nprivate double solde;\n\n// Version 2 : BigDecimal (plus précis)\nprivate BigDecimal solde;\n\n// L'interface publique NE CHANGE PAS !\n// deposer() et retirer() fonctionnent pareil",problem:"",fix:" Puissance de l'encapsulation : changer l'interne sans casser le code client !"},
 ];
 
 // ─── GAME 2: Information Hiding Deep Dive ───
@@ -61,10 +61,10 @@ export default function Ch6Game(){
         </div>
         <div style={{display:"grid",gap:14}}>
           {[
-            {p:"simulator" as Phase,emoji:"🔒",t:"Simulateur d'Encapsulation",d:"Construisez une classe encapsulée étape par étape",c:TEAL},
-            {p:"hiding" as Phase,emoji:"🕵️",t:"Information Hiding — Quiz",d:"6 questions sur les principes du masquage d'information",c:PURPLE},
-            {p:"interfaces" as Phase,emoji:"📋",t:"Interfaces Java",d:"4 questions : contrats, polymorphisme, lien avec ADT",c:GREEN},
-            {p:"heritage" as Phase,emoji:"🧬",t:"Encapsulation + Héritage & Modularité",d:"Explorez comment l'encapsulation interagit avec l'héritage",c:ORANGE},
+            {p:"simulator" as Phase,emoji:"",t:"Simulateur d'Encapsulation",d:"Construisez une classe encapsulée étape par étape",c:TEAL},
+            {p:"hiding" as Phase,emoji:"",t:"Information Hiding — Quiz",d:"6 questions sur les principes du masquage d'information",c:PURPLE},
+            {p:"interfaces" as Phase,emoji:"",t:"Interfaces Java",d:"4 questions : contrats, polymorphisme, lien avec ADT",c:GREEN},
+            {p:"heritage" as Phase,emoji:"",t:"Encapsulation + Héritage & Modularité",d:"Explorez comment l'encapsulation interagit avec l'héritage",c:ORANGE},
           ].map(g=>(
             <button key={g.p} onClick={()=>{setPhase(g.p);if(g.p==="simulator")setSimStep(0);if(g.p==="hiding"){setHIdx(0);setHScore(0);setHSel(null);setHShow(false)}if(g.p==="interfaces"){setIIdx(0);setIScore(0);setISel(null);setIShow(false)}if(g.p==="heritage")setHerExp(null)}}
               style={{padding:"1.2rem",border:`2px solid ${BORDER}`,borderRadius:12,background:CARD,cursor:"pointer",textAlign:"left"}}>
@@ -84,7 +84,7 @@ export default function Ch6Game(){
       <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
         <div style={{maxWidth:700,margin:"0 auto"}}>
           {back}
-          <h2 style={{fontSize:22,fontWeight:700,color:TEAL,marginBottom:4}}>🔒 Simulateur d'Encapsulation</h2>
+          <h2 style={{fontSize:22,fontWeight:700,color:TEAL,marginBottom:4}}>Simulateur d'Encapsulation</h2>
           <div style={{display:"flex",gap:6,marginBottom:16}}>
             {ENCAP_STEPS.map((_,i)=>(<div key={i} style={{flex:1,height:4,borderRadius:2,background:i<=simStep?TEAL:BORDER}}/>))}
           </div>
@@ -97,7 +97,7 @@ export default function Ch6Game(){
           <div style={{display:"flex",gap:10,marginTop:12}}>
             {simStep>0&&<button onClick={()=>setSimStep(s=>s-1)} style={{flex:1,padding:"10px",background:CARD,color:TEXT,border:`1px solid ${BORDER}`,borderRadius:8,cursor:"pointer",fontWeight:600}}>← Précédent</button>}
             {simStep<ENCAP_STEPS.length-1?<button onClick={()=>setSimStep(s=>s+1)} style={{flex:1,padding:"10px",background:TEAL,color:"white",border:"none",borderRadius:8,cursor:"pointer",fontWeight:600}}>Suivant →</button>
-            :<div style={{flex:1,padding:"10px",background:GREEN+"20",borderRadius:8,textAlign:"center",fontSize:14,fontWeight:600,color:GREEN}}>✅ Classe parfaitement encapsulée !</div>}
+            :<div style={{flex:1,padding:"10px",background:GREEN+"20",borderRadius:8,textAlign:"center",fontSize:14,fontWeight:600,color:GREEN}}> Classe parfaitement encapsulée !</div>}
           </div>
         </div>
       </div>
@@ -145,7 +145,7 @@ export default function Ch6Game(){
     <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
       <div style={{maxWidth:700,margin:"0 auto"}}>
         {back}
-        <h2 style={{fontSize:22,fontWeight:700,color:ORANGE,marginBottom:16}}>🧬 Encapsulation + Héritage & Modularité</h2>
+        <h2 style={{fontSize:22,fontWeight:700,color:ORANGE,marginBottom:16}}>Encapsulation + Héritage & Modularité</h2>
         <div style={{display:"grid",gap:10}}>
           {HERITAGE_ITEMS.map((item,i)=>(
             <div key={i} style={{border:`1px solid ${herExp===i?ORANGE:BORDER}`,borderRadius:10,overflow:"hidden"}}>
