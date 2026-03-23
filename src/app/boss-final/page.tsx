@@ -144,13 +144,13 @@ export default function BossFinal(){
             return <button key={i} onClick={()=>answer(i)} disabled={show} style={{padding:"10px 14px",border:"2px solid "+bd,borderRadius:8,background:bg,cursor:show?"default":"pointer",textAlign:"left",fontSize:14,color:TEXT,transition:"all 0.15s"}}>{o}</button>})}
         </div>
         {show&&(<div style={{marginTop:12}}>
-          <div style={{display:"flex",gap:12,alignItems:"flex-start"}}>
+          <div style={{display:"flex",gap:12,alignItems:"center"}}>
             <div style={{flex:1}}>
               <div style={{padding:"8px 12px",background:(sel===q.ci?GREEN:RED)+"15",borderRadius:8,fontSize:13,color:sel===q.ci?GREEN:RED,border:"1px solid "+(sel===q.ci?GREEN:RED)+"30"}}>{q.e}</div>
               {sel===q.ci&&streak>=3&&<div style={{marginTop:4,fontSize:11,color:ORANGE,fontWeight:600}}>Streak +{streak>=4?10:5}</div>}
               {sel===q.ci&&respTime<3000&&<div style={{fontSize:11,color:"#7C3AED",fontWeight:600}}>Speed +5</div>}
             </div>
-            <TargetHit timeMs={respTime} show={showTarget}/>
+            <div style={{flexShrink:0}}><TargetHit timeMs={respTime} show={showTarget}/></div>
           </div>
           <button onClick={next} style={{marginTop:10,width:"100%",padding:"10px",background:"linear-gradient(135deg,"+RED+","+ORANGE+")",color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>{idx+1<questions.length?"Suivant":"Resultats"}</button>
         </div>)}

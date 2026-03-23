@@ -23,7 +23,7 @@ export function TargetHit({ timeMs, show }: { timeMs: number; show: boolean }) {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
-      <svg viewBox="0 0 200 200" width={120} height={120}>
+      <svg viewBox="0 0 200 200" width={90} height={90}>
         {/* Target rings */}
         <circle cx="100" cy="100" r="90" fill="#1E293B" stroke="#334155" strokeWidth="1" />
         <circle cx="100" cy="100" r="70" fill="#1E293B" stroke="#475569" strokeWidth="1" />

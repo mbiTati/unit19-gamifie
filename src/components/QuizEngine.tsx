@@ -78,11 +78,11 @@ export default function QuizEngine({ questions, color="#16A34A", title="Quiz" }:
       {/* Feedback + Target */}
       {show&&(
         <div style={{marginTop:10}}>
-          <div style={{display:"flex",gap:12,alignItems:"flex-start"}}>
+          <div style={{display:"flex",gap:12,alignItems:"center"}}>
             <div style={{flex:1,padding:"8px 12px",background:(sel===q.c?GREEN:RED)+"15",borderRadius:8,fontSize:13,color:sel===q.c?GREEN:RED}}>
               {q.e}
             </div>
-            <TargetHit timeMs={respTime} show={showTarget}/>
+            <div style={{flexShrink:0}}><TargetHit timeMs={respTime} show={showTarget}/></div>
           </div>
           <button onClick={next} style={{marginTop:10,width:"100%",padding:"10px",background:color,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>
             {idx+1<questions.length?"Suivant":"Resultats"}
