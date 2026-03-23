@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import TopBar from "@/components/TopBar";
 
 const BG="#0B1120",CARD="#111827",BORDER="#1E3A5F",TEXT="#E2E8F0",MUTED="#94A3B8",GREEN="#16A34A",RED="#DC2626",ORANGE="#F97316",PURPLE="#7C3AED",TEAL="#0891B2",AMBER="#D97706",BLUE="#3B82F6";
 
@@ -64,8 +65,8 @@ export default function Ch14Game(){
 
   if(phase==="menu")return(
     <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"2rem 1rem"}}>
-      <div style={{padding:"8px 16px",borderBottom:"1px solid #1E3A5F"}}><Link href="/" style={{fontSize:12,color:"#94A3B8",textDecoration:"none"}}>Retour accueil</Link></div>
-            <div style={{maxWidth:700,margin:"0 auto"}}>
+      <TopBar/>
+      <div style={{maxWidth:700,margin:"0 auto"}}>
         <div style={{textAlign:"center",marginBottom:"2rem"}}>
           <div style={{fontSize:13,color:AMBER,fontWeight:600,letterSpacing:2,textTransform:"uppercase"}}>Monde 4 — Chapitre 14</div>
           <h1 style={{fontSize:28,fontWeight:700,margin:"0.5rem 0"}}>Trade-offs & Benchmarks</h1>
@@ -95,6 +96,7 @@ export default function Ch14Game(){
     const t=TRADEOFFS[balIdx];
     return(
       <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+      <TopBar/>
         <div style={{maxWidth:700,margin:"0 auto"}}>
           {back}
           <div style={{fontSize:13,color:MUTED,marginBottom:8}}>Scénario {balIdx+1}/{TRADEOFFS.length}</div>
@@ -142,6 +144,7 @@ export default function Ch14Game(){
     const fmt=(n:number)=>{if(n>=1e9)return(n/1e9).toFixed(1)+"B";if(n>=1e6)return(n/1e6).toFixed(1)+"M";if(n>=1e3)return(n/1e3).toFixed(0)+"K";return n.toString()};
     return(
       <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+      <TopBar/>
         <div style={{maxWidth:700,margin:"0 auto"}}>
           {back}
           <div style={{display:"flex",gap:8,marginBottom:16}}>
@@ -176,6 +179,7 @@ export default function Ch14Game(){
   const q=QUIZ[qIdx];
   return(
     <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+      <TopBar/>
       <div style={{maxWidth:650,margin:"0 auto"}}>
         {back}
         <div style={{fontSize:13,color:MUTED,marginBottom:8}}>{qIdx+1}/{QUIZ.length} | Score: {qScore}</div>

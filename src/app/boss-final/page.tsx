@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { TargetHit, CircleTimer, FlameStreak, XPBar, Confetti } from "@/components/GameAnimations";
+import TopBar from "@/components/TopBar";
 
 interface Q { q: string; c?: string; o: string[]; ci: number; e: string; lo: string; }
 
@@ -76,6 +77,7 @@ export default function BossFinal(){
 
   if(!started)return(
     <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"2rem 1rem"}}>
+      <TopBar/>
       <div style={{padding:"8px 16px",borderBottom:"1px solid "+BORDER}}><Link href="/" style={{fontSize:12,color:MUTED,textDecoration:"none"}}>Retour accueil</Link></div>
       <div style={{maxWidth:600,margin:"0 auto",textAlign:"center",paddingTop:"2rem"}}>
         <div style={{fontSize:14,color:RED,fontWeight:600,letterSpacing:3,textTransform:"uppercase"}}>Boss final</div>
@@ -97,6 +99,7 @@ export default function BossFinal(){
     const gc=pct>=75?GREEN:pct>=50?ORANGE:RED;
     return(
       <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"3rem 1rem"}}>
+      <TopBar/>
         <Confetti active={showConfetti}/>
         <div style={{maxWidth:500,margin:"0 auto",textAlign:"center"}}>
           <div style={{fontSize:100,fontWeight:800,color:gc,lineHeight:1}}>{grade}</div>
@@ -116,6 +119,7 @@ export default function BossFinal(){
   const q=questions[idx];const min=Math.floor(timeLeft/60);const sec=timeLeft%60;
   return(
     <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+      <TopBar/>
       <div style={{maxWidth:650,margin:"0 auto"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
           <div style={{display:"flex",alignItems:"center",gap:8}}>

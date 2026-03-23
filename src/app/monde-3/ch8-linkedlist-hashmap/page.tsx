@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import TopBar from "@/components/TopBar";
 
 const BG="#0B1120",CARD="#111827",BORDER="#1E3A5F",TEXT="#E2E8F0",MUTED="#94A3B8",GREEN="#16A34A",RED="#DC2626",ORANGE="#F97316",PURPLE="#7C3AED",TEAL="#0891B2",BLUE="#3B82F6";
 
@@ -54,6 +55,7 @@ export default function Ch8Game(){
 
   if(phase==="menu")return(
     <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"2rem 1rem"}}>
+      <TopBar/>
       <div style={{padding:"8px 16px",borderBottom:"1px solid "+BORDER}}><Link href="/" style={{fontSize:12,color:MUTED,textDecoration:"none"}}>Retour accueil</Link></div>
       <div style={{maxWidth:700,margin:"0 auto"}}>
         <div style={{textAlign:"center",marginBottom:"2rem"}}>
@@ -82,6 +84,7 @@ export default function Ch8Game(){
   if(phase==="table"){
     return(
       <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+      <TopBar/>
         <div style={{maxWidth:750,margin:"0 auto"}}>
           {back}
           <h2 style={{fontSize:18,fontWeight:700,color:TEAL,marginBottom:12}}>Completez le tableau de complexite</h2>
@@ -138,6 +141,7 @@ export default function Ch8Game(){
   const q=QUIZ[qIdx];
   return(
     <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+      <TopBar/>
       <div style={{maxWidth:650,margin:"0 auto"}}>
         {back}
         <div style={{fontSize:13,color:MUTED,marginBottom:8}}>{qIdx+1}/{QUIZ.length} | Score: {qScore}</div>

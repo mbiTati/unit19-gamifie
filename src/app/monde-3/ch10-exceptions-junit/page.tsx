@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import TopBar from "@/components/TopBar";
 
 const BG="#0B1120",CARD="#111827",BORDER="#1E3A5F",TEXT="#E2E8F0",MUTED="#94A3B8",GREEN="#16A34A",RED="#DC2626",ORANGE="#F97316",PURPLE="#7C3AED",TEAL="#0891B2";
 
@@ -128,6 +129,7 @@ export default function Ch10Game(){
 
   if(phase==="menu")return(
     <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"2rem 1rem"}}>
+      <TopBar/>
       <div style={{padding:"8px 16px",borderBottom:"1px solid "+BORDER}}><Link href="/" style={{fontSize:12,color:MUTED,textDecoration:"none"}}>Retour accueil</Link></div>
       <div style={{maxWidth:700,margin:"0 auto"}}>
         <div style={{textAlign:"center",marginBottom:"2rem"}}>
@@ -163,6 +165,7 @@ export default function Ch10Game(){
     const isCorrect=trShow&&JSON.stringify(trSel)===JSON.stringify(tr.correctOrder);
     return(
       <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+      <TopBar/>
         <div style={{maxWidth:700,margin:"0 auto"}}>
           {back}
           <div style={{fontSize:13,color:MUTED,marginBottom:8}}>{trIdx+1}/{TRACES.length} | Score: {trScore}</div>
@@ -218,6 +221,7 @@ export default function Ch10Game(){
     const check=(v:string)=>{if(compShow)return;setCompSel(v);setCompShow(true);if(v===correctAnswer)setCompScore(s=>s+1)};
     return(
       <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+      <TopBar/>
         <div style={{maxWidth:700,margin:"0 auto"}}>
           {back}
           <div style={{fontSize:13,color:MUTED,marginBottom:8}}>{compIdx+1}/{COMPILE_CHECKS.length} | Score: {compScore}</div>
@@ -244,6 +248,7 @@ export default function Ch10Game(){
     const puzz=PUZZLES[puzzIdx];
     return(
       <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+      <TopBar/>
         <div style={{maxWidth:700,margin:"0 auto"}}>
           {back}
           <div style={{fontSize:13,color:MUTED,marginBottom:8}}>Bug {puzzIdx+1}/{PUZZLES.length}</div>
@@ -278,6 +283,7 @@ export default function Ch10Game(){
     const isCorrect=builderDone&&placed.every((id,i)=>{const block=JUNIT_BLOCKS.find(b=>b.id===id);return block&&block.order===i});
     return(
       <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+      <TopBar/>
         <div style={{maxWidth:700,margin:"0 auto"}}>
           {back}
           <h2 style={{fontSize:18,fontWeight:700,color:ORANGE,marginBottom:4}}>Code Builder — Test JUnit 5</h2>
@@ -306,6 +312,7 @@ export default function Ch10Game(){
   const q=QUIZ[qIdx];
   return(
     <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+      <TopBar/>
       <div style={{maxWidth:650,margin:"0 auto"}}>
         {back}
         <div style={{fontSize:13,color:MUTED,marginBottom:8}}>{qIdx+1}/{QUIZ.length} | Score: {qScore}</div>

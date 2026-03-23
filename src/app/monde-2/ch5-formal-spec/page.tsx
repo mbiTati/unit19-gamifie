@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import TopBar from "@/components/TopBar";
 
 const BG="#0B1120",CARD="#111827",BORDER="#1E3A5F",TEXT="#E2E8F0",MUTED="#94A3B8",GREEN="#16A34A",TEAL="#0891B2",PURPLE="#7C3AED",RED="#DC2626",ORANGE="#F97316";
 
@@ -67,8 +68,8 @@ export default function Ch5Game(){
 
   if(phase==="menu")return(
     <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"2rem 1rem"}}>
-      <div style={{padding:"8px 16px",borderBottom:"1px solid #1E3A5F"}}><Link href="/" style={{fontSize:12,color:"#94A3B8",textDecoration:"none"}}>Retour accueil</Link></div>
-            <div style={{maxWidth:700,margin:"0 auto"}}>
+      <TopBar/>
+      <div style={{maxWidth:700,margin:"0 auto"}}>
         <div style={{textAlign:"center",marginBottom:"2rem"}}>
           <div style={{fontSize:13,color:TEAL,fontWeight:600,letterSpacing:2,textTransform:"uppercase"}}>Monde 2 — Chapitre 5</div>
           <h1 style={{fontSize:28,fontWeight:700,margin:"0.5rem 0"}}>Spécification formelle & Notation</h1>
@@ -95,6 +96,7 @@ export default function Ch5Game(){
 
   if(phase==="builder")return(
     <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+      <TopBar/>
       <div style={{maxWidth:700,margin:"0 auto"}}>
         {back}
         <h2 style={{fontSize:22,fontWeight:700,color:TEAL,marginBottom:16}}>Spec complète d'un Stack</h2>
@@ -119,6 +121,7 @@ export default function Ch5Game(){
     const filtered=vFilter==="all"?VDM_ITEMS:VDM_ITEMS.filter(i=>i.cat===vFilter);
     return(
       <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+      <TopBar/>
         <div style={{maxWidth:700,margin:"0 auto"}}>
           {back}
           <h2 style={{fontSize:22,fontWeight:700,color:PURPLE,marginBottom:4}}>Langages de spécification</h2>
@@ -151,6 +154,7 @@ export default function Ch5Game(){
     const it=shuffled[cIdx];const cats=["PRE","POST","INVARIANT","AXIOM"] as const;
     return(
       <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+      <TopBar/>
         <div style={{maxWidth:600,margin:"0 auto"}}>
           {back}
           <div style={{fontSize:13,color:MUTED,marginBottom:8}}>{cIdx+1}/{shuffled.length} | Score: {cScore}</div>
@@ -176,6 +180,7 @@ export default function Ch5Game(){
   const qq=QUIZ[qIdx];
   return(
     <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+      <TopBar/>
       <div style={{maxWidth:650,margin:"0 auto"}}>
         {back}
         <div style={{fontSize:13,color:MUTED,marginBottom:8}}>{qIdx+1}/{QUIZ.length} | Score: {qScore}</div>

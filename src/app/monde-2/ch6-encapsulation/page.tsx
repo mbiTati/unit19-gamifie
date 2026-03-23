@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import TopBar from "@/components/TopBar";
 
 const BG="#0B1120",CARD="#111827",BORDER="#1E3A5F",TEXT="#E2E8F0",MUTED="#94A3B8",GREEN="#16A34A",TEAL="#0891B2",PURPLE="#7C3AED",RED="#DC2626",ORANGE="#F97316";
 
@@ -53,8 +54,8 @@ export default function Ch6Game(){
 
   if(phase==="menu")return(
     <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"2rem 1rem"}}>
-      <div style={{padding:"8px 16px",borderBottom:"1px solid #1E3A5F"}}><Link href="/" style={{fontSize:12,color:"#94A3B8",textDecoration:"none"}}>Retour accueil</Link></div>
-            <div style={{maxWidth:700,margin:"0 auto"}}>
+      <TopBar/>
+      <div style={{maxWidth:700,margin:"0 auto"}}>
         <div style={{textAlign:"center",marginBottom:"2rem"}}>
           <div style={{fontSize:13,color:TEAL,fontWeight:600,letterSpacing:2,textTransform:"uppercase"}}>Monde 2 — Chapitre 6</div>
           <h1 style={{fontSize:28,fontWeight:700,margin:"0.5rem 0"}}>Encapsulation, Info Hiding & Interfaces</h1>
@@ -84,6 +85,7 @@ export default function Ch6Game(){
     const step=ENCAP_STEPS[simStep];
     return(
       <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+      <TopBar/>
         <div style={{maxWidth:700,margin:"0 auto"}}>
           {back}
           <h2 style={{fontSize:22,fontWeight:700,color:TEAL,marginBottom:4}}>Simulateur d'Encapsulation</h2>
@@ -112,6 +114,7 @@ export default function Ch6Game(){
     const q=HIDING_QS[hIdx];
     return(
       <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+      <TopBar/>
         <div style={{maxWidth:650,margin:"0 auto"}}>
           {back}
           <div style={{fontSize:13,color:MUTED,marginBottom:8}}>{hIdx+1}/{HIDING_QS.length} | Score: {hScore}</div>
@@ -130,6 +133,7 @@ export default function Ch6Game(){
     const q=INTERFACE_QS[iIdx];
     return(
       <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+      <TopBar/>
         <div style={{maxWidth:650,margin:"0 auto"}}>
           {back}
           <div style={{fontSize:13,color:MUTED,marginBottom:8}}>{iIdx+1}/{INTERFACE_QS.length} | Score: {iScore}</div>
@@ -145,6 +149,7 @@ export default function Ch6Game(){
   // HERITAGE EXPLORER
   return(
     <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+      <TopBar/>
       <div style={{maxWidth:700,margin:"0 auto"}}>
         {back}
         <h2 style={{fontSize:22,fontWeight:700,color:ORANGE,marginBottom:16}}>Encapsulation + Héritage & Modularité</h2>

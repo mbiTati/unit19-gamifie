@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import TopBar from "@/components/TopBar";
 const BG="#0B1120",CARD="#111827",BORDER="#1E3A5F",TEXT="#E2E8F0",MUTED="#94A3B8",GREEN="#16A34A",RED="#DC2626",ORANGE="#F97316",AMBER="#D97706";
 const QS=[
   {q:"O(1) signifie :",o:["Le programme fait 1 opération","Temps constant quelle que soit la taille","Toujours 1 seconde","Erreur"],c:1,e:"O(1) = temps constant, indépendant de n."},
@@ -32,5 +33,4 @@ export default function BossLO4(){
   if(idx>=shuffled.length){const p=Math.round(score/shuffled.length*100);const msg=p>=80?"BOSS VAINCU !":p>=60?"Presque... Réessayez !":"Le boss vous a battu !";return(<div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"3rem 1rem"}}><div style={{maxWidth:500,margin:"0 auto",textAlign:"center"}}><div style={{fontSize:80,fontWeight:800,color:p>=80?GREEN:p>=60?ORANGE:RED}}>{score}/{shuffled.length}</div><div style={{fontSize:20,fontWeight:600,margin:"0.5rem 0"}}>{msg}</div><button onClick={()=>{setIdx(0);setScore(0);setStarted(false)}} style={{marginTop:16,padding:"10px 24px",background:AMBER,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>Rejouer</button></div></div>)}
   const q=shuffled[idx];
   return(<div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}><div style={{maxWidth:650,margin:"0 auto"}}><div style={{fontSize:13,color:MUTED,marginBottom:8}}> {idx+1}/{shuffled.length} | Score: {score}</div><div style={{height:4,background:BORDER,borderRadius:2,marginBottom:16}}><div style={{height:4,background:AMBER,borderRadius:2,width:`${(idx+1)/shuffled.length*100}%`}}/></div><p style={{fontSize:16,fontWeight:600,marginBottom:12}}>{q.q}</p><div style={{display:"grid",gap:8}}>{q.o.map((o,i)=>{let bg=CARD,bd=BORDER;if(show){if(i===q.c){bg=GREEN+"20";bd=GREEN}else if(i===sel){bg=RED+"20";bd=RED}}return(<button key={i} onClick={()=>{if(show)return;setSel(i);setShow(true);if(i===q.c)setScore(s=>s+1)}} disabled={show} style={{padding:"10px 14px",border:`2px solid ${bd}`,borderRadius:8,background:bg,cursor:show?"default":"pointer",textAlign:"left",fontSize:14,color:TEXT}}>{o}</button>)})}</div>{show&&<><div style={{marginTop:10,padding:"10px 14px",background:GREEN+"15",borderRadius:8,fontSize:13,color:GREEN}}>{q.e}</div><button onClick={()=>{setIdx(i=>i+1);setSel(null);setShow(false)}} style={{marginTop:10,width:"100%",padding:"10px",background:AMBER,color:"white",border:"none",borderRadius:8,fontWeight:600,cursor:"pointer"}}>Suivant →</button></>}</div></div>);
-      <div style={{padding:"8px 16px",borderBottom:"1px solid #1E3A5F"}}><Link href="/" style={{fontSize:12,color:"#94A3B8",textDecoration:"none"}}>Retour accueil</Link></div>
-}
+      }

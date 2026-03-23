@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { FlashcardDeck, SpinningWheel, DigiLock, Buzzer } from "@/components/GameAnimations";
+import TopBar from "@/components/TopBar";
 
 const BG="#0B1120",CARD="#111827",BORDER="#1E3A5F",TEXT="#E2E8F0",MUTED="#94A3B8",GREEN="#16A34A",ORANGE="#F97316",PURPLE="#7C3AED",TEAL="#0891B2",RED="#DC2626";
 
@@ -55,6 +56,7 @@ export default function OutilsPage(){
 
   if(phase==="menu")return(
     <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"2rem 1rem"}}>
+      <TopBar/>
       <div style={{padding:"8px 16px",borderBottom:"1px solid "+BORDER}}><Link href="/" style={{fontSize:12,color:MUTED,textDecoration:"none"}}>Retour accueil</Link></div>
       <div style={{maxWidth:700,margin:"0 auto"}}>
         <div style={{textAlign:"center",marginBottom:"2rem",marginTop:"1rem"}}>
@@ -86,6 +88,7 @@ export default function OutilsPage(){
 
   if(phase==="flashcards")return(
     <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+      <TopBar/>
       <div style={{maxWidth:500,margin:"0 auto"}}>
         {back}
         <h2 style={{fontSize:20,fontWeight:700,color:TEAL,marginBottom:12}}>Flashcards — Unit 19</h2>
@@ -96,6 +99,7 @@ export default function OutilsPage(){
 
   if(phase==="wheel")return(
     <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+      <TopBar/>
       <div style={{maxWidth:500,margin:"0 auto",textAlign:"center"}}>
         {back}
         <h2 style={{fontSize:20,fontWeight:700,color:ORANGE,marginBottom:16}}>Roue du hasard</h2>
@@ -109,6 +113,7 @@ export default function OutilsPage(){
     const allOpen=locksOpen>=LOCKS.length;
     return(
       <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+      <TopBar/>
         <div style={{maxWidth:500,margin:"0 auto"}}>
           {back}
           <h2 style={{fontSize:20,fontWeight:700,color:RED,marginBottom:4}}>Escape Game — Unit 19</h2>
@@ -138,6 +143,7 @@ export default function OutilsPage(){
   // Buzzer
   return(
     <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
+      <TopBar/>
       <div style={{maxWidth:400,margin:"0 auto",textAlign:"center"}}>
         {back}
         <h2 style={{fontSize:20,fontWeight:700,color:GREEN,marginBottom:20}}>Buzzer</h2>

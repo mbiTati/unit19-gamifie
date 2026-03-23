@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import TopBar from "@/components/TopBar";
 
 // Binary tree node
 interface TreeNode { value: number; left?: TreeNode; right?: TreeNode; }
@@ -132,7 +133,6 @@ export default function Ch9Game() {
 
   if (mode === "menu") return (
     <div style={{ minHeight: "100vh", background: "#0B1120", color: "#1E3A5F", padding: "2rem 1rem", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
-      <div style={{padding:"8px 16px",borderBottom:"1px solid #1E3A5F"}}><Link href="/" style={{fontSize:12,color:"#94A3B8",textDecoration:"none"}}>Retour accueil</Link></div>
       <div style={{ textAlign: "center", marginBottom: "2rem" }}>
         <div style={{ fontSize: 14, color: "#993C1D", fontWeight: 600, letterSpacing: 2, textTransform: "uppercase" as const }}>Monde 3 — Chapitre 9</div>
         <h1 style={{ fontSize: 32, fontWeight: 700, color: "#1E3A5F", margin: "0.5rem 0" }}>Tree + Algorithmes de tri</h1>
