@@ -1219,19 +1219,54 @@ const EXERCISES=[
     criteria:"P4 (HashMap+LinkedList), P5 (exceptions multiples), M4, D3 (Queue+HashMap combines)"},
 ,
   {id:4,title:"Gestion de Tickets de Support IT",color:"#3B82F6",
-    context:"Votre manager vous demande de developper une application de gestion de tickets de support. Les tickets ont un id auto-incremente, une description, une priorite (CRITIQUE/NORMAL/FAIBLE), un demandeur, et un statut resolu/ouvert.",
-    tasks:["Creer un ticket avec id auto-incremente (throw si description vide ou priorite invalide)","Resoudre un ticket par id (throws Exception si inexistant)","Tickets critiques non resolus + rechercher par demandeur","Statistiques + try/catch/finally dans le Menu","5 tests JUnit 5 : valide, desc vide, priorite invalide, inexistant, critiques"],
+    context:"Vous travaillez dans le service informatique d'une entreprise. Votre manager vous demande de developper une application de gestion de tickets de support. Les tickets doivent etre traites par ordre de priorite : les tickets critiques en premier, puis les tickets normaux. L'application utilise un systeme de file d'attente avec priorite.",
+    tasks:[
+      "P4 — Classe Ticket : id, description, priorite (CRITIQUE/NORMAL/FAIBLE), demandeur, resolu + getters/setters + toString()",
+      "P4 — Classe GestionTickets : HashMap<Integer, Ticket> + compteur auto-increment + creerTicket() + resoudreTicket() + ticketsCritiques() + rechercherParDemandeur() + statistiques()",
+      "P4 — Menu interactif : 1.Creer 2.Resoudre 3.Critiques 4.Rechercher 5.Stats 6.Quitter",
+      "P5 — throws : resoudreTicket() declare throws Exception",
+      "P5 — throw : creerTicket() leve IllegalArgumentException si description vide ou priorite invalide",
+      "P5 — try/catch : saisie id ticket a resoudre (NumberFormatException)",
+      "P5 — try/catch/finally : creation ticket, finally affiche le total apres chaque tentative",
+      "P5 — 5 Tests JUnit : testCreerTicketValide, testCreerDescriptionVide, testCreerPrioriteInvalide, testResoudreTicketInexistant, testTicketsCritiques",
+      "M4 — Commentaires : POURQUOI HashMap, COMMENT get() resout le probleme, COMMENT ticketsCritiques() filtre, QUEL avantage HashMap pour recherche par cle",
+      "D3 — Complexite : creerTicket O(1), resoudreTicket O(1) vs LinkedList O(n), ticketsCritiques O(n), rechercherParDemandeur O(n), amelioration HashMap<String, List<Ticket>>"
+    ],
     structure:"HashMap<Integer, Ticket>",
-    structureWhy:"Acces direct par id en O(1). Unicite des cles garantie. Bien meilleur que LinkedList qui serait O(n) pour resoudreTicket(id).",
-    classes:["Ticket (id, description, priorite, demandeur, resolu) + getters/setters + toString()","GestionTickets (HashMap, compteurId) : creerTicket (throw), resoudreTicket (throws Exception), ticketsCritiques, rechercherParDemandeur, statistiques -- SANS Scanner","Menu avec GestionTickets injecte + try/catch/finally + Main separee","GestionTicketsTest : 5 tests JUnit 5 (@Test, @BeforeEach, assertThrows)"],
+    structureWhy:"HashMap choisi car : acces direct par id en O(1) (essentiel pour resoudreTicket), unicite des cles (pas 2 tickets meme id), ajout O(1) amorti. Avec LinkedList, resoudreTicket serait O(n).",
+    classes:[
+      "Ticket — Entite metier : id, description, priorite, demandeur, resolu + getters/setters + toString()",
+      "GestionTickets — ADT + Algorithmes : HashMap<Integer,Ticket>, compteur auto-increment, SANS Scanner (testable JUnit)",
+      "Menu — Interface utilisateur : Scanner, afficherMenu(), gestionChoix() avec boucle while + try/catch + finally",
+      "Main — Point d'entree : instancie GestionTickets et Menu, lance le programme",
+      "GestionTicketsTest — 5 tests JUnit 5 : @BeforeEach, @Test, assertEquals, assertThrows"
+    ],
     code:EX4_CODE,
     criteria:"P4 (HashMap), P5 (exceptions multiples : IllegalArgument + IllegalState + NumberFormat), M4 (resout un probleme IT), D3 (analyse O(1) vs O(n))"},
   {id:5,title:"Gestion de Stock de Medicaments en Pharmacie",color:"#16A34A",
-    context:"Vous etes developpeur dans une pharmacie de quartier. Le pharmacien souhaite une application Java pour gerer son stock de medicaments. Ajout, recherche par nom, stocks faibles (quantite < 5), affichage trie par nom. Utilise LinkedList (pas HashMap).",
-    tasks:["Ajouter un medicament (throw si nom vide ou prix negatif)","Rechercher par nom (throws Exception si non trouve)","Stocks faibles : medicaments avec quantite < 5","Trier par nom avec tri a bulles (pas Collections.sort)","Supprimer un medicament + try/catch/finally dans le Menu","5 tests JUnit 5 : valide, nom vide, existant, inexistant, stocks faibles"],
+    context:"Vous etes developpeur dans une pharmacie de quartier. Le pharmacien souhaite une application Java pour gerer son stock de medicaments. L'application doit permettre d'ajouter des medicaments, de rechercher un medicament par nom, de verifier les stocks faibles (quantite < 5) et d'afficher l'ensemble du stock trie par nom.",
+    tasks:[
+      "P4 — Classe Medicament : nom (String), prix (double), quantite (int), dateExpiration (String) + getters/setters + toString()",
+      "P4 — Classe GestionStock : LinkedList<Medicament> + ajouter() + rechercher() + stocksFaibles() + trierParNom() + supprimer()",
+      "P4 — trierParNom() : tri a bulles a implementer (PAS Collections.sort)",
+      "P4 — Menu interactif : 1.Ajouter 2.Rechercher 3.Stocks faibles 4.Afficher tout (trie) 5.Supprimer 6.Quitter",
+      "P5 — throws : rechercher() declare throws Exception dans sa signature",
+      "P5 — throw : ajouter() leve IllegalArgumentException si nom vide ou prix negatif",
+      "P5 — try/catch : Menu gere InputMismatchException et NumberFormatException",
+      "P5 — try/catch/finally : finally affiche un message de fin d'operation apres CHAQUE action",
+      "P5 — 5 Tests JUnit : testAjouterMedicamentValide, testAjouterNomVide, testRechercherExistant, testRechercherInexistant, testStocksFaibles",
+      "M4 — Commentaires : POURQUOI LinkedList (pas tableau/ArrayList), COMMENT trierParNom() fonctionne, COMMENT stocksFaibles() filtre, QUEL avantage pour ajouts/suppressions",
+      "D3 — Complexite : ajouter O(1), rechercher O(n) meilleur/pire cas, stocksFaibles O(n), trierParNom O(n^2) et est-il optimal ?, comparaison ArrayList/HashMap"
+    ],
     structure:"LinkedList<Medicament>",
-    structureWhy:"Ajouts/suppressions frequents en pharmacie. LinkedList O(1) pour ajouter. Tri a bulles a implementer soi-meme (pas Collections.sort).",
-    classes:["Medicament (nom, prix, quantite, dateExpiration String) + getters/setters + toString() avec alerte [STOCK FAIBLE]","GestionStock (LinkedList) : ajouter (throw), rechercher (throws Exception), stocksFaibles, trierParNom (tri a bulles), supprimer -- SANS Scanner","Menu avec GestionStock injecte + try/catch/finally + Main separee","GestionStockTest : 5 tests JUnit 5 (@Test, @BeforeEach, assertThrows)"],
+    structureWhy:"LinkedList choisi car : ajouts/suppressions frequents en pharmacie O(1), pas besoin d'acces par index (recherche par nom = parcours), tri a bulles implementable sur LinkedList.",
+    classes:[
+      "Medicament — Entite metier : nom, prix, quantite, dateExpiration + getters/setters + toString()",
+      "GestionStock — ADT + Algorithmes : LinkedList<Medicament>, tri a bulles, SANS Scanner (testable JUnit)",
+      "Menu — Interface utilisateur : Scanner, afficherMenu(), gestionChoix() avec boucle while + try/catch + finally",
+      "Main — Point d'entree : instancie GestionStock et Menu, lance le programme",
+      "GestionStockTest — 5 tests JUnit 5 : @BeforeEach, @Test, assertEquals, assertThrows"
+    ],
     code:EX5_CODE,
     criteria:"P4 (LinkedList + tri a bulles), P5 (throws Exception + throw + try/catch/finally), M4 (pourquoi LinkedList + comment le tri resout le probleme), D3 (O(n) recherche, O(n^2) tri, comparaison avec ArrayList/HashMap)"}
 
@@ -1250,8 +1285,8 @@ export default function ExercicesEntreprise(){
         <div style={{textAlign:"center",marginBottom:"2rem"}}>
           <div style={{fontSize:13,color:ORANGE,fontWeight:600,letterSpacing:2,textTransform:"uppercase"}}>Exercices pratiques</div>
           <h1 style={{fontSize:28,fontWeight:700,margin:"0.5rem 0"}}>Cas d'entreprise Java</h1>
-          <p style={{color:MUTED,fontSize:15}}>5 exercices complets avec classes metier, gestion, menu, exceptions</p>
-          <p style={{color:MUTED,fontSize:12,marginTop:4}}>Architecture : Classe metier + Classe Gestion (sans Scanner) + Menu (avec Scanner)</p>
+          <p style={{color:MUTED,fontSize:15}}>5 exercices complets — classes metier, gestion, menu, exceptions, tests JUnit</p>
+          <p style={{color:MUTED,fontSize:12,marginTop:4}}>Structure par exercice : 4 niveaux (P4 Implementation, P5 Error Handling + Tests, M4 Commentaires, D3 Complexite)</p>
         </div>
         <div style={{display:"grid",gap:16}}>
           {EXERCISES.map((ex)=>(
