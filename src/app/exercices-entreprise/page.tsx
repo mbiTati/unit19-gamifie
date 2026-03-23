@@ -548,6 +548,195 @@ public class Menu {
     }
 }`;
 
+const EX4_CODE=`import java.util.HashMap;
+import java.util.ArrayList;
+
+// ===================================================
+// CLASSE METIER : Ticket
+// ===================================================
+public class Ticket {
+    private int id;
+    private String description;
+    private String priorite; // "CRITIQUE", "NORMAL", "FAIBLE"
+    private String demandeur;
+    private boolean resolu;
+
+    public Ticket(int id, String description, String priorite, String demandeur) {
+        this.id = id;
+        this.description = description;
+        this.priorite = priorite;
+        this.demandeur = demandeur;
+        this.resolu = false;
+    }
+
+    public int getId() { return id; }
+    public String getDescription() { return description; }
+    public String getPriorite() { return priorite; }
+    public String getDemandeur() { return demandeur; }
+    public boolean isResolu() { return resolu; }
+    public void setResolu(boolean resolu) { this.resolu = resolu; }
+
+    @Override
+    public String toString() {
+        return "[#" + id + "] " + (resolu ? "RESOLU" : "OUVERT")
+            + " | " + priorite + " | " + description
+            + " | Demandeur: " + demandeur;
+    }
+}
+
+// ===================================================
+// CLASSE GESTION (sans Scanner - testable JUnit)
+// ===================================================
+public class GestionTickets {
+    private HashMap<Integer, Ticket> tickets;
+    private int compteurId;
+
+    public GestionTickets() {
+        this.tickets = new HashMap<>();
+        this.compteurId = 1;
+    }
+
+    // CREATE - id auto-increment
+    public Ticket creerTicket(String description, String priorite, String demandeur) {
+        if (description == null || description.trim().isEmpty())
+            throw new IllegalArgumentException("Description vide !");
+        if (!priorite.equals("CRITIQUE") && !priorite.equals("NORMAL") && !priorite.equals("FAIBLE"))
+            throw new IllegalArgumentException("Priorite invalide : " + priorite);
+        Ticket t = new Ticket(compteurId, description, priorite, demandeur);
+        tickets.put(compteurId, t);
+        compteurId++;
+        return t;
+    }
+
+    // UPDATE - resoudre par id O(1)
+    public void resoudreTicket(int id) {
+        if (!tickets.containsKey(id))
+            throw new IllegalArgumentException("Ticket #" + id + " inexistant !");
+        Ticket t = tickets.get(id);
+        if (t.isResolu())
+            throw new IllegalStateException("Ticket #" + id + " deja resolu !");
+        t.setResolu(true);
+    }
+
+    // READ - critiques non resolus O(n)
+    public ArrayList<Ticket> ticketsCritiques() {
+        ArrayList<Ticket> critiques = new ArrayList<>();
+        for (Ticket t : tickets.values()) {
+            if (t.getPriorite().equals("CRITIQUE") && !t.isResolu())
+                critiques.add(t);
+        }
+        return critiques;
+    }
+
+    // READ - par demandeur O(n)
+    public ArrayList<Ticket> rechercherParDemandeur(String demandeur) {
+        ArrayList<Ticket> resultats = new ArrayList<>();
+        for (Ticket t : tickets.values()) {
+            if (t.getDemandeur().equalsIgnoreCase(demandeur))
+                resultats.add(t);
+        }
+        if (resultats.isEmpty())
+            throw new IllegalArgumentException("Aucun ticket pour : " + demandeur);
+        return resultats;
+    }
+
+    // READ - statistiques O(n)
+    public String statistiques() {
+        int total = tickets.size();
+        int resolus = 0;
+        for (Ticket t : tickets.values()) if (t.isResolu()) resolus++;
+        int ouverts = total - resolus;
+        double pourcent = total > 0 ? (resolus * 100.0 / total) : 0;
+        return "Total: " + total + " | Resolus: " + resolus
+            + " | Ouverts: " + ouverts + " | Taux: " + String.format("%.1f", pourcent) + "%";
+    }
+
+    public int getTotal() { return tickets.size(); }
+}
+
+// ===================================================
+// MENU (Scanner + try/catch multi-exceptions)
+// ===================================================
+import java.util.Scanner;
+
+public class Menu {
+    public static void main(String[] args) {
+        GestionTickets gestion = new GestionTickets();
+        Scanner sc = new Scanner(System.in);
+        int choix;
+
+        do {
+            System.out.println("\\n=== SUPPORT IT - Tickets ===");
+            System.out.println("1. Creer un ticket");
+            System.out.println("2. Resoudre un ticket");
+            System.out.println("3. Tickets critiques");
+            System.out.println("4. Rechercher par demandeur");
+            System.out.println("5. Statistiques");
+            System.out.println("0. Quitter");
+            System.out.print("Choix : ");
+
+            try {
+                choix = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Entrez un nombre !");
+                choix = -1; continue;
+            }
+
+            switch (choix) {
+                case 1:
+                    try {
+                        System.out.print("Description : ");
+                        String desc = sc.nextLine();
+                        System.out.print("Priorite (CRITIQUE/NORMAL/FAIBLE) : ");
+                        String prio = sc.nextLine().toUpperCase();
+                        System.out.print("Demandeur : ");
+                        String dem = sc.nextLine();
+                        Ticket t = gestion.creerTicket(desc, prio, dem);
+                        System.out.println("Ticket cree : " + t);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Erreur : " + e.getMessage());
+                    }
+                    break;
+                case 2:
+                    try {
+                        System.out.print("ID du ticket : ");
+                        int id = Integer.parseInt(sc.nextLine());
+                        gestion.resoudreTicket(id);
+                        System.out.println("Ticket #" + id + " resolu !");
+                    } catch (NumberFormatException e) {
+                        System.out.println("ID invalide !");
+                    } catch (IllegalArgumentException | IllegalStateException e) {
+                        System.out.println("Erreur : " + e.getMessage());
+                    }
+                    break;
+                case 3:
+                    var critiques = gestion.ticketsCritiques();
+                    if (critiques.isEmpty()) System.out.println("Aucun ticket critique ouvert.");
+                    else { System.out.println("Critiques (" + critiques.size() + ") :");
+                        for (var tk : critiques) System.out.println("  " + tk); }
+                    break;
+                case 4:
+                    try {
+                        System.out.print("Demandeur : ");
+                        var res = gestion.rechercherParDemandeur(sc.nextLine());
+                        System.out.println("Tickets (" + res.size() + ") :");
+                        for (var tk : res) System.out.println("  " + tk);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Erreur : " + e.getMessage());
+                    }
+                    break;
+                case 5:
+                    System.out.println(gestion.statistiques());
+                    break;
+                case 0: System.out.println("Au revoir !"); break;
+                default: System.out.println("Choix invalide.");
+            }
+        } while (choix != 0);
+        sc.close();
+    }
+}`;
+
+
 const EXERCISES=[
   {id:1,title:"Gestion des emprunts de velos",color:TEAL,
     context:"Vous etes developpeur dans une entreprise proposant un service de pret de velos a ses employes. Vous devez creer un programme Java oriente objet.",
@@ -573,11 +762,20 @@ const EXERCISES=[
     classes:["Reservation (nomEmploye, date, heure, salle) + getters + toString + equals (doublon = meme salle+date+heure)","GestionSalles (HashMap+LinkedList, reserver, annuler, getCreneauxReserves) — SANS Scanner","Menu (Scanner + switch/case + try/catch + DateTimeParseException)"],
     code:EX3_CODE,
     criteria:"P4 (HashMap+LinkedList), P5 (exceptions multiples), M4, D3 (Queue+HashMap combines)"},
+,
+  {id:4,title:"Gestion des Tickets de Support IT",color:"#3B82F6",
+    context:"Votre manager vous demande de developper une application de gestion de tickets de support. Les tickets ont un id auto-incremente, une description, une priorite (CRITIQUE/NORMAL/FAIBLE), un demandeur, et un statut resolu/ouvert.",
+    tasks:["Creer un ticket (description, priorite, demandeur) avec id auto-incremente","Resoudre un ticket par son id","Afficher les tickets critiques non resolus","Rechercher les tickets d'un demandeur","Afficher les statistiques (total, resolus, ouverts, taux)"],
+    structure:"HashMap<Integer, Ticket>",
+    structureWhy:"Acces direct par id en O(1). Unicite des cles garantie. Bien meilleur que LinkedList qui serait O(n) pour resoudreTicket(id).",
+    classes:["Ticket (id, description, priorite, demandeur, resolu) + getters/setters + toString()","GestionTickets (HashMap, compteurId, creerTicket, resoudreTicket, ticketsCritiques, rechercherParDemandeur, statistiques) -- SANS Scanner","Menu (Scanner + switch/case + try/catch multi-exceptions)"],
+    code:EX4_CODE,
+    criteria:"P4 (HashMap), P5 (exceptions multiples : IllegalArgument + IllegalState + NumberFormat), M4 (resout un probleme IT), D3 (analyse O(1) vs O(n))"}
 ];
 
 export default function ExercicesEntreprise(){
-  const[expanded,setExpanded]=useState(null as number|null);
-  const[showCode,setShowCode]=useState(new Set() as Set<number>);
+  const[expanded,setExpanded]=useState(null);
+  const[showCode,setShowCode]=useState(new Set());
 
   const toggleCode=(id:number)=>{const s=new Set(showCode);s.has(id)?s.delete(id):s.add(id);setShowCode(s)};
 
@@ -588,11 +786,11 @@ export default function ExercicesEntreprise(){
         <div style={{textAlign:"center",marginBottom:"2rem"}}>
           <div style={{fontSize:13,color:ORANGE,fontWeight:600,letterSpacing:2,textTransform:"uppercase"}}>Exercices pratiques</div>
           <h1 style={{fontSize:28,fontWeight:700,margin:"0.5rem 0"}}>Cas d'entreprise Java</h1>
-          <p style={{color:MUTED,fontSize:15}}>3 exercices complets avec classes metier, gestion, menu, exceptions</p>
+          <p style={{color:MUTED,fontSize:15}}>4 exercices complets avec classes metier, gestion, menu, exceptions</p>
           <p style={{color:MUTED,fontSize:12,marginTop:4}}>Architecture : Classe metier + Classe Gestion (sans Scanner) + Menu (avec Scanner)</p>
         </div>
         <div style={{display:"grid",gap:16}}>
-          {EXERCISES.map(ex=>(
+          {EXERCISES.map((ex)=>(
             <div key={ex.id} style={{border:"1px solid "+(expanded===ex.id?ex.color:BORDER),borderRadius:12,overflow:"hidden"}}>
               <button onClick={()=>setExpanded(expanded===ex.id?null:ex.id)}
                 style={{width:"100%",padding:"16px",background:expanded===ex.id?ex.color+"15":CARD,border:"none",cursor:"pointer",textAlign:"left",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
