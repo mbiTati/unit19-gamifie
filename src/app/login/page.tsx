@@ -29,7 +29,10 @@ export default function LoginPage() {
     if (mode === "login") {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) { setError(error.message); setLoading(false); return; }
-      router.push("/student");
+      // Check role and redirect
+      const { data: profile } = await supabase.from("cq_students").select("role").eq("email", email).single();
+      if (profile?.role === "teacher") router.push("/teacher");
+      else router.push("/student");
     } else {
       if (!firstName.trim() || !lastName.trim()) { setError("Prenom et nom requis"); setLoading(false); return; }
       const { error, data } = await supabase.auth.signUp({ email, password });
