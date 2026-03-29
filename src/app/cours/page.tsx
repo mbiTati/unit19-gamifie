@@ -42,6 +42,7 @@ export default function CoursPage() {
   })).filter(cat => cat.items.length > 0);
 
   return (
+    <><NavBar/>
     <GameShell title="Documents & Memos" color={C.accent}>
       <div style={{ maxWidth: 700, margin: "0 auto" }}>
         <p style={{ color: C.muted, fontSize: 13, marginBottom: 12 }}>Fiches memo, presentations, exercices — tout telecharger</p>
@@ -68,5 +69,6 @@ export default function CoursPage() {
         ))}
       </div>
     </GameShell>
+    </>
   );
 }

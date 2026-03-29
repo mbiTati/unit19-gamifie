@@ -116,7 +116,9 @@ function ModuleCard({ m, color }: { m: Module; color: string }) {
 
 export default function Home() {
   return (
-    <div style={{ maxWidth: 900, margin: "0 auto", padding: "1.5rem 1rem", fontFamily: "'Segoe UI', system-ui, sans-serif", color: TEXT }}>
+    <div style={{ fontFamily: "'Segoe UI', system-ui, sans-serif", color: TEXT }}>
+      <NavBar/>
+      <div style={{ maxWidth: 900, margin: "0 auto", padding: "1.5rem 1rem" }}>
       {/* HERO */}
       <div style={{ textAlign: "center" as const, padding: "2.5rem 1rem 2rem", marginBottom: "1.5rem", borderRadius: 16, background: "linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%)", border: `1px solid ${BORDER}` }}>
         <div style={{ marginBottom: 8 }}><GraduationCap size={48} color="#00A896" /></div>
@@ -265,6 +267,7 @@ export default function Home() {
       <div style={{ textAlign: "center" as const, marginTop: "2rem", padding: "1rem", borderTop: `1px solid ${BORDER}` }}>
         <div style={{ fontSize: 12, color: DIM }}>Mme MBI — Bachelor 2 — Unit 19 : Data Structures & Algorithms</div>
       </div>
+    </div>
     </div>
   );
 }

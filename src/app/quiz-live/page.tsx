@@ -129,6 +129,7 @@ export default function QuizLive() {
 
   // Menu
   return (
+    <><NavBar/>
     <GameShell title="Quiz Live" color={C.gold}>
       <div style={{ maxWidth: 500, margin: "0 auto" }}>
         <p style={{ color: C.muted, fontSize: 14, textAlign: "center", marginBottom: 20 }}>Quiz en temps reel — style Kahoot</p>
@@ -156,5 +157,6 @@ export default function QuizLive() {
         </div>
       </div>
     </GameShell>
+    </>
   );
 }
