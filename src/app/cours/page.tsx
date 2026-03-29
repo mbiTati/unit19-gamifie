@@ -1,4 +1,5 @@
 "use client";
+import NavBar from "@/components/NavBar";
 import { useState } from "react";
 import GameShell from "@/components/GameShell";
 import { C } from "@/lib/theme";

@@ -1,4 +1,5 @@
 "use client";
+import NavBar from "@/components/NavBar";
 import { useState } from "react";
 import TopBar from "@/components/TopBar";
 import { useAuth } from "@/components/AuthProvider";
@@ -30,7 +31,7 @@ export default function SettingsPage() {
 
   return (
     <div style={{ minHeight: "100vh", background: BG, color: TEXT }}>
-      <TopBar />
+      <NavBar/>
       <div style={{ maxWidth: 500, margin: "0 auto", padding: "2rem 1.5rem" }}>
         <h1 style={{ fontSize: 22, fontWeight: 700, marginBottom: 20 }}>Parametres</h1>
 

@@ -1,4 +1,5 @@
 "use client";
+import NavBar from "@/components/NavBar";
 import Link from "next/link";
 import TopBar from "@/components/TopBar";
 import { useState } from "react";
@@ -1291,7 +1292,7 @@ export default function ExercicesEntreprise(){
 
   return(
     <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"2rem 1rem"}}>
-      <TopBar/>
+      <NavBar/>
       <div style={{maxWidth:800,margin:"0 auto"}}>
         <div style={{textAlign:"center",marginBottom:"2rem"}}>
           <div style={{fontSize:13,color:ORANGE,fontWeight:600,letterSpacing:2,textTransform:"uppercase"}}>Exercices pratiques</div>

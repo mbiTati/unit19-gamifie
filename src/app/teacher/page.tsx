@@ -1,4 +1,5 @@
 "use client";
+import NavBar from "@/components/NavBar";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import TopBar from "@/components/TopBar";
@@ -22,7 +23,7 @@ export default function TeacherDashboard() {
   }, [isTeacher]);
 
   if (loading) return <div style={{ minHeight: "100vh", background: BG, display: "flex", alignItems: "center", justifyContent: "center", color: MUTED }}>Chargement...</div>;
-  if (!isTeacher) return <div style={{ minHeight: "100vh", background: BG, color: TEXT, padding: "3rem", textAlign: "center" }}><TopBar /><h2 style={{ marginTop: "2rem" }}>Acces reserve au professeur</h2><Link href="/" style={{ color: TEAL }}>Retour</Link></div>;
+  if (!isTeacher) return <div style={{ minHeight: "100vh", background: BG, color: TEXT, padding: "3rem", textAlign: "center" }}><NavBar/><h2 style={{ marginTop: "2rem" }}>Acces reserve au professeur</h2><Link href="/" style={{ color: TEAL }}>Retour</Link></div>;
 
   const avgXP = students.length > 0 ? Math.round(students.reduce((s, st) => s + (st.total_xp || 0), 0) / students.length) : 0;
   const struggling = students.filter(s => (s.total_xp || 0) < avgXP * 0.4);
@@ -30,7 +31,7 @@ export default function TeacherDashboard() {
 
   return (
     <div style={{ minHeight: "100vh", background: BG, color: TEXT }}>
-      <TopBar />
+      <NavBar/>
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "1.5rem" }}>
         <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 4 }}>Dashboard Professeur</h1>
         <p style={{ fontSize: 13, color: MUTED, marginBottom: 16 }}>Unit 19 — Data Structures & Algorithms</p>

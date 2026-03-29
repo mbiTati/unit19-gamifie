@@ -1,4 +1,5 @@
 "use client";
+import NavBar from "@/components/NavBar";
 import { useState, useEffect } from "react";
 import TopBar from "@/components/TopBar";
 import { useAuth, getLevel, LEVELS } from "@/components/AuthProvider";
@@ -22,7 +23,7 @@ export default function ScoresPage() {
 
   return (
     <div style={{ minHeight: "100vh", background: BG, color: TEXT }}>
-      <TopBar />
+      <NavBar/>
       <div style={{ maxWidth: 600, margin: "0 auto", padding: "1.5rem" }}>
         <div style={{ display: "flex", gap: 4, marginBottom: 16, background: CARD, borderRadius: 8, padding: 3 }}>
           {(["profile","leaderboard"] as const).map(v => (

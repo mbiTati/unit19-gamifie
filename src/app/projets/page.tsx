@@ -1,4 +1,5 @@
 "use client";
+import NavBar from "@/components/NavBar";
 import { useState } from "react";
 import Link from "next/link";
 import TopBar from "@/components/TopBar";
@@ -87,7 +88,7 @@ export default function ProjetsPage(){
 
   if(proj)return(
     <div style={{minHeight:"100vh",background:BG,color:TEXT}}>
-      <TopBar/>
+      <NavBar/>
       {/* Hero banner Steam-style */}
       <div style={{padding:"2.5rem 1.5rem",background:proj.hero,borderBottom:"1px solid "+BORDER}}>
         <div style={{maxWidth:800,margin:"0 auto"}}>
@@ -153,7 +154,7 @@ export default function ProjetsPage(){
   // Project list - Steam store style
   return(
     <div style={{minHeight:"100vh",background:BG,color:TEXT}}>
-      <TopBar/>
+      <NavBar/>
       <div style={{maxWidth:900,margin:"0 auto",padding:"2rem 1.5rem"}}>
         <div style={{textAlign:"center",marginBottom:"2rem"}}>
           <div style={{fontSize:13,color:RED,fontWeight:600,letterSpacing:2,textTransform:"uppercase"}}>Projets integrateurs</div>

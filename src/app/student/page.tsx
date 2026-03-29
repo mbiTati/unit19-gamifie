@@ -1,4 +1,5 @@
 "use client";
+import NavBar from "@/components/NavBar";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import TopBar from "@/components/TopBar";
@@ -20,7 +21,7 @@ export default function StudentHome() {
   }, [student]);
 
   if (loading) return <div style={{ minHeight: "100vh", background: BG, display: "flex", alignItems: "center", justifyContent: "center", color: MUTED }}>Chargement...</div>;
-  if (!user) return <div style={{ minHeight: "100vh", background: BG, color: TEXT, padding: "3rem", textAlign: "center" }}><TopBar /><h2 style={{ marginTop: "2rem" }}>Connectez-vous</h2><Link href="/login" style={{ color: TEAL, fontSize: 16 }}>Page de connexion</Link></div>;
+  if (!user) return <div style={{ minHeight: "100vh", background: BG, color: TEXT, padding: "3rem", textAlign: "center" }}><NavBar/><h2 style={{ marginTop: "2rem" }}>Connectez-vous</h2><Link href="/login" style={{ color: TEAL, fontSize: 16 }}>Page de connexion</Link></div>;
 
   const xp = student?.total_xp || 0;
   const lvl = getLevel(xp);
@@ -28,7 +29,7 @@ export default function StudentHome() {
 
   return (
     <div style={{ minHeight: "100vh", background: BG, color: TEXT }}>
-      <TopBar />
+      <NavBar/>
       <div style={{ maxWidth: 700, margin: "0 auto", padding: "1.5rem" }}>
         {/* Badge niveau anime */}
         <div style={{ textAlign: "center", marginBottom: "1.5rem", paddingTop: "1rem" }}>
