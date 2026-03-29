@@ -37,6 +37,16 @@ export default function TeacherDashboard() {
   const u19Comments = comments.filter(c => c.unit === "Unit 19" || !c.unit);
   const unread = u19Comments.filter(c => !c.is_read);
 
+  const deleteStudent = async (id: string, name: string) => {
+    if (!confirm("SUPPRIMER definitivement " + name + " ? Cette action est irreversible.")) return;
+    if (!isSupabaseConfigured) return;
+    await supabase.from("cq_student_progress").delete().eq("student_id", id);
+    await supabase.from("cq_game_scores").delete().eq("student_id", id);
+    await supabase.from("cq_comments").delete().eq("student_id", id);
+    await supabase.from("cq_students").delete().eq("id", id);
+    setStudents(prev => prev.filter(s => s.id !== id));
+  };
+
   const resetStudent = async (id: string) => {
     if (!confirm("Remettre a zero la progression de cet eleve ?")) return;
     if (isSupabaseConfigured) {
@@ -130,7 +140,10 @@ export default function TeacherDashboard() {
                         </td>
                         <td style={{ padding: "8px 10px", color: C.muted }}>-</td>
                         <td style={{ padding: "8px 10px" }}>
-                          <button onClick={() => resetStudent(s.id)} style={{ fontSize: 11, padding: "4px 10px", background: C.danger + "15", border: "1px solid " + C.danger + "30", borderRadius: 4, color: C.danger, cursor: "pointer", fontWeight: 600 }}>Reset</button>
+                          <div style={{display:"flex",gap:4}}>
+                          <button onClick={() => resetStudent(s.id)} style={{ fontSize: 11, padding: "4px 8px", background: C.gold + "15", border: "1px solid " + C.gold + "30", borderRadius: 4, color: C.gold, cursor: "pointer", fontWeight: 600 }}>Reset</button>
+                          <button onClick={() => deleteStudent(s.id, s.first_name + " " + s.last_name)} style={{ fontSize: 11, padding: "4px 8px", background: C.danger + "15", border: "1px solid " + C.danger + "30", borderRadius: 4, color: C.danger, cursor: "pointer", fontWeight: 600 }}>Suppr</button>
+                          </div>
                         </td>
                       </tr>
                     );
