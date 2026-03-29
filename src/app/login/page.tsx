@@ -40,7 +40,7 @@ export default function LoginPage() {
       if (data.user) {
         await supabase.from("cq_students").insert({
           email, first_name: firstName.trim(), last_name: lastName.trim(),
-          role: "student", level: 0, total_xp: 0, classe: "BI1", cohort: "2025",
+          role: "student", level: 0, total_xp: 0, classe: "BI2", cohort: "2025",
         });
       }
       setSuccess("Compte cree ! Verifiez votre email pour confirmer.");

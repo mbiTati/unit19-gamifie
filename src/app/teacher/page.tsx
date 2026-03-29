@@ -15,7 +15,7 @@ export default function TeacherDashboard() {
   const [comments, setComments] = useState<any[]>([]);
   const [scores, setScores] = useState<any[]>([]);
   const [tab, setTab] = useState<"progression"|"questions"|"gestion"|"documents"|"outils">("progression");
-  const [filterClasse, setFilterClasse] = useState("all");
+  const [filterClasse, setFilterClasse] = useState("BI2");
   const [filterCohort, setFilterCohort] = useState("all");
 
   useEffect(() => {
@@ -179,7 +179,7 @@ export default function TeacherDashboard() {
               <div style={{ padding: "14px", background: C.card, borderRadius: 10, border: "1px solid " + C.primary + "30" }}>
                 <div style={{ fontSize: 14, fontWeight: 600, color: C.primary, marginBottom: 8 }}>Creer une classe</div>
                 <div style={{ display: "flex", gap: 6 }}>
-                  <input id="newClasse" placeholder="Nom (ex: BI2)" style={{ flex: 1, padding: "8px", background: C.bg, border: "1px solid " + C.border, borderRadius: 6, color: C.text, fontSize: 12, outline: "none" }}/>
+                  <input id="newClasse" placeholder="Nom (ex: BI2, BI3)" style={{ flex: 1, padding: "8px", background: C.bg, border: "1px solid " + C.border, borderRadius: 6, color: C.text, fontSize: 12, outline: "none" }}/>
                   <button onClick={async () => { const name = (document.getElementById("newClasse") as HTMLInputElement)?.value; if (!name || !isSupabaseConfigured) return; await supabase.from("cq_classes").insert({ name, cohort: "2025" }); alert("Classe " + name + " creee !"); }} style={{ padding: "8px 14px", background: C.primary, color: "white", border: "none", borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>Creer</button>
                 </div>
               </div>
@@ -187,7 +187,7 @@ export default function TeacherDashboard() {
                 <div style={{ fontSize: 14, fontWeight: 600, color: C.gold, marginBottom: 8 }}>Ajouter un eleve</div>
                 <div style={{ display: "flex", gap: 6 }}>
                   <input id="newEmail" placeholder="Email eleve" style={{ flex: 1, padding: "8px", background: C.bg, border: "1px solid " + C.border, borderRadius: 6, color: C.text, fontSize: 12, outline: "none" }}/>
-                  <button onClick={async () => { const email = (document.getElementById("newEmail") as HTMLInputElement)?.value; if (!email || !isSupabaseConfigured) return; await supabase.from("cq_students").insert({ email, first_name: email.split("@")[0], last_name: "", role: "student", level: 0, total_xp: 0, classe: "BI1", cohort: "2025" }); alert("Eleve ajoute !"); }} style={{ padding: "8px 14px", background: C.gold, color: C.bg, border: "none", borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>Ajouter</button>
+                  <button onClick={async () => { const email = (document.getElementById("newEmail") as HTMLInputElement)?.value; if (!email || !isSupabaseConfigured) return; await supabase.from("cq_students").insert({ email, first_name: email.split("@")[0], last_name: "", role: "student", level: 0, total_xp: 0, classe: "BI2", cohort: "2025" }); alert("Eleve ajoute !"); }} style={{ padding: "8px 14px", background: C.gold, color: C.bg, border: "none", borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>Ajouter</button>
                 </div>
               </div>
             </div>

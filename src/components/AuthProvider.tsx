@@ -93,7 +93,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     if (!error && data.user) {
       await supabase.from("cq_students").insert({
         email, first_name: firstName, last_name: lastName,
-        role: "student", level: 0, total_xp: 0, classe: "BI1", cohort: "2025",
+        role: "student", level: 0, total_xp: 0, classe: "BI2", cohort: "2025",
       });
     }
     return { error };
