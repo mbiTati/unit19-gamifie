@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import GameShell from "@/components/GameShell";
 import { C } from "@/lib/theme";
 import { useAuth } from "@/components/AuthProvider";
-import { supabase } from "@/lib/supabase";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 
 // Question banks for Unit 19
 const BANKS: Record<string, { name: string; color: string; questions: { q: string; o: string[]; c: number }[] }> = {

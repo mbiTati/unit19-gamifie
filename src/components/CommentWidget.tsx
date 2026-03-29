@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 
 const BORDER="#1E3A5F",CARD="#111827",TEXT="#E2E8F0",MUTED="#94A3B8",TEAL="#0891B2",GREEN="#16A34A";
 
@@ -13,6 +13,7 @@ export default function CommentWidget({ chapter, studentEmail }: { chapter: stri
   const send = async () => {
     if (!message.trim()) return;
     setSending(true);
+    if (!isSupabaseConfigured) { setSent(true); setSending(false); return; }
     await supabase.from("cq_comments").insert({
       student_email: studentEmail || "anonyme",
       chapter,

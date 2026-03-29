@@ -1,6 +1,6 @@
 "use client";
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { supabase } from "@/lib/supabase";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 
 interface Student {
   id: string;
@@ -29,7 +29,6 @@ interface AuthCtx {
 const AuthContext = createContext<AuthCtx>({} as AuthCtx);
 export const useAuth = () => useContext(AuthContext);
 
-// 9 niveaux CodeQuest (partages entre les 3 apps)
 export const LEVELS = [
   { name: "Noob Master", minXP: 0, color: "#94A3B8" },
   { name: "Noob Coder", minXP: 50, color: "#64748B" },
@@ -44,9 +43,7 @@ export const LEVELS = [
 
 export function getLevel(xp: number) {
   let lvl = LEVELS[0];
-  for (const l of LEVELS) {
-    if (xp >= l.minXP) lvl = l;
-  }
+  for (const l of LEVELS) { if (xp >= l.minXP) lvl = l; }
   const idx = LEVELS.indexOf(lvl);
   const nextLvl = idx < LEVELS.length - 1 ? LEVELS[idx + 1] : null;
   const progress = nextLvl ? (xp - lvl.minXP) / (nextLvl.minXP - lvl.minXP) : 1;
@@ -59,25 +56,23 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   const fetchStudent = async (email: string) => {
-    const { data } = await supabase
-      .from("cq_students")
-      .select("*")
-      .eq("email", email)
-      .single();
-    if (data) setStudent(data);
-    return data;
+    if (!isSupabaseConfigured) return null;
+    try {
+      const { data } = await supabase.from("cq_students").select("*").eq("email", email).single();
+      if (data) setStudent(data);
+      return data;
+    } catch { return null; }
   };
 
-  const refreshStudent = async () => {
-    if (user?.email) await fetchStudent(user.email);
-  };
+  const refreshStudent = async () => { if (user?.email) await fetchStudent(user.email); };
 
   useEffect(() => {
+    if (!isSupabaseConfigured) { setLoading(false); return; }
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
       if (session?.user?.email) fetchStudent(session.user.email);
       setLoading(false);
-    });
+    }).catch(() => setLoading(false));
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
       if (session?.user?.email) fetchStudent(session.user.email);
@@ -87,49 +82,38 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signIn = async (email: string, password: string) => {
+    if (!isSupabaseConfigured) return { error: { message: "Supabase non configure" } };
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     return { error };
   };
 
   const signUp = async (email: string, password: string, firstName: string, lastName: string) => {
+    if (!isSupabaseConfigured) return { error: { message: "Supabase non configure" } };
     const { error, data } = await supabase.auth.signUp({ email, password });
     if (!error && data.user) {
-      // Create student profile
       await supabase.from("cq_students").insert({
-        email,
-        first_name: firstName,
-        last_name: lastName,
-        role: "student",
-        level: 0,
-        total_xp: 0,
-        classe: "BI1",
-        cohort: "2025",
+        email, first_name: firstName, last_name: lastName,
+        role: "student", level: 0, total_xp: 0, classe: "BI1", cohort: "2025",
       });
     }
     return { error };
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
-    setUser(null);
-    setStudent(null);
+    if (isSupabaseConfigured) await supabase.auth.signOut();
+    setUser(null); setStudent(null);
   };
 
   const addXP = async (points: number) => {
-    if (!student) return;
+    if (!student || !isSupabaseConfigured) return;
     const newXP = (student.total_xp || 0) + points;
     const newLevel = getLevel(newXP).index;
-    await supabase
-      .from("cq_students")
-      .update({ total_xp: newXP, level: newLevel })
-      .eq("id", student.id);
+    await supabase.from("cq_students").update({ total_xp: newXP, level: newLevel }).eq("id", student.id);
     setStudent({ ...student, total_xp: newXP, level: newLevel });
   };
 
-  const isTeacher = student?.role === "teacher";
-
   return (
-    <AuthContext.Provider value={{ user, student, loading, isTeacher, signIn, signUp, signOut, refreshStudent, addXP }}>
+    <AuthContext.Provider value={{ user, student, loading, isTeacher: student?.role === "teacher", signIn, signUp, signOut, refreshStudent, addXP }}>
       {children}
     </AuthContext.Provider>
   );

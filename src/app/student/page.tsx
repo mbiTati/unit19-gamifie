@@ -4,7 +4,7 @@ import Link from "next/link";
 import TopBar from "@/components/TopBar";
 import { useAuth, LEVELS, getLevel } from "@/components/AuthProvider";
 import { XPBar } from "@/components/GameAnimations";
-import { supabase } from "@/lib/supabase";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 
 const BG="#0B1120",CARD="#111827",BORDER="#1E3A5F",TEXT="#E2E8F0",MUTED="#94A3B8",TEAL="#0891B2",GREEN="#16A34A",ORANGE="#F97316",PURPLE="#7C3AED",RED="#DC2626";
 
