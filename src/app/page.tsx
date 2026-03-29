@@ -199,7 +199,23 @@ export default function Home() {
         </div>
       </Link>
 
-      {/* BOSS FINAL + EXERCICES */}
+            {/* JEUX INTERACTIFS */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginTop: 16 }}>
+        <Link href="/jeux/sort-race" style={{ padding: "14px", background: CARD, border: "1px solid " + RED + "30", borderRadius: 12, textDecoration: "none", textAlign: "center" as const }}>
+          <div style={{ fontSize: 15, fontWeight: 700, color: RED }}>Sort Race</div>
+          <div style={{ fontSize: 11, color: MUTED, marginTop: 4 }}>4 tris en course</div>
+        </Link>
+        <Link href="/jeux/linked-list-lab" style={{ padding: "14px", background: CARD, border: "1px solid " + TEAL + "30", borderRadius: 12, textDecoration: "none", textAlign: "center" as const }}>
+          <div style={{ fontSize: 15, fontWeight: 700, color: TEAL }}>LinkedList Lab</div>
+          <div style={{ fontSize: 11, color: MUTED, marginTop: 4 }}>Noeuds et fleches</div>
+        </Link>
+        <Link href="/jeux/hash-table-hero" style={{ padding: "14px", background: CARD, border: "1px solid " + PURPLE + "30", borderRadius: 12, textDecoration: "none", textAlign: "center" as const }}>
+          <div style={{ fontSize: 15, fontWeight: 700, color: PURPLE }}>Hash Table Hero</div>
+          <div style={{ fontSize: 11, color: MUTED, marginTop: 4 }}>Hashing et collisions</div>
+        </Link>
+      </div>
+
+{/* BOSS FINAL + EXERCICES */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginTop: 20 }}>
         <Link href="/boss-final" style={{ borderRadius: 16, overflow: "hidden", border: `1px solid ${RED}`, textDecoration: "none", textAlign: "center" as const, padding: "1.5rem", background: `linear-gradient(135deg, ${RED}15, ${ORANGE}15)`, boxShadow: `0 0 40px ${RED}25` }}>
           <Crown size={36} color="white" />
