@@ -120,7 +120,8 @@ export default function Home() {
       <div style={{ textAlign: "center" as const, padding: "2.5rem 1rem 2rem", marginBottom: "1.5rem", borderRadius: 16, background: "linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%)", border: `1px solid ${BORDER}` }}>
         <div style={{ marginBottom: 8 }}><GraduationCap size={48} color="#00A896" /></div>
         <div style={{ fontSize: 12, fontWeight: 600, letterSpacing: 3, textTransform: "uppercase" as const, color: ACCENT }}>Unit 19 — Data Structures & Algorithms</div>
-        <h1 style={{ fontSize: 36, fontWeight: 800, margin: "0.5rem 0", color: "white" }}>Unit 19 : Data Structures & Algorithms</h1>
+        <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 8 }}><a href="/login" style={{ fontSize: 12, color: "#0891B2", textDecoration: "none", padding: "4px 12px", border: "1px solid #0891B230", borderRadius: 6 }}>Connexion</a></div>
+      <h1 style={{ fontSize: 36, fontWeight: 800, margin: "0.5rem 0", color: "white" }}>Unit 19 : Data Structures & Algorithms</h1>
         <p style={{ color: MUTED, fontSize: 14, maxWidth: 480, margin: "0.5rem auto 1rem" }}>4 mondes, 14 chapitres, des mini-jeux interactifs</p>
 
         {/* Stats */}
