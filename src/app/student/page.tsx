@@ -55,7 +55,7 @@ export default function StudentHome(){
 
   return(
     <div style={{minHeight:"100vh",background:C.bg,color:C.text}}>
-      <NavBar isTeacher={isTeacher}/>
+      <NavBar/>
       <div style={{maxWidth:900,margin:"0 auto",padding:"12px 20px 0"}}>
         <style>{`
           @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}

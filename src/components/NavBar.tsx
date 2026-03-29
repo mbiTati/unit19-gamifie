@@ -4,63 +4,71 @@ import { usePathname } from "next/navigation";
 import { useAuth } from "@/components/AuthProvider";
 import { C } from "@/lib/theme";
 
-export default function NavBar({ isTeacher: isTeacherProp }: { isTeacher?: boolean } = {}) {
+const ALL_NAV = [
+  { href: "/", label: "Hub Cours", icon: "📚" },
+  { href: "/student", label: "Mon Espace", icon: "🏠" },
+  { href: "/teacher", label: "Dashboard Prof", icon: "📊", profOnly: true },
+  { href: "/cours", label: "Documents", icon: "📄" },
+  { href: "/scores", label: "Classement", icon: "🏆" },
+  { href: "/settings", label: "Parametres", icon: "⚙️" },
+  { href: "/quiz-live", label: "Quiz Live", icon: "🎮" },
+];
+
+export default function NavBar() {
   const pathname = usePathname();
-  const { user, student, isTeacher: authIsTeacher, signOut } = useAuth();
-  const isProf = isTeacherProp || authIsTeacher || (student?.role === "teacher");
+  const { user, student, isTeacher, signOut } = useAuth();
   const isLoggedIn = !!user;
 
-  const NAV = [
-    { href: "/", label: "Hub Cours" },
-    ...(isLoggedIn ? [{ href: "/student", label: "Mon Espace" }] : []),
-    ...(isProf ? [{ href: "/teacher", label: "Dashboard Prof" }] : []),
-    { href: "/cours", label: "Documents" },
-    ...(isLoggedIn ? [{ href: "/scores", label: "Classement" }] : []),
-    ...(isLoggedIn ? [{ href: "/settings", label: "Parametres" }] : []),
-  ];
+  // Show all items always (some redirect to login if needed)
+  const items = ALL_NAV.filter(item => !item.profOnly || isTeacher);
 
   return (
-    <nav style={{
-      display: "flex", alignItems: "center", gap: 2, padding: "6px 12px",
-      background: C.card, borderBottom: "1px solid " + C.border,
-      overflowX: "auto", position: "sticky", top: 0, zIndex: 100,
-    }}>
-      <Link href="/" style={{ fontSize: 14, fontWeight: 800, color: C.accent, textDecoration: "none", marginRight: 10, flexShrink: 0 }}>U19</Link>
-
-      {NAV.map(item => {
-        const active = pathname === item.href;
-        return (
-          <Link key={item.href} href={item.href}
-            style={{
-              padding: "6px 10px", borderRadius: 6, fontSize: 11, fontWeight: active ? 700 : 400,
-              background: active ? C.primary + "25" : "transparent",
-              color: active ? C.accent : C.muted,
-              textDecoration: "none", whiteSpace: "nowrap",
-              border: active ? "1px solid " + C.primary + "40" : "1px solid transparent",
-            }}>
-            {item.label}
-          </Link>
-        );
-      })}
-
-      <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
-        {isLoggedIn ? (
-          <>
-            <span style={{ fontSize: 10, color: C.accent, fontWeight: 600 }}>
-              {student?.first_name || user?.email?.split("@")[0]}
-            </span>
-            <button onClick={() => signOut()}
-              style={{ fontSize: 10, color: C.danger, background: C.danger + "10", border: "1px solid " + C.danger + "25", borderRadius: 6, padding: "4px 8px", cursor: "pointer", fontWeight: 600 }}>
-              Deconnexion
-            </button>
-          </>
-        ) : (
-          <Link href="/login"
-            style={{ fontSize: 11, color: C.accent, textDecoration: "none", padding: "5px 12px", border: "1px solid " + C.accent + "30", borderRadius: 6, fontWeight: 600 }}>
-            Connexion
-          </Link>
-        )}
+    <div style={{ background: C.card, borderBottom: "2px solid " + C.border, position: "sticky", top: 0, zIndex: 100 }}>
+      {/* Top bar: brand + auth */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 20px" }}>
+        <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 10 }}>
+          <span style={{ fontSize: 20, fontWeight: 800, color: C.accent }}>CodeQuest</span>
+          <span style={{ fontSize: 12, color: C.muted }}>Unit 19</span>
+        </Link>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          {isLoggedIn ? (
+            <>
+              <Link href="/student" style={{ fontSize: 13, color: C.accent, textDecoration: "none", fontWeight: 600 }}>
+                {student?.first_name || user?.email?.split("@")[0]}
+              </Link>
+              {isTeacher && <span style={{ fontSize: 10, padding: "2px 8px", background: C.gold + "20", color: C.gold, borderRadius: 4, fontWeight: 700 }}>PROF</span>}
+              <button onClick={() => signOut()}
+                style={{ fontSize: 12, color: C.danger, background: C.danger + "12", border: "1px solid " + C.danger + "30", borderRadius: 6, padding: "6px 12px", cursor: "pointer", fontWeight: 600 }}>
+                Deconnexion
+              </button>
+            </>
+          ) : (
+            <Link href="/login"
+              style={{ fontSize: 13, color: "#0a0f1a", textDecoration: "none", padding: "8px 20px", background: C.accent, borderRadius: 8, fontWeight: 700 }}>
+              Connexion
+            </Link>
+          )}
+        </div>
       </div>
-    </nav>
+
+      {/* Navigation tabs */}
+      <div style={{ display: "flex", gap: 0, padding: "0 16px", overflowX: "auto" }}>
+        {items.map(item => {
+          const active = pathname === item.href;
+          return (
+            <Link key={item.href} href={item.href}
+              style={{
+                padding: "10px 16px", fontSize: 13, fontWeight: active ? 700 : 500,
+                color: active ? C.accent : C.muted,
+                textDecoration: "none", whiteSpace: "nowrap",
+                borderBottom: active ? "3px solid " + C.accent : "3px solid transparent",
+                transition: "all 0.2s",
+              }}>
+              {item.label}
+            </Link>
+          );
+        })}
+      </div>
+    </div>
   );
 }
