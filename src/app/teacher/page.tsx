@@ -1,140 +1,242 @@
 "use client";
-import NavBar from "@/components/NavBar";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import TopBar from "@/components/TopBar";
-import { useAuth } from "@/components/AuthProvider";
+import NavBar from "@/components/NavBar";
+import { useAuth, getLevel, LEVELS } from "@/components/AuthProvider";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase";
+import { C } from "@/lib/theme";
 
-const BG="#0B1120",CARD="#111827",BORDER="#1E3A5F",TEXT="#E2E8F0",MUTED="#94A3B8",TEAL="#0891B2",GREEN="#16A34A",ORANGE="#F97316",RED="#DC2626",PURPLE="#7C3AED";
+const TEACHER_EMAILS = ["tati.b@hotmail.fr"];
 
 export default function TeacherDashboard() {
-  const TEACHER_EMAILS = ['tati.b@hotmail.fr'];
-
-  const { student, isTeacher, loading, user } = useAuth();
-  const isProf = isTeacher || TEACHER_EMAILS.includes(user?.email || '');
+  const { student, isTeacher, user, loading } = useAuth();
+  const isProf = isTeacher || TEACHER_EMAILS.includes(user?.email || "");
   const [students, setStudents] = useState<any[]>([]);
   const [comments, setComments] = useState<any[]>([]);
-  const [gameScores, setGameScores] = useState<any[]>([]);
-  const [view, setView] = useState<"kpi"|"students"|"comments"|"scores">("kpi");
+  const [scores, setScores] = useState<any[]>([]);
+  const [tab, setTab] = useState<"progression"|"questions"|"gestion"|"documents"|"outils">("progression");
+  const [filterClasse, setFilterClasse] = useState("all");
+  const [filterCohort, setFilterCohort] = useState("all");
 
   useEffect(() => {
-    if (!isProf) return;
-    supabase.from("cq_students").select("*").eq("role", "student").then(({ data }) => { if (data) setStudents(data); });
-    supabase.from("cq_comments").select("*").eq("unit", "Unit 19").order("created_at", { ascending: false }).limit(20).then(({ data }) => { if (data) setComments(data); });
-    supabase.from("cq_game_scores").select("*").order("created_at", { ascending: false }).limit(50).then(({ data }) => { if (data) setGameScores(data); });
-  }, [isTeacher]);
+    if (!isProf || !isSupabaseConfigured) return;
+    supabase.from("cq_students").select("*").eq("role", "student").order("last_name").then(({ data }) => { if (data) setStudents(data); });
+    supabase.from("cq_comments").select("*").order("created_at", { ascending: false }).limit(50).then(({ data }) => { if (data) setComments(data); });
+    supabase.from("cq_game_scores").select("*").order("created_at", { ascending: false }).limit(100).then(({ data }) => { if (data) setScores(data); });
+  }, [isProf]);
 
-  if (loading) return <div style={{ minHeight: "100vh", background: BG, display: "flex", alignItems: "center", justifyContent: "center", color: MUTED }}>Chargement...</div>;
-  if (!isProf) return <div style={{ minHeight: "100vh", background: BG, color: TEXT, padding: "3rem", textAlign: "center" }}><NavBar/><h2 style={{ marginTop: "2rem" }}>Acces reserve au professeur</h2><Link href="/" style={{ color: TEAL }}>Retour</Link></div>;
+  if (loading) return <div style={{ minHeight: "100vh", background: C.bg, display: "flex", alignItems: "center", justifyContent: "center", color: C.muted }}>Chargement...</div>;
+  if (!isProf) return <div style={{ minHeight: "100vh", background: C.bg, color: C.text }}><NavBar /><div style={{ padding: "3rem", textAlign: "center" }}><h2>Acces reserve au professeur</h2><Link href="/login" style={{ color: C.accent }}>Se connecter</Link></div></div>;
 
-  const avgXP = students.length > 0 ? Math.round(students.reduce((s, st) => s + (st.total_xp || 0), 0) / students.length) : 0;
-  const struggling = students.filter(s => (s.total_xp || 0) < avgXP * 0.4);
-  const topStudents = [...students].sort((a, b) => (b.total_xp || 0) - (a.total_xp || 0)).slice(0, 5);
+  const classes = Array.from(new Set(students.map(s => s.classe).filter(Boolean)));
+  const cohorts = Array.from(new Set(students.map(s => s.cohort).filter(Boolean)));
+  const filtered = students.filter(s => (filterClasse === "all" || s.classe === filterClasse) && (filterCohort === "all" || s.cohort === filterCohort));
+
+  const avgXP = filtered.length > 0 ? Math.round(filtered.reduce((a, s) => a + (s.total_xp || 0), 0) / filtered.length) : 0;
+  const struggling = filtered.filter(s => (s.total_xp || 0) < avgXP * 0.4 && avgXP > 0);
+  const u19Comments = comments.filter(c => c.unit === "Unit 19" || !c.unit);
+  const unread = u19Comments.filter(c => !c.is_read);
+
+  const resetStudent = async (id: string) => {
+    if (!confirm("Remettre a zero la progression de cet eleve ?")) return;
+    if (isSupabaseConfigured) {
+      await supabase.from("cq_student_progress").delete().eq("student_id", id);
+      await supabase.from("cq_students").update({ total_xp: 0, level: 0 }).eq("id", id);
+      setStudents(prev => prev.map(s => s.id === id ? { ...s, total_xp: 0, level: 0 } : s));
+    }
+  };
+
+  const TABS = [
+    { id: "progression" as const, label: "Progression" },
+    { id: "questions" as const, label: `Questions${unread.length > 0 ? " (" + unread.length + ")" : ""}` },
+    { id: "gestion" as const, label: "Gerer les eleves" },
+    { id: "documents" as const, label: "Mes Documents" },
+    { id: "outils" as const, label: "Outils & Jeux" },
+  ];
 
   return (
-    <div style={{ minHeight: "100vh", background: BG, color: TEXT }}>
-      <NavBar/>
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "1.5rem" }}>
-        <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 4 }}>Dashboard Professeur</h1>
-        <p style={{ fontSize: 13, color: MUTED, marginBottom: 16 }}>Unit 19 — Data Structures & Algorithms</p>
+    <div style={{ minHeight: "100vh", background: C.bg, color: C.text }}>
+      <NavBar />
+      <div style={{ maxWidth: 1100, margin: "0 auto", padding: "1rem 1.5rem" }}>
+
+        {/* KPIs */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 10, marginBottom: 16 }}>
+          {[
+            { v: String(filtered.length), l: "ELEVES", c: C.accent },
+            { v: "0%", l: "PROGRESSION MOY.", c: C.accent },
+            { v: "-", l: "QUIZ MOYEN", c: C.muted },
+            { v: String(u19Comments.length), l: "QUESTIONS", c: C.gold },
+            { v: String(struggling.length), l: "EN DIFFICULTE", c: struggling.length > 0 ? C.danger : C.success },
+          ].map((kpi, i) => (
+            <div key={i} style={{ padding: "14px", background: C.card, borderRadius: 10, border: "1px solid " + C.border, textAlign: "center" }}>
+              <div style={{ fontSize: 28, fontWeight: 800, color: kpi.c }}>{kpi.v}</div>
+              <div style={{ fontSize: 9, color: C.muted, letterSpacing: 1, textTransform: "uppercase" }}>{kpi.l}</div>
+            </div>
+          ))}
+        </div>
 
         {/* Tabs */}
-        <div style={{ display: "flex", gap: 4, marginBottom: 20, background: CARD, borderRadius: 8, padding: 3 }}>
-          {(["kpi","students","comments","scores"] as const).map(v => (
-            <button key={v} onClick={() => setView(v)}
-              style={{ flex: 1, padding: "8px", borderRadius: 6, border: "none", background: view === v ? TEAL : "transparent", color: view === v ? "white" : MUTED, fontWeight: 600, fontSize: 12, cursor: "pointer" }}>
-              {v === "kpi" ? "KPIs" : v === "students" ? "Eleves" : v === "comments" ? `Messages (${comments.length})` : "Scores"}
+        <div style={{ display: "flex", gap: 0, marginBottom: 16, borderBottom: "2px solid " + C.border }}>
+          {TABS.map(t => (
+            <button key={t.id} onClick={() => setTab(t.id)}
+              style={{ padding: "10px 18px", fontSize: 13, fontWeight: tab === t.id ? 700 : 400, color: tab === t.id ? C.accent : C.muted, background: "none", border: "none", borderBottom: tab === t.id ? "3px solid " + C.accent : "3px solid transparent", cursor: "pointer" }}>
+              {t.label}
             </button>
           ))}
         </div>
 
-        {/* KPIs */}
-        {view === "kpi" && (
+        {/* TAB: Progression */}
+        {tab === "progression" && (
           <>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 10, marginBottom: 20 }}>
-              {[
-                { label: "Eleves", value: String(students.length), color: TEAL },
-                { label: "XP moyen", value: String(avgXP), color: PURPLE },
-                { label: "En difficulte", value: String(struggling.length), color: struggling.length > 0 ? RED : GREEN },
-                { label: "Messages", value: String(comments.length), color: ORANGE },
-              ].map((s, i) => (
-                <div key={i} style={{ padding: "14px", background: CARD, borderRadius: 10, border: "1px solid " + BORDER, textAlign: "center" }}>
-                  <div style={{ fontSize: 28, fontWeight: 800, color: s.color }}>{s.value}</div>
-                  <div style={{ fontSize: 11, color: MUTED }}>{s.label}</div>
-                </div>
-              ))}
+            {/* Filters */}
+            <div style={{ display: "flex", gap: 12, marginBottom: 12, alignItems: "center" }}>
+              <span style={{ fontSize: 12, color: C.muted }}>Classe :</span>
+              <select value={filterClasse} onChange={e => setFilterClasse(e.target.value)} style={{ padding: "6px 10px", background: C.card, border: "1px solid " + C.border, borderRadius: 6, color: C.text, fontSize: 12 }}>
+                <option value="all">Toutes</option>
+                {classes.map(cl => <option key={cl} value={cl}>{cl}</option>)}
+              </select>
+              <span style={{ fontSize: 12, color: C.muted }}>Cohorte :</span>
+              <select value={filterCohort} onChange={e => setFilterCohort(e.target.value)} style={{ padding: "6px 10px", background: C.card, border: "1px solid " + C.border, borderRadius: 6, color: C.text, fontSize: 12 }}>
+                <option value="all">Toutes</option>
+                {cohorts.map(co => <option key={co} value={co}>{co}</option>)}
+              </select>
             </div>
 
-            {/* Alertes */}
-            {struggling.length > 0 && (
-              <div style={{ padding: "12px", background: RED + "10", border: "1px solid " + RED + "30", borderRadius: 10, marginBottom: 16 }}>
-                <div style={{ fontSize: 13, fontWeight: 600, color: RED, marginBottom: 6 }}>Eleves en difficulte (XP &lt; 40% de la moyenne)</div>
-                {struggling.map((s, i) => (
-                  <div key={i} style={{ fontSize: 12, color: TEXT, padding: "2px 0" }}>{s.first_name} {s.last_name} — {s.total_xp || 0} XP</div>
-                ))}
-              </div>
-            )}
-
-            {/* Top 5 */}
-            <div style={{ padding: "14px", background: CARD, borderRadius: 10, border: "1px solid " + BORDER }}>
-              <div style={{ fontSize: 13, fontWeight: 600, color: GREEN, marginBottom: 8 }}>Top 5 eleves</div>
-              {topStudents.map((s, i) => (
-                <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", borderBottom: i < 4 ? "1px solid " + BORDER : "none" }}>
-                  <span style={{ fontSize: 13, color: TEXT }}>{i + 1}. {s.first_name} {s.last_name}</span>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: PURPLE }}>{s.total_xp || 0} XP</span>
-                </div>
-              ))}
+            {/* Student table */}
+            <div style={{ overflowX: "auto" }}>
+              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+                <thead>
+                  <tr style={{ borderBottom: "2px solid " + C.border }}>
+                    {["ELEVE", "CLASSE", "NIVEAU", "XP", "MODULES", "PROGRESSION", "QUIZ", "ACTIONS"].map(h => (
+                      <th key={h} style={{ padding: "8px 10px", textAlign: "left", color: C.gold, fontSize: 11, fontWeight: 700, letterSpacing: 1 }}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {filtered.map((s, i) => {
+                    const lvl = getLevel(s.total_xp || 0);
+                    return (
+                      <tr key={s.id} style={{ borderBottom: "1px solid " + C.border, background: i % 2 === 0 ? "transparent" : C.card + "40" }}>
+                        <td style={{ padding: "8px 10px", fontWeight: 600, color: C.text }}>{s.first_name} {(s.last_name || "").toUpperCase()}</td>
+                        <td style={{ padding: "8px 10px", color: C.muted }}>{s.classe} - {s.cohort}</td>
+                        <td style={{ padding: "8px 10px", color: lvl.color, fontSize: 12 }}>{lvl.name}</td>
+                        <td style={{ padding: "8px 10px", fontWeight: 700, color: C.accent }}>{s.total_xp || 0}</td>
+                        <td style={{ padding: "8px 10px", color: C.muted }}>0/14</td>
+                        <td style={{ padding: "8px 10px" }}>
+                          <div style={{ width: 80, height: 6, background: C.border, borderRadius: 3, overflow: "hidden" }}>
+                            <div style={{ width: "0%", height: "100%", background: C.accent, borderRadius: 3 }} />
+                          </div>
+                          <span style={{ fontSize: 10, color: C.muted }}>0%</span>
+                        </td>
+                        <td style={{ padding: "8px 10px", color: C.muted }}>-</td>
+                        <td style={{ padding: "8px 10px" }}>
+                          <button onClick={() => resetStudent(s.id)} style={{ fontSize: 11, padding: "4px 10px", background: C.danger + "15", border: "1px solid " + C.danger + "30", borderRadius: 4, color: C.danger, cursor: "pointer", fontWeight: 600 }}>Reset</button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
           </>
         )}
 
-        {/* Students list */}
-        {view === "students" && (
-          <div style={{ background: CARD, borderRadius: 10, border: "1px solid " + BORDER, overflow: "hidden" }}>
-            {students.map((s, i) => (
-              <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", borderBottom: "1px solid " + BORDER }}>
-                <div>
-                  <div style={{ fontSize: 14, fontWeight: 600, color: TEXT }}>{s.first_name} {s.last_name}</div>
-                  <div style={{ fontSize: 11, color: MUTED }}>{s.email} | {s.classe} {s.cohort}</div>
-                </div>
-                <div style={{ textAlign: "right" }}>
-                  <div style={{ fontSize: 16, fontWeight: 700, color: PURPLE }}>{s.total_xp || 0} XP</div>
-                  <div style={{ fontSize: 10, color: MUTED }}>Niv. {(s.level || 0) + 1}</div>
-                </div>
-              </div>
-            ))}
-            {students.length === 0 && <div style={{ padding: 20, textAlign: "center", color: MUTED }}>Aucun eleve inscrit</div>}
-          </div>
-        )}
-
-        {/* Comments */}
-        {view === "comments" && (
-          <div style={{ display: "grid", gap: 10 }}>
-            {comments.map((c, i) => (
-              <div key={i} style={{ padding: "12px", background: CARD, borderRadius: 10, border: "1px solid " + BORDER }}>
+        {/* TAB: Questions */}
+        {tab === "questions" && (
+          <div style={{ display: "grid", gap: 8 }}>
+            {u19Comments.length === 0 && <div style={{ padding: 20, textAlign: "center", color: C.muted, background: C.card, borderRadius: 10 }}>Aucune question</div>}
+            {u19Comments.map((c, i) => (
+              <div key={i} style={{ padding: "12px 14px", background: C.card, borderRadius: 10, border: "1px solid " + (c.is_read ? C.border : C.gold + "40") }}>
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-                  <span style={{ fontSize: 12, fontWeight: 600, color: TEAL }}>{c.student_email}</span>
-                  <span style={{ fontSize: 10, color: MUTED }}>{c.chapter} | {new Date(c.created_at).toLocaleDateString("fr-FR")}</span>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: C.accent }}>{c.student_email}</span>
+                  <span style={{ fontSize: 10, color: C.muted }}>{c.chapter} | {new Date(c.created_at).toLocaleDateString("fr-FR")}</span>
                 </div>
-                <div style={{ fontSize: 13, color: TEXT }}>{c.message}</div>
+                <div style={{ fontSize: 13, color: C.text }}>{c.message}</div>
+                {!c.is_read && <span style={{ fontSize: 9, padding: "2px 6px", background: C.gold + "20", color: C.gold, borderRadius: 4, marginTop: 4, display: "inline-block" }}>Non lu</span>}
               </div>
             ))}
-            {comments.length === 0 && <div style={{ padding: 20, textAlign: "center", color: MUTED, background: CARD, borderRadius: 10 }}>Aucun message</div>}
           </div>
         )}
 
-        {/* Game scores */}
-        {view === "scores" && (
-          <div style={{ background: CARD, borderRadius: 10, border: "1px solid " + BORDER, overflow: "hidden" }}>
-            {gameScores.slice(0, 20).map((s, i) => (
-              <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "8px 14px", borderBottom: "1px solid " + BORDER, fontSize: 12 }}>
-                <span style={{ color: MUTED }}>{s.student_email || "?"}</span>
-                <span style={{ color: TEXT }}>{s.game_name || s.module_name}</span>
-                <span style={{ color: GREEN, fontWeight: 600 }}>{s.score} pts</span>
-              </div>
+        {/* TAB: Gestion */}
+        {tab === "gestion" && (
+          <div>
+            <div style={{ padding: "14px", background: C.card, borderRadius: 10, border: "1px solid " + C.border, marginBottom: 12 }}>
+              <div style={{ fontSize: 14, fontWeight: 600, color: C.text, marginBottom: 8 }}>Eleves en difficulte (XP &lt; 40% de la moyenne)</div>
+              {struggling.length === 0 ? (
+                <div style={{ color: C.success, fontSize: 13 }}>Aucun eleve en difficulte</div>
+              ) : (
+                struggling.map((s, i) => (
+                  <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", borderBottom: "1px solid " + C.border }}>
+                    <span style={{ color: C.text }}>{s.first_name} {s.last_name}</span>
+                    <span style={{ color: C.danger, fontWeight: 600 }}>{s.total_xp || 0} XP</span>
+                  </div>
+                ))
+              )}
+            </div>
+            <div style={{ padding: "14px", background: C.card, borderRadius: 10, border: "1px solid " + C.border }}>
+              <div style={{ fontSize: 14, fontWeight: 600, color: C.gold, marginBottom: 8 }}>Top 5 eleves</div>
+              {Array.from(filtered).sort((a, b) => (b.total_xp || 0) - (a.total_xp || 0)).slice(0, 5).map((s, i) => (
+                <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", borderBottom: i < 4 ? "1px solid " + C.border : "none" }}>
+                  <span style={{ color: C.text }}>{i + 1}. {s.first_name} {s.last_name}</span>
+                  <span style={{ color: C.accent, fontWeight: 700 }}>{s.total_xp || 0} XP</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* TAB: Documents */}
+        {tab === "documents" && (
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+            {[
+              { title: "Fiches memo (PDF)", desc: "15 fiches recapitulatives", href: "/cours" },
+              { title: "Presentations (PPTX)", desc: "25 presentations avec notes prof", href: "/cours" },
+              { title: "Exercices entreprise", desc: "5 cas reels avec corrections", href: "/exercices-entreprise" },
+              { title: "Projets integrateurs", desc: "1 projet par LO", href: "/projets" },
+            ].map((d, i) => (
+              <Link key={i} href={d.href} style={{ padding: "14px", background: C.card, borderRadius: 10, border: "1px solid " + C.border, textDecoration: "none" }}>
+                <div style={{ fontSize: 14, fontWeight: 600, color: C.text }}>{d.title}</div>
+                <div style={{ fontSize: 12, color: C.muted, marginTop: 2 }}>{d.desc}</div>
+              </Link>
             ))}
-            {gameScores.length === 0 && <div style={{ padding: 20, textAlign: "center", color: MUTED }}>Aucun score</div>}
+          </div>
+        )}
+
+        {/* TAB: Outils & Jeux */}
+        {tab === "outils" && (
+          <div>
+            {/* Battle & Quiz collectif */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 16 }}>
+              <Link href="/quiz-live" style={{ padding: "20px", background: `linear-gradient(135deg, ${C.danger}15, ${C.gold}15)`, borderRadius: 12, border: "2px solid " + C.gold + "40", textDecoration: "none", textAlign: "center" }}>
+                <div style={{ fontSize: 18, fontWeight: 800, color: C.gold }}>Quiz Live — Kahoot</div>
+                <div style={{ fontSize: 12, color: C.muted, marginTop: 4 }}>Projeter les questions, les eleves repondent sur leur ecran</div>
+                <div style={{ fontSize: 11, color: C.accent, marginTop: 6 }}>4 banques : Structures, Tri, Big O, Exceptions</div>
+              </Link>
+              <Link href="/scores" style={{ padding: "20px", background: `linear-gradient(135deg, ${C.accent}15, ${C.primary}15)`, borderRadius: 12, border: "2px solid " + C.accent + "40", textDecoration: "none", textAlign: "center" }}>
+                <div style={{ fontSize: 18, fontWeight: 800, color: C.accent }}>Battle — Leaderboard</div>
+                <div style={{ fontSize: 12, color: C.muted, marginTop: 4 }}>Classement XP en temps reel entre eleves</div>
+                <div style={{ fontSize: 11, color: C.gold, marginTop: 6 }}>Les eleves se defient par le score</div>
+              </Link>
+            </div>
+
+            {/* Outils prof */}
+            <div style={{ fontSize: 12, fontWeight: 700, color: C.muted, letterSpacing: 2, marginBottom: 8 }}>OUTILS PROF</div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
+              {[
+                { name: "Roue du hasard", desc: "Tirage au sort theme", href: "/prof", c: C.gold },
+                { name: "Buzzer", desc: "Quiz en classe", href: "/prof", c: C.danger },
+                { name: "Block Animations", desc: "Projeter en cours", href: "/jeux/block-animations", c: C.accent },
+                { name: "Sort Race", desc: "Visualiser les tris", href: "/jeux/sort-race", c: C.danger },
+                { name: "Tree Builder", desc: "Construire un BST", href: "/jeux/tree-builder", c: C.success },
+                { name: "Graph Explorer", desc: "BFS / DFS", href: "/jeux/graph-explorer", c: C.secondary },
+              ].map((t, i) => (
+                <Link key={i} href={t.href} style={{ padding: "10px", background: C.card, border: "1px solid " + t.c + "25", borderRadius: 8, textDecoration: "none", textAlign: "center" }}>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: t.c }}>{t.name}</div>
+                  <div style={{ fontSize: 10, color: C.muted, marginTop: 2 }}>{t.desc}</div>
+                </Link>
+              ))}
+            </div>
           </div>
         )}
       </div>
