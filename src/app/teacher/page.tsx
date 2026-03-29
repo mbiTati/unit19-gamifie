@@ -9,21 +9,24 @@ import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 const BG="#0B1120",CARD="#111827",BORDER="#1E3A5F",TEXT="#E2E8F0",MUTED="#94A3B8",TEAL="#0891B2",GREEN="#16A34A",ORANGE="#F97316",RED="#DC2626",PURPLE="#7C3AED";
 
 export default function TeacherDashboard() {
-  const { student, isTeacher, loading } = useAuth();
+  const TEACHER_EMAILS = ['tati.b@hotmail.fr'];
+
+  const { student, isTeacher, loading, user } = useAuth();
+  const isProf = isTeacher || TEACHER_EMAILS.includes(user?.email || '');
   const [students, setStudents] = useState<any[]>([]);
   const [comments, setComments] = useState<any[]>([]);
   const [gameScores, setGameScores] = useState<any[]>([]);
   const [view, setView] = useState<"kpi"|"students"|"comments"|"scores">("kpi");
 
   useEffect(() => {
-    if (!isTeacher) return;
+    if (!isProf) return;
     supabase.from("cq_students").select("*").eq("role", "student").then(({ data }) => { if (data) setStudents(data); });
     supabase.from("cq_comments").select("*").eq("unit", "Unit 19").order("created_at", { ascending: false }).limit(20).then(({ data }) => { if (data) setComments(data); });
     supabase.from("cq_game_scores").select("*").order("created_at", { ascending: false }).limit(50).then(({ data }) => { if (data) setGameScores(data); });
   }, [isTeacher]);
 
   if (loading) return <div style={{ minHeight: "100vh", background: BG, display: "flex", alignItems: "center", justifyContent: "center", color: MUTED }}>Chargement...</div>;
-  if (!isTeacher) return <div style={{ minHeight: "100vh", background: BG, color: TEXT, padding: "3rem", textAlign: "center" }}><NavBar/><h2 style={{ marginTop: "2rem" }}>Acces reserve au professeur</h2><Link href="/" style={{ color: TEAL }}>Retour</Link></div>;
+  if (!isProf) return <div style={{ minHeight: "100vh", background: BG, color: TEXT, padding: "3rem", textAlign: "center" }}><NavBar/><h2 style={{ marginTop: "2rem" }}>Acces reserve au professeur</h2><Link href="/" style={{ color: TEAL }}>Retour</Link></div>;
 
   const avgXP = students.length > 0 ? Math.round(students.reduce((s, st) => s + (st.total_xp || 0), 0) / students.length) : 0;
   const struggling = students.filter(s => (s.total_xp || 0) < avgXP * 0.4);
