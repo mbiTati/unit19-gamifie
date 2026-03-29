@@ -33,6 +33,8 @@ export default function QuizEngine({ questions, color="#16A34A", title="Quiz" }:
     qStartRef.current=Date.now();
   };
 
+  const restart=()=>{setIdx(0);setScore(0);setSel(null);setShow(false);setStreak(0);setShowTarget(false);qStartRef.current=Date.now()};
+
   // Finished
   if(idx>=questions.length){
     const pct=Math.round(score/questions.length*100);
@@ -42,6 +44,7 @@ export default function QuizEngine({ questions, color="#16A34A", title="Quiz" }:
         <div style={{textAlign:"center",marginTop:16}}>
           <div style={{fontSize:56,fontWeight:800,color:pct>=70?GREEN:color}}>{score}/{questions.length}</div>
           <div style={{fontSize:14,color:MUTED}}>{pct}%{pct===100?" — Parfait !":pct>=80?" — Excellent":pct>=60?" — Bien":""}</div>
+          <button onClick={restart} style={{marginTop:12,padding:"10px 24px",background:color,color:"white",border:"none",borderRadius:8,fontWeight:600,fontSize:13,cursor:"pointer"}}>Recommencer</button>
         </div>
       </div>
     );

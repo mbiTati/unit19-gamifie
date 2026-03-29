@@ -221,6 +221,10 @@ export default function Home() {
           <div style={{ fontSize: 15, fontWeight: 700, color: "#14A3C7" }}>Graph Explorer</div>
           <div style={{ fontSize: 11, color: MUTED, marginTop: 4 }}>BFS et DFS animes</div>
         </Link>
+        <Link href="/jeux/stack-queue-runner" style={{ padding: "14px", background: CARD, border: "1px solid " + TEAL + "30", borderRadius: 12, textDecoration: "none", textAlign: "center" as const }}>
+          <div style={{ fontSize: 15, fontWeight: 700, color: TEAL }}>Stack & Queue</div>
+          <div style={{ fontSize: 11, color: MUTED, marginTop: 4 }}>LIFO vs FIFO</div>
+        </Link>
         <Link href="/jeux/recursion-tower" style={{ padding: "14px", background: CARD, border: "1px solid " + ORANGE + "30", borderRadius: 12, textDecoration: "none", textAlign: "center" as const }}>
           <div style={{ fontSize: 15, fontWeight: 700, color: ORANGE }}>Recursion Tower</div>
           <div style={{ fontSize: 11, color: MUTED, marginTop: 4 }}>Hanoi + pile d'appels</div>
@@ -241,7 +245,19 @@ export default function Home() {
         </Link>
       </div>
 
-      {/* FOOTER */}
+            {/* OUTILS PEDAGOGIQUES */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 16 }}>
+        <Link href="/cours" style={{ padding: "14px", background: CARD, border: "1px solid " + TEAL + "30", borderRadius: 12, textDecoration: "none", textAlign: "center" as const }}>
+          <div style={{ fontSize: 15, fontWeight: 700, color: TEAL }}>Documents & Memos</div>
+          <div style={{ fontSize: 11, color: MUTED, marginTop: 4 }}>Fiches, PPTX, exercices</div>
+        </Link>
+        <Link href="/quiz-live" style={{ padding: "14px", background: CARD, border: "1px solid " + ORANGE + "30", borderRadius: 12, textDecoration: "none", textAlign: "center" as const }}>
+          <div style={{ fontSize: 15, fontWeight: 700, color: ORANGE }}>Quiz Live</div>
+          <div style={{ fontSize: 11, color: MUTED, marginTop: 4 }}>Kahoot en classe</div>
+        </Link>
+      </div>
+
+{/* FOOTER */}
       <div style={{ textAlign: "center" as const, marginTop: "2rem", padding: "1rem", borderTop: `1px solid ${BORDER}` }}>
         <div style={{ fontSize: 12, color: DIM }}>Mme MBI — Bachelor 2 — Unit 19 : Data Structures & Algorithms</div>
       </div>

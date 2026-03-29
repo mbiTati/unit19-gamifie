@@ -1,4 +1,5 @@
 "use client";
+import CommentWidget from "@/components/CommentWidget";
 import Link from "next/link";
 import { useState } from "react";
 import TopBar from "@/components/TopBar";
@@ -45,6 +46,7 @@ export default function Ch7Game(){
     return(
       <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"1.5rem 1rem"}}>
       <TopBar/>
+      <CommentWidget chapter="ch7-adt-oop"/>
       <div style={{maxWidth:650,margin:"0 auto"}}>
           {back}
           <div style={{fontSize:13,color:MUTED,marginBottom:8}}>{idx+1}/{qs.length} | Score: {score}</div>

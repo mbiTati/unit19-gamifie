@@ -1,4 +1,5 @@
 "use client";
+import CommentWidget from "@/components/CommentWidget";
 import QuizEngine from "@/components/QuizEngine";
 import Link from "next/link";
 import { useState } from "react";
@@ -70,6 +71,7 @@ export default function Ch5Game(){
   if(phase==="menu")return(
     <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"2rem 1rem"}}>
       <TopBar/>
+      <CommentWidget chapter="ch5-formal-spec"/>
       <div style={{maxWidth:700,margin:"0 auto"}}>
         <div style={{textAlign:"center",marginBottom:"2rem"}}>
           <div style={{fontSize:13,color:TEAL,fontWeight:600,letterSpacing:2,textTransform:"uppercase"}}>Monde 2 — Chapitre 5</div>

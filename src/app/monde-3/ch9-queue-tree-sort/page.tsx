@@ -1,4 +1,5 @@
 "use client";
+import CommentWidget from "@/components/CommentWidget";
 import Link from "next/link";
 import { useState } from "react";
 import TopBar from "@/components/TopBar";

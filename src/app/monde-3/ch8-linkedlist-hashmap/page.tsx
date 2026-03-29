@@ -1,4 +1,6 @@
 "use client";
+import JavaCompiler from "@/components/JavaCompiler";
+import CommentWidget from "@/components/CommentWidget";
 import QuizEngine from "@/components/QuizEngine";
 import { useState } from "react";
 import Link from "next/link";
@@ -57,6 +59,7 @@ export default function Ch8Game(){
   if(phase==="menu")return(
     <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"2rem 1rem"}}>
       <TopBar/>
+      <CommentWidget chapter="ch8-linkedlist-hashmap"/>
       <div style={{padding:"8px 16px",borderBottom:"1px solid "+BORDER}}><Link href="/" style={{fontSize:12,color:MUTED,textDecoration:"none"}}>Retour accueil</Link></div>
       <div style={{maxWidth:700,margin:"0 auto"}}>
         <div style={{textAlign:"center",marginBottom:"2rem"}}>
