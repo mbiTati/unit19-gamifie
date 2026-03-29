@@ -224,7 +224,7 @@ export default function Ch1Game() {
       <div style={{ maxWidth: 700, margin: "0 auto", padding: "2rem 1rem", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
       <div style={{ textAlign: "center", marginBottom: "2rem" }}>
           <div style={{ fontSize: 14, color: "#028090", fontWeight: 600, letterSpacing: 2, textTransform: "uppercase" as const }}>Monde 1 — Chapitre 1</div>
-          <h1 style={{ fontSize: 32, fontWeight: 700, color: "#1B2A4A", margin: "0.5rem 0" }}>Design Specification des ADT</h1>
+          <h1 style={{ fontSize: 32, fontWeight: 700, color: "#E2E8F0", margin: "0.5rem 0" }}>Design Specification des ADT</h1>
           <p style={{ color: "#64748B", fontSize: 16 }}>Critère P1 — Mini-jeux interactifs</p>
           <a href="/fiches/Ch1_Fiche_Memo_ADT.pdf" target="_blank" rel="noopener" style={{display:"inline-block",marginTop:8,padding:"6px 14px",background:"#1E293B",border:"1px solid #1E3A5F",borderRadius:8,fontSize:12,color:"#94A3B8",textDecoration:"none"}}>Fiche memo PDF</a>
         </div>
@@ -249,7 +249,7 @@ export default function Ch1Game() {
     return (
       <div style={{ maxWidth: 500, margin: "0 auto", padding: "3rem 1rem", fontFamily: "'Segoe UI', system-ui, sans-serif", textAlign: "center" as const }}>
         <div style={{ fontSize: 80, fontWeight: 800, color: grade.color, lineHeight: 1 }}>{grade.label}</div>
-        <div style={{ fontSize: 24, fontWeight: 600, color: "#1B2A4A", margin: "1rem 0" }}>{score} / {totalAnswered} correct ({pct}%)</div>
+        <div style={{ fontSize: 24, fontWeight: 600, color: "#E2E8F0", margin: "1rem 0" }}>{score} / {totalAnswered} correct ({pct}%)</div>
         <div style={{ fontSize: 16, color: "#64748B", marginBottom: "2rem" }}>
           Meilleure série : {maxStreak} {maxStreak > 3 ? "" : ""}
         </div>
@@ -279,7 +279,7 @@ export default function Ch1Game() {
           <code style={{ fontSize: 26, color: "#F97316", fontWeight: 700 }}>{q.operation.name}</code>
           <div style={{ fontSize: 14, color: "#94A3B8", marginTop: 8 }}>{q.operation.description}</div>
         </div>
-        <p style={{ fontSize: 16, color: "#1B2A4A", fontWeight: 500, marginBottom: "0.75rem" }}>À quel ADT appartient cette opération ?</p>
+        <p style={{ fontSize: 16, color: "#E2E8F0", fontWeight: 500, marginBottom: "0.75rem" }}>À quel ADT appartient cette opération ?</p>
         <div style={{ display: "grid", gap: 10 }}>
           {q.choices.map((choice, idx) => {
             const adt = ADTS.find((a) => a.name === choice)!;
@@ -288,8 +288,8 @@ export default function Ch1Game() {
             let borderColor = adt.color;
             let bg = "#111827";
             if (showFeedback) {
-              if (isCorrect) { borderColor = "#16A34A"; bg = "#F0FDF4"; }
-              else if (isSelected && !isCorrect) { borderColor = "#DC2626"; bg = "#FEF2F2"; }
+              if (isCorrect) { borderColor = "#16A34A"; bg = "#10B98120"; }
+              else if (isSelected && !isCorrect) { borderColor = "#DC2626"; bg = "#EF444420"; }
               else { bg = "#F8FAFC"; borderColor = "#E2E8F0"; }
             }
             return (
@@ -334,7 +334,7 @@ export default function Ch1Game() {
             <pre style={{ fontSize: 13, color: "#E2E8F0", fontFamily: "Consolas, monospace", margin: 0, whiteSpace: "pre-wrap" as const }}>{q.code}</pre>
           </div>
         )}
-        <p style={{ fontSize: 17, color: "#1B2A4A", fontWeight: 600, marginBottom: "1rem", lineHeight: 1.4 }}>{q.question}</p>
+        <p style={{ fontSize: 17, color: "#E2E8F0", fontWeight: 600, marginBottom: "1rem", lineHeight: 1.4 }}>{q.question}</p>
         <div style={{ display: "grid", gap: 10 }}>
           {q.options.map((opt, idx) => {
             const isCorrect = idx === q.correctIndex;
@@ -342,8 +342,8 @@ export default function Ch1Game() {
             let borderColor = "#E2E8F0";
             let bg = "#111827";
             if (showFeedback) {
-              if (isCorrect) { borderColor = "#16A34A"; bg = "#F0FDF4"; }
-              else if (isSelected) { borderColor = "#DC2626"; bg = "#FEF2F2"; }
+              if (isCorrect) { borderColor = "#16A34A"; bg = "#10B98120"; }
+              else if (isSelected) { borderColor = "#DC2626"; bg = "#EF444420"; }
             }
             return (
               <button key={idx} onClick={() => handleAnswer(idx, isCorrect)} disabled={showFeedback}
@@ -357,7 +357,7 @@ export default function Ch1Game() {
           })}
         </div>
         {showFeedback && (
-          <div style={{ marginTop: "1rem", padding: "0.75rem 1rem", background: "#F0FDF4", borderRadius: 8, border: "1px solid #86EFAC", fontSize: 14, color: "#166534" }}>
+          <div style={{ marginTop: "1rem", padding: "0.75rem 1rem", background: "#10B98120", borderRadius: 8, border: "1px solid #86EFAC", fontSize: 14, color: "#166534" }}>
             {q.explanation}
           </div>
         )}

@@ -139,12 +139,12 @@ export default function BossLO1() {
           const isSelected = selected === idx;
           let bg = "#111827", border = "#1E3A5F";
           if (showFeedback) {
-            if (isCorrect) { bg = "#F0FDF4"; border = "#16A34A"; }
-            else if (isSelected) { bg = "#FEF2F2"; border = "#DC2626"; }
+            if (isCorrect) { bg = "#10B98120"; border = "#16A34A"; }
+            else if (isSelected) { bg = "#EF444420"; border = "#DC2626"; }
           }
           return (
             <button key={idx} onClick={() => handleAnswer(idx)} disabled={showFeedback}
-              style={{ padding: "10px 14px", border: `2px solid ${border}`, borderRadius: 8, background: bg, cursor: showFeedback ? "default" : "pointer", textAlign: "left" as const, fontSize: 14, color: "#334155" }}>
+              style={{ padding: "10px 14px", border: `2px solid ${border}`, borderRadius: 8, background: bg, cursor: showFeedback ? "default" : "pointer", textAlign: "left" as const, fontSize: 14, color: "#94A3B8" }}>
               <span style={{ fontWeight: 600, marginRight: 8, color: "#7C3AED" }}>{String.fromCharCode(65 + idx)}.</span>{opt}
             </button>
           );

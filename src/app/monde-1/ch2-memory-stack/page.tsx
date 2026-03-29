@@ -61,7 +61,7 @@ export default function Ch2Game() {
       <div style={{ maxWidth: 700, margin: "0 auto", padding: "2rem 1rem", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
       <div style={{ textAlign: "center", marginBottom: "2rem" }}>
           <div style={{ fontSize: 14, color: "#2563EB", fontWeight: 600, letterSpacing: 2, textTransform: "uppercase" as const }}>Monde 1 — Chapitre 2</div>
-          <h1 style={{ fontSize: 32, fontWeight: 700, color: "#1B2A4A", margin: "0.5rem 0" }}>Memory Stack & Function Calls</h1>
+          <h1 style={{ fontSize: 32, fontWeight: 700, color: "#E2E8F0", margin: "0.5rem 0" }}>Memory Stack & Function Calls</h1>
           <p style={{ color: "#64748B", fontSize: 16 }}>Simulateur interactif du call stack</p>
           <a href="/fiches/Ch2_Fiche_Memo_Memory_Stack.pdf" target="_blank" rel="noopener" style={{ display:"inline-block", marginTop:8, padding:"6px 14px", background:"#1E293B", border:"1px solid #1E3A5F", borderRadius:8, fontSize:12, color:"#94A3B8", textDecoration:"none" }}>Fiche memo PDF</a>
         </div>
@@ -89,7 +89,7 @@ export default function Ch2Game() {
         <span style={{ fontSize: 13, color: "#2563EB", fontWeight: 600 }}>Étape {stepIdx + 1}/{scenario.steps.length}</span>
       </div>
 
-      <h2 style={{ fontSize: 20, fontWeight: 700, color: "#1B2A4A", marginBottom: 4 }}>{step.label}</h2>
+      <h2 style={{ fontSize: 20, fontWeight: 700, color: "#E2E8F0", marginBottom: 4 }}>{step.label}</h2>
 
       <div style={{ height: 4, background: "#E2E8F0", borderRadius: 2, marginBottom: "1rem" }}>
         <div style={{ height: 4, background: "#2563EB", borderRadius: 2, width: `${((stepIdx + 1) / scenario.steps.length) * 100}%`, transition: "width 0.3s" }} />
@@ -129,7 +129,7 @@ export default function Ch2Game() {
 
         {/* Explanation */}
         <div style={{ flex: 1 }}>
-          <div style={{ background: "#F0FDF4", border: "1px solid #86EFAC", borderRadius: 10, padding: "1rem" }}>
+          <div style={{ background: "#10B98120", border: "1px solid #86EFAC", borderRadius: 10, padding: "1rem" }}>
             <div style={{ fontSize: 13, fontWeight: 600, color: "#166534", marginBottom: 4 }}>Explication :</div>
             <div style={{ fontSize: 14, color: "#E2E8F0", lineHeight: 1.5 }}>{step.explanation}</div>
           </div>

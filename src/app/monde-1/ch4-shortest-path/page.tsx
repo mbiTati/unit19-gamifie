@@ -111,7 +111,7 @@ export default function Ch4Game() {
       <div style={{ maxWidth: 700, margin: "0 auto", padding: "2rem 1rem", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
       <div style={{ textAlign: "center", marginBottom: "2rem" }}>
           <div style={{ fontSize: 14, color: "#7C3AED", fontWeight: 600, letterSpacing: 2, textTransform: "uppercase" as const }}>Monde 1 — Chapitre 4</div>
-          <h1 style={{ fontSize: 32, fontWeight: 700, color: "#1B2A4A", margin: "0.5rem 0" }}>Shortest Path — Dijkstra</h1>
+          <h1 style={{ fontSize: 32, fontWeight: 700, color: "#E2E8F0", margin: "0.5rem 0" }}>Shortest Path — Dijkstra</h1>
           <p style={{ color: "#64748B", fontSize: 16 }}>Critère D1 — Algorithmes de plus court chemin</p>
           <a href="/fiches/Ch4_Fiche_Memo_Shortest_Path.pdf" target="_blank" rel="noopener" style={{display:"inline-block",marginTop:8,padding:"6px 14px",background:"#1E293B",border:"1px solid #1E3A5F",borderRadius:8,fontSize:12,color:"#94A3B8",textDecoration:"none"}}>Fiche memo PDF</a>
         </div>
@@ -134,7 +134,7 @@ export default function Ch4Game() {
   return (
     <div style={{ maxWidth: 750, margin: "0 auto", padding: "1.5rem 1rem", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
       <button onClick={() => setScenarioIdx(null)} style={{ fontSize: 13, color: "#64748B", background: "none", border: "none", cursor: "pointer", marginBottom: 8 }}>← Retour</button>
-      <h2 style={{ fontSize: 20, fontWeight: 700, color: "#1B2A4A", marginBottom: 4 }}>{sc.title}</h2>
+      <h2 style={{ fontSize: 20, fontWeight: 700, color: "#E2E8F0", marginBottom: 4 }}>{sc.title}</h2>
       <div style={{ height: 4, background: "#E2E8F0", borderRadius: 2, marginBottom: 12 }}>
         <div style={{ height: 4, background: "#7C3AED", borderRadius: 2, width: `${((stepIdx + 1) / (result?.steps.length || 1)) * 100}%`, transition: "width 0.3s" }} />
       </div>
@@ -188,7 +188,7 @@ export default function Ch4Game() {
 
       {/* Step explanation */}
       {step && !showResult && (
-        <div style={{ background: "#F0FDF4", border: "1px solid #86EFAC", borderRadius: 10, padding: "0.75rem 1rem", marginBottom: 12 }}>
+        <div style={{ background: "#10B98120", border: "1px solid #86EFAC", borderRadius: 10, padding: "0.75rem 1rem", marginBottom: 12 }}>
           <div style={{ fontSize: 14, fontWeight: 600, color: "#166534" }}>Étape {stepIdx + 1} : {step.description}</div>
         </div>
       )}
