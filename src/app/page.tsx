@@ -200,7 +200,7 @@ export default function Home() {
       </Link>
 
             {/* JEUX INTERACTIFS */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginTop: 16 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: 10, marginTop: 16 }}>
         <Link href="/jeux/sort-race" style={{ padding: "14px", background: CARD, border: "1px solid " + RED + "30", borderRadius: 12, textDecoration: "none", textAlign: "center" as const }}>
           <div style={{ fontSize: 15, fontWeight: 700, color: RED }}>Sort Race</div>
           <div style={{ fontSize: 11, color: MUTED, marginTop: 4 }}>4 tris en course</div>
@@ -212,6 +212,18 @@ export default function Home() {
         <Link href="/jeux/hash-table-hero" style={{ padding: "14px", background: CARD, border: "1px solid " + PURPLE + "30", borderRadius: 12, textDecoration: "none", textAlign: "center" as const }}>
           <div style={{ fontSize: 15, fontWeight: 700, color: PURPLE }}>Hash Table Hero</div>
           <div style={{ fontSize: 11, color: MUTED, marginTop: 4 }}>Hashing et collisions</div>
+        </Link>
+        <Link href="/jeux/tree-builder" style={{ padding: "14px", background: CARD, border: "1px solid " + GREEN + "30", borderRadius: 12, textDecoration: "none", textAlign: "center" as const }}>
+          <div style={{ fontSize: 15, fontWeight: 700, color: GREEN }}>Tree Builder</div>
+          <div style={{ fontSize: 11, color: MUTED, marginTop: 4 }}>BST + parcours</div>
+        </Link>
+        <Link href="/jeux/graph-explorer" style={{ padding: "14px", background: CARD, border: "1px solid #14A3C7" + "30", borderRadius: 12, textDecoration: "none", textAlign: "center" as const }}>
+          <div style={{ fontSize: 15, fontWeight: 700, color: "#14A3C7" }}>Graph Explorer</div>
+          <div style={{ fontSize: 11, color: MUTED, marginTop: 4 }}>BFS et DFS animes</div>
+        </Link>
+        <Link href="/jeux/recursion-tower" style={{ padding: "14px", background: CARD, border: "1px solid " + ORANGE + "30", borderRadius: 12, textDecoration: "none", textAlign: "center" as const }}>
+          <div style={{ fontSize: 15, fontWeight: 700, color: ORANGE }}>Recursion Tower</div>
+          <div style={{ fontSize: 11, color: MUTED, marginTop: 4 }}>Hanoi + pile d'appels</div>
         </Link>
       </div>
 

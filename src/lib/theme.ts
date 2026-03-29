@@ -1,0 +1,23 @@
+// Theme aligné avec CodeQuest Unit 1
+export const C = {
+  bg: "#0a0f1a",
+  card: "#111827",
+  primary: "#0D7377",
+  secondary: "#14A3C7",
+  accent: "#32E0C4",
+  gold: "#F59E0B",
+  text: "#e2e8f0",
+  muted: "#94a3b8",
+  dimmed: "#64748b",
+  border: "#1e293b",
+  success: "#10B981",
+  danger: "#EF4444",
+  code: "#1E293B",
+  codeBorder: "#2d3a4f",
+  codeText: "#32E0C4",
+  comment: "#6b7f99",
+  keyword: "#c792ea",
+  string: "#c3e88d",
+  number: "#f78c6c",
+  type: "#ffcb6b",
+};
