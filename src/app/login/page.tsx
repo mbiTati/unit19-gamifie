@@ -42,7 +42,7 @@ export default function LoginPage() {
       if (data.user) {
         await supabase.from("cq_students").insert({
           email, first_name: firstName.trim(), last_name: lastName.trim(),
-          role: "student", level: 0, total_xp: 0, class_name: "BI2", cohort: "2025",
+          role: "student", class_name: "BI2", cohort: "2025",
           auth_id: data.user.id,
         });
       }

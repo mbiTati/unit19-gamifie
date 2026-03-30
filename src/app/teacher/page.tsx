@@ -56,7 +56,7 @@ export default function TeacherDashboard() {
     if (!confirm("Remettre a zero la progression de cet eleve ?")) return;
     if (isSupabaseConfigured) {
       await supabase.from("cq_student_progress").delete().eq("student_id", id);
-      await supabase.from("cq_students").update({ total_xp: 0, level: 0 }).eq("id", id);
+      // level/total_xp stored in cq_student_progress, not cq_students
       setStudents(prev => prev.map(s => s.id === id ? { ...s, total_xp: 0, level: 0 } : s));
     }
   };
@@ -282,7 +282,7 @@ export default function TeacherDashboard() {
                     // Etape 2 : Creer le profil etudiant
                     const { error } = await supabase.from("cq_students").insert({ 
                       email, first_name: prenom, last_name: nom, role: "student", 
-                      level: 0, total_xp: 0, class_name: classe, cohort: cohort || "2025",
+                      class_name: classe, cohort: cohort || "2025",
                       auth_id: authId
                     });
                     if (error) { alert("Erreur profil : " + error.message); return; }
