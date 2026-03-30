@@ -105,11 +105,15 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const addXP = async (points: number) => {
-    if (!student || !isSupabaseConfigured) return;
+    if (!student) return;
     const newXP = (student.total_xp || 0) + points;
     const newLevel = getLevel(newXP).index;
-    await supabase.from("cq_students").update({ total_xp: newXP, level: newLevel }).eq("id", student.id);
+    // Store XP locally (cq_students may not have total_xp column)
     setStudent({ ...student, total_xp: newXP, level: newLevel });
+    // Try to save to Supabase if columns exist, ignore error if not
+    if (isSupabaseConfigured) {
+      try { await supabase.from("cq_students").update({ total_xp: newXP, level: newLevel }).eq("id", student.id); } catch {}
+    }
   };
 
   return (
