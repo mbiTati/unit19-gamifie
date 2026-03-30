@@ -9,6 +9,10 @@ import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 const BG="#0B1120",CARD="#111827",BORDER="#1E3A5F",TEXT="#E2E8F0",MUTED="#94A3B8",TEAL="#0891B2",GREEN="#16A34A",PURPLE="#7C3AED",ORANGE="#F97316";
 
 export default function ScoresPage() {
+  const { user: authUser, loading: authLoading } = useAuth();
+  if (authLoading) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
+  if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
+
   const { student } = useAuth();
   const [leaderboard, setLeaderboard] = useState<any[]>([]);
   const [view, setView] = useState<"profile"|"leaderboard">("profile");

@@ -1,4 +1,5 @@
 "use client";
+import { useAuth } from "@/components/AuthProvider";
 import NavBar from "@/components/NavBar";
 import Link from "next/link";
 import { useState, useEffect, useRef, useCallback } from "react";
@@ -36,6 +37,10 @@ const BG="#0B1120",CARD="#111827",BORDER="#1E3A5F",TEXT="#E2E8F0",MUTED="#94A3B8
 const LO_C:any={"LO1":"#7C3AED","LO2":"#0891B2","LO3":"#F97316","LO4":"#D97706"};
 
 export default function BossFinal(){
+  const { user: authUser, loading: authLoading } = useAuth();
+  if (authLoading) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
+  if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
+
   const[started,setStarted]=useState(false);
   const[questions]=useState(()=>shuffle(QS).slice(0,15));
   const[idx,setIdx]=useState(0);

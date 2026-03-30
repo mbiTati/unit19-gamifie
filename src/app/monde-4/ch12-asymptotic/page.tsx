@@ -1,4 +1,5 @@
 "use client";
+import { useAuth } from "@/components/AuthProvider";
 import CommentWidget from "@/components/CommentWidget";
 import QuizEngine from "@/components/QuizEngine";
 import Link from "next/link";
@@ -50,6 +51,10 @@ const GROWTHS=[
 type Phase="menu"|"rank"|"code"|"quiz"|"calculator";
 
 export default function Ch12Game(){
+  const { user: authUser, loading: authLoading } = useAuth();
+  if (authLoading) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
+  if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
+
   const[phase,setPhase]=useState<Phase>("menu");
   // Rank
   const[rankIdx,setRankIdx]=useState(0);const[rankScore,setRankScore]=useState(0);

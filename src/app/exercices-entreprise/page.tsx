@@ -1,4 +1,5 @@
 "use client";
+import { useAuth } from "@/components/AuthProvider";
 import NavBar from "@/components/NavBar";
 import Link from "next/link";
 import TopBar from "@/components/TopBar";
@@ -1285,6 +1286,10 @@ const EXERCISES=[
 ];
 
 export default function ExercicesEntreprise(){
+  const { user: authUser, loading: authLoading } = useAuth();
+  if (authLoading) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
+  if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
+
   const[expanded,setExpanded]=useState(null);
   const[showCode,setShowCode]=useState(new Set());
 

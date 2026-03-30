@@ -1,4 +1,5 @@
 "use client";
+import { useAuth } from "@/components/AuthProvider";
 import NavBar from "@/components/NavBar";
 import { useState } from "react";
 import GameShell from "@/components/GameShell";
@@ -34,6 +35,10 @@ const DOCS = [
 ];
 
 export default function CoursPage() {
+  const { user: authUser, loading: authLoading } = useAuth();
+  if (authLoading) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
+  if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
+
   const [search, setSearch] = useState("");
 
   const filtered = DOCS.map(cat => ({

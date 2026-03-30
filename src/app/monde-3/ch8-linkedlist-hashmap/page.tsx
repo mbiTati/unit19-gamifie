@@ -1,4 +1,5 @@
 "use client";
+import { useAuth } from "@/components/AuthProvider";
 import JavaCompiler from "@/components/JavaCompiler";
 import CommentWidget from "@/components/CommentWidget";
 import QuizEngine from "@/components/QuizEngine";
@@ -43,6 +44,10 @@ const QUIZ=[
 type Phase="menu"|"table"|"quiz";
 
 export default function Ch8Game(){
+  const { user: authUser, loading: authLoading } = useAuth();
+  if (authLoading) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
+  if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
+
   const[phase,setPhase]=useState("menu" as Phase);
   const[answers,setAnswers]=useState({} as Record<string,string>);
   const[submitted,setSubmitted]=useState(false);

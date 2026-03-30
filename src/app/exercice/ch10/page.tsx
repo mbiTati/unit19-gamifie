@@ -1,6 +1,11 @@
 "use client";
+import { useAuth } from "@/components/AuthProvider";
 import CodeExercise from "@/components/CodeExercise";
-export default function Ex10() { return <CodeExercise
+export default function Ex10() {
+  const { user: authUser, loading: authLoading } = useAuth();
+  if (authLoading) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
+  if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
+ return <CodeExercise
   chapter={10} title="Exceptions + JUnit 5" criteria="P5" worldColor="#F97316" totalPoints={60}
   intro="Ajoutez la gestion d'erreurs et écrivez des tests JUnit 5."
   codeTemplate={`// Gestion des exceptions

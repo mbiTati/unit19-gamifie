@@ -1,4 +1,5 @@
 "use client";
+import { useAuth } from "@/components/AuthProvider";
 import CommentWidget from "@/components/CommentWidget";
 import Link from "next/link";
 import { useState } from "react";
@@ -27,6 +28,10 @@ const QS=[
   {q:"Quick Sort complexité moyenne :",o:["O(n)","O(n log n)","O(n²)","O(log n)"],c:1,e:"Quick Sort partitionne et trie récursivement. Moyenne O(n log n), pire cas O(n²)."},
 ];
 export default function BossLO3(){
+  const { user: authUser, loading: authLoading } = useAuth();
+  if (authLoading) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
+  if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
+
   const[started,setStarted]=useState(false);const[idx,setIdx]=useState(0);const[score,setScore]=useState(0);
   const[sel,setSel]=useState<number|null>(null);const[show,setShow]=useState(false);
   const[shuffled]=useState(()=>[...QS].sort(()=>Math.random()-0.5).slice(0,15));

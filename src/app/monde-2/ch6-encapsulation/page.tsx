@@ -1,4 +1,5 @@
 "use client";
+import { useAuth } from "@/components/AuthProvider";
 import CommentWidget from "@/components/CommentWidget";
 import Link from "next/link";
 import { useState } from "react";
@@ -43,6 +44,10 @@ const HERITAGE_ITEMS=[
 type Phase="menu"|"simulator"|"hiding"|"interfaces"|"heritage";
 
 export default function Ch6Game(){
+  const { user: authUser, loading: authLoading } = useAuth();
+  if (authLoading) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
+  if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
+
   const[phase,setPhase]=useState<Phase>("menu");
   const[simStep,setSimStep]=useState(0);
   const[hIdx,setHIdx]=useState(0);const[hScore,setHScore]=useState(0);

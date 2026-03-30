@@ -1,4 +1,5 @@
 "use client";
+import { useAuth } from "@/components/AuthProvider";
 import { useState, useEffect, useRef } from "react";
 import GameShell from "@/components/GameShell";
 import { C } from "@/lib/theme";
@@ -8,6 +9,10 @@ const BLOCK_COLORS=["#DC2626","#F97316","#FBBF24","#16A34A","#0891B2","#3B82F6",
 type AnimMode = "menu"|"callstack"|"swap"|"linkedlist";
 
 export default function BlockAnimations() {
+  const { user: authUser, loading: authLoading } = useAuth();
+  if (authLoading) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
+  if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
+
   const [mode, setMode] = useState<AnimMode>("menu");
 
   // Call stack animation

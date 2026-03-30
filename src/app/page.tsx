@@ -1,4 +1,5 @@
 "use client";
+import { useAuth } from "@/components/AuthProvider";
 import NavBar from "@/components/NavBar";
 import Link from "next/link";
 import { Layers, ScrollText, Code2, BarChart3, Brain, Monitor, Zap, Blocks, Bug, Skull, Gamepad2, Pencil, Crown, Building2, GraduationCap } from "lucide-react";
@@ -115,6 +116,15 @@ function ModuleCard({ m, color }: { m: Module; color: string }) {
 }
 
 export default function Home() {
+  const { user, loading } = useAuth();
+
+  if (loading) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
+
+  if (!user) {
+    if (typeof window !== "undefined") window.location.href = "/login";
+    return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Redirection vers la connexion...</div>;
+  }
+
   return (
     <div style={{ fontFamily: "'Segoe UI', system-ui, sans-serif", color: TEXT }}>
       <NavBar/>

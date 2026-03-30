@@ -1,6 +1,11 @@
 "use client";
+import { useAuth } from "@/components/AuthProvider";
 import CodeExercise from "@/components/CodeExercise";
-export default function Ex14() { return <CodeExercise
+export default function Ex14() {
+  const { user: authUser, loading: authLoading } = useAuth();
+  if (authLoading) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
+  if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
+ return <CodeExercise
   chapter={14} title="Trade-offs + Indépendance" criteria="M5/D4" worldColor="#16A34A" totalPoints={50}
   intro="Analysez les compromis et l'indépendance d'implémentation."
   codeTemplate={`// Trade-off : ArrayList vs LinkedList

@@ -1,4 +1,5 @@
 "use client";
+import { useAuth } from "@/components/AuthProvider";
 import { useState } from "react";
 import GameShell from "@/components/GameShell";
 import { C } from "@/lib/theme";
@@ -55,6 +56,10 @@ function dfs(start: string): string[] {
 }
 
 export default function GraphExplorer() {
+  const { user: authUser, loading: authLoading } = useAuth();
+  if (authLoading) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
+  if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
+
   const [mode, setMode] = useState<"idle"|"bfs"|"dfs">("idle");
   const [visited, setVisited] = useState<string[]>([]);
   const [step, setStep] = useState(0);

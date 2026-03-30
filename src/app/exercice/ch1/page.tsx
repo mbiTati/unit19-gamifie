@@ -1,7 +1,12 @@
 "use client";
+import { useAuth } from "@/components/AuthProvider";
 import CodeExercise from "@/components/CodeExercise";
 
 export default function Ex1() {
+  const { user: authUser, loading: authLoading } = useAuth();
+  if (authLoading) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
+  if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
+
   return <CodeExercise
     chapter={1} title="Design Specification d'un ADT" criteria="P1" worldColor="#7C3AED" totalPoints={60}
     intro="Complétez le code d'un répertoire d'étudiants en utilisant une LinkedList. Chaque trou correspond à une opération fondamentale de l'ADT List."
