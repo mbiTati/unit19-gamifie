@@ -44,7 +44,10 @@ export default function TeacherDashboard() {
     await supabase.from("cq_game_scores").delete().eq("student_id", id);
     await supabase.from("cq_comments").delete().eq("student_id", id);
     await supabase.from("cq_students").delete().eq("id", id);
-    setStudents(prev => prev.filter(s => s.id !== id));
+    // Refresh list from Supabase
+    const { data } = await supabase.from("cq_students").select("*").eq("role", "student").order("last_name");
+    if (data) setStudents(data);
+    else setStudents(prev => prev.filter(s => s.id !== id));
   };
 
   const resetStudent = async (id: string) => {
@@ -174,26 +177,45 @@ export default function TeacherDashboard() {
         {/* TAB: Gestion */}
         {tab === "gestion" && (
           <div>
-            {/* Quick actions */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 16 }}>
-              <div style={{ padding: "14px", background: C.card, borderRadius: 10, border: "1px solid " + C.primary + "30" }}>
-                <div style={{ fontSize: 14, fontWeight: 600, color: C.primary, marginBottom: 8 }}>Creer une classe</div>
-                <div style={{ display: "flex", gap: 6 }}>
-                  <input id="newClasse" placeholder="Nom (ex: BI2, BI3)" style={{ flex: 1, padding: "8px", background: C.bg, border: "1px solid " + C.border, borderRadius: 6, color: C.text, fontSize: 12, outline: "none" }}/>
-                  <button onClick={async () => { const name = (document.getElementById("newClasse") as HTMLInputElement)?.value; if (!name || !isSupabaseConfigured) return; await supabase.from("cq_classes").insert({ name, cohort: "2025" }); alert("Classe " + name + " creee !"); }} style={{ padding: "8px 14px", background: C.primary, color: "white", border: "none", borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>Creer</button>
-                </div>
+            {/* Ajouter un eleve */}
+            <div style={{ padding: "16px", background: C.card, borderRadius: 10, border: "1px solid " + C.gold + "30", marginBottom: 12 }}>
+              <div style={{ fontSize: 15, fontWeight: 700, color: C.gold, marginBottom: 10 }}>Ajouter un eleve</div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginBottom: 8 }}>
+                <input id="addPrenom" placeholder="Prenom" style={{ padding: "10px 12px", background: C.bg, border: "1px solid " + C.border, borderRadius: 8, color: C.text, fontSize: 13, outline: "none" }}/>
+                <input id="addNom" placeholder="Nom" style={{ padding: "10px 12px", background: C.bg, border: "1px solid " + C.border, borderRadius: 8, color: C.text, fontSize: 13, outline: "none" }}/>
+                <input id="addEmail" placeholder="Email" style={{ padding: "10px 12px", background: C.bg, border: "1px solid " + C.border, borderRadius: 8, color: C.text, fontSize: 13, outline: "none" }}/>
               </div>
-              <div style={{ padding: "14px", background: C.card, borderRadius: 10, border: "1px solid " + C.gold + "30" }}>
-                <div style={{ fontSize: 14, fontWeight: 600, color: C.gold, marginBottom: 8 }}>Ajouter un eleve</div>
-                <div style={{ display: "flex", gap: 6 }}>
-                  <input id="newEmail" placeholder="Email eleve" style={{ flex: 1, padding: "8px", background: C.bg, border: "1px solid " + C.border, borderRadius: 6, color: C.text, fontSize: 12, outline: "none" }}/>
-                  <button onClick={async () => { const email = (document.getElementById("newEmail") as HTMLInputElement)?.value; if (!email || !isSupabaseConfigured) return; await supabase.from("cq_students").insert({ email, first_name: email.split("@")[0], last_name: "", role: "student", level: 0, total_xp: 0, classe: "BI2", cohort: "2025" }); alert("Eleve ajoute !"); }} style={{ padding: "8px 14px", background: C.gold, color: C.bg, border: "none", borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>Ajouter</button>
-                </div>
+              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                <select id="addClasse" defaultValue="BI2" style={{ padding: "10px", background: C.bg, border: "1px solid " + C.border, borderRadius: 8, color: C.text, fontSize: 13 }}>
+                  <option value="BI2">BI2</option>
+                  <option value="BI1">BI1</option>
+                  {classes.filter(cl => cl !== "BI1" && cl !== "BI2").map(cl => <option key={cl} value={cl}>{cl}</option>)}
+                </select>
+                <button onClick={async () => {
+                  const prenom = (document.getElementById("addPrenom") as HTMLInputElement)?.value?.trim();
+                  const nom = (document.getElementById("addNom") as HTMLInputElement)?.value?.trim();
+                  const email = (document.getElementById("addEmail") as HTMLInputElement)?.value?.trim();
+                  const classe = (document.getElementById("addClasse") as HTMLSelectElement)?.value;
+                  if (!prenom || !nom || !email) { alert("Prenom, nom et email requis !"); return; }
+                  if (!isSupabaseConfigured) { alert("Supabase non configure"); return; }
+                  const { error } = await supabase.from("cq_students").insert({ email, first_name: prenom, last_name: nom, role: "student", level: 0, total_xp: 0, classe: classe || "BI2", cohort: "2025" });
+                  if (error) { alert("Erreur : " + error.message); return; }
+                  // Refresh list
+                  const { data } = await supabase.from("cq_students").select("*").eq("role", "student").order("last_name");
+                  if (data) setStudents(data);
+                  (document.getElementById("addPrenom") as HTMLInputElement).value = "";
+                  (document.getElementById("addNom") as HTMLInputElement).value = "";
+                  (document.getElementById("addEmail") as HTMLInputElement).value = "";
+                  alert(prenom + " " + nom + " ajoute en " + classe + " !");
+                }} style={{ flex: 1, padding: "10px 20px", background: C.gold, color: C.bg, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
+                  Ajouter l'eleve
+                </button>
               </div>
             </div>
 
+            {/* Eleves en difficulte */}
             <div style={{ padding: "14px", background: C.card, borderRadius: 10, border: "1px solid " + C.border, marginBottom: 12 }}>
-              <div style={{ fontSize: 14, fontWeight: 600, color: C.text, marginBottom: 8 }}>Eleves en difficulte (XP &lt; 40% de la moyenne)</div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: C.danger, marginBottom: 8 }}>Eleves en difficulte (XP &lt; 40% de la moyenne)</div>
               {struggling.length === 0 ? (
                 <div style={{ color: C.success, fontSize: 13 }}>Aucun eleve en difficulte</div>
               ) : (
@@ -205,14 +227,17 @@ export default function TeacherDashboard() {
                 ))
               )}
             </div>
+
+            {/* Top 5 */}
             <div style={{ padding: "14px", background: C.card, borderRadius: 10, border: "1px solid " + C.border }}>
               <div style={{ fontSize: 14, fontWeight: 600, color: C.gold, marginBottom: 8 }}>Top 5 eleves</div>
-              {Array.from(filtered).sort((a, b) => (b.total_xp || 0) - (a.total_xp || 0)).slice(0, 5).map((s, i) => (
+              {Array.from(filtered).sort((a: any, b: any) => (b.total_xp || 0) - (a.total_xp || 0)).slice(0, 5).map((s: any, i: number) => (
                 <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", borderBottom: i < 4 ? "1px solid " + C.border : "none" }}>
                   <span style={{ color: C.text }}>{i + 1}. {s.first_name} {s.last_name}</span>
                   <span style={{ color: C.accent, fontWeight: 700 }}>{s.total_xp || 0} XP</span>
                 </div>
               ))}
+              {filtered.length === 0 && <div style={{ color: C.muted, fontSize: 13 }}>Aucun eleve dans cette classe</div>}
             </div>
           </div>
         )}
