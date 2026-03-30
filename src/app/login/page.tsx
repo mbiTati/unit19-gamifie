@@ -15,11 +15,23 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showReset, setShowReset] = useState(false);
 
   const inputStyle: React.CSSProperties = {
     width: "100%", padding: "10px 14px", borderRadius: 8,
     border: "1px solid " + C.border, background: C.card,
     color: C.text, fontSize: 13, outline: "none", boxSizing: "border-box",
+  };
+
+  const handleReset = async () => {
+    if (!email) { setError("Entrez votre email"); return; }
+    setLoading(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + "/settings",
+    });
+    if (error) setError(error.message);
+    else setSuccess("Email de reinitialisation envoye ! Verifiez votre boite mail.");
+    setLoading(false);
   };
 
   const handleSubmit = async () => {
@@ -104,7 +116,20 @@ export default function LoginPage() {
         </button>
 
         {mode === "login" && (
-          <div style={{ fontSize: 11, color: C.dimmed, textAlign: "center", marginTop: 10 }}>Mot de passe par defaut : Schulz2025!</div>
+          <div style={{ textAlign: "center", marginTop: 10 }}>
+            <div style={{ fontSize: 11, color: C.dimmed }}>Mot de passe par defaut : Schulz2025!</div>
+            <button onClick={() => setShowReset(!showReset)} style={{ fontSize: 11, color: C.accent, background: "none", border: "none", cursor: "pointer", marginTop: 6, textDecoration: "underline" }}>
+              Mot de passe oublie ?
+            </button>
+            {showReset && (
+              <div style={{ marginTop: 8, padding: "10px", background: C.card, borderRadius: 8, border: "1px solid " + C.border }}>
+                <div style={{ fontSize: 12, color: C.muted, marginBottom: 6 }}>Entrez votre email ci-dessus puis cliquez :</div>
+                <button onClick={handleReset} disabled={loading} style={{ padding: "8px 16px", background: C.accent, color: C.bg, border: "none", borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
+                  Envoyer le lien de reinitialisation
+                </button>
+              </div>
+            )}
+          </div>
         )}
       </div>
 
