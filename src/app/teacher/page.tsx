@@ -300,6 +300,40 @@ export default function TeacherDashboard() {
                 ))}
               </div>
             </div>
+
+            {/* Tous les eleves */}
+            <div style={{ marginTop: 16 }}>
+              <div style={{ fontSize: 14, fontWeight: 700, color: C.text, marginBottom: 8 }}>Tous les eleves ({filtered.length})</div>
+              <div style={{ overflowX: "auto" }}>
+                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+                  <thead>
+                    <tr style={{ borderBottom: "2px solid " + C.border }}>
+                      {["NOM", "EMAIL", "CLASSE", "COHORTE", "AUTH", "ACTIONS"].map(h => (
+                        <th key={h} style={{ padding: "8px 10px", textAlign: "left", color: C.gold, fontSize: 11, fontWeight: 700, letterSpacing: 1 }}>{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filtered.map((s: any, i: number) => (
+                      <tr key={s.id} style={{ borderBottom: "1px solid " + C.border, background: i % 2 === 0 ? "transparent" : C.card + "40" }}>
+                        <td style={{ padding: "8px 10px", fontWeight: 600, color: C.text }}>{s.first_name} {(s.last_name || "").toUpperCase()}</td>
+                        <td style={{ padding: "8px 10px", color: C.muted }}>{s.email}</td>
+                        <td style={{ padding: "8px 10px", color: C.text }}>{s.classe}</td>
+                        <td style={{ padding: "8px 10px", color: C.muted }}>{s.cohort}</td>
+                        <td style={{ padding: "8px 10px", color: C.success, fontSize: 12 }}>Lie</td>
+                        <td style={{ padding: "8px 10px" }}>
+                          <div style={{ display: "flex", gap: 4 }}>
+                            <button onClick={() => resetStudent(s.id)} style={{ fontSize: 11, padding: "4px 8px", background: C.gold + "15", border: "1px solid " + C.gold + "30", borderRadius: 4, color: C.gold, cursor: "pointer", fontWeight: 600 }}>Reset</button>
+                            <button onClick={() => deleteStudent(s.id, s.first_name + " " + s.last_name)} style={{ fontSize: 11, padding: "4px 8px", background: C.danger + "15", border: "1px solid " + C.danger + "30", borderRadius: 4, color: C.danger, cursor: "pointer", fontWeight: 600 }}>Suppr</button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                    {filtered.length === 0 && <tr><td colSpan={6} style={{ padding: 20, textAlign: "center", color: C.muted }}>Aucun eleve dans cette classe</td></tr>}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         )}
 
