@@ -63,7 +63,7 @@ export default function SettingsPage() {
         <div style={{ padding: "16px", background: CARD, borderRadius: 10, border: "1px solid " + BORDER }}>
           <div style={{ fontSize: 13, color: MUTED }}>Connecte en tant que :</div>
           <div style={{ fontSize: 14, fontWeight: 600, color: TEXT, marginTop: 4 }}>{student?.first_name} {student?.last_name}</div>
-          <div style={{ fontSize: 12, color: MUTED }}>{user?.email} | {student?.classe} {student?.cohort}</div>
+          <div style={{ fontSize: 12, color: MUTED }}>{user?.email} | {student?.class_name} {student?.cohort}</div>
         </div>
       </div>
     </div>

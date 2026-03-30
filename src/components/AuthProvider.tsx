@@ -10,7 +10,7 @@ interface Student {
   role: string;
   level: number;
   total_xp: number;
-  classe: string;
+  class_name: string;
   cohort: string;
 }
 
@@ -93,7 +93,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     if (!error && data.user) {
       await supabase.from("cq_students").insert({
         email, first_name: firstName, last_name: lastName,
-        role: "student", level: 0, total_xp: 0, classe: "BI2", cohort: "2025",
+        role: "student", level: 0, total_xp: 0, class_name: "BI2", cohort: "2025",
       });
     }
     return { error };

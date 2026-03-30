@@ -30,9 +30,9 @@ export default function TeacherDashboard() {
   if (loading) return <div style={{ minHeight: "100vh", background: C.bg, display: "flex", alignItems: "center", justifyContent: "center", color: C.muted }}>Chargement...</div>;
   if (!isProf) return <div style={{ minHeight: "100vh", background: C.bg, color: C.text }}><NavBar /><div style={{ padding: "3rem", textAlign: "center" }}><h2>Acces reserve au professeur</h2><Link href="/login" style={{ color: C.accent }}>Se connecter</Link></div></div>;
 
-  const classes = Array.from(new Set(students.map(s => s.classe).filter(Boolean)));
+  const classes = Array.from(new Set(students.map(s => s.class_name).filter(Boolean)));
   const cohorts = Array.from(new Set(students.map(s => s.cohort).filter(Boolean)));
-  const filtered = students.filter(s => (filterClasse === "all" || s.classe === filterClasse) && (filterCohort === "all" || s.cohort === filterCohort));
+  const filtered = students.filter(s => (filterClasse === "all" || s.class_name === filterClasse) && (filterCohort === "all" || s.cohort === filterCohort));
 
   const avgXP = filtered.length > 0 ? Math.round(filtered.reduce((a, s) => a + (s.total_xp || 0), 0) / filtered.length) : 0;
   const struggling = filtered.filter(s => (s.total_xp || 0) < avgXP * 0.4 && avgXP > 0);
@@ -133,7 +133,7 @@ export default function TeacherDashboard() {
                     return (
                       <tr key={s.id} style={{ borderBottom: "1px solid " + C.border, background: i % 2 === 0 ? "transparent" : C.card + "40" }}>
                         <td style={{ padding: "8px 10px", fontWeight: 600, color: C.text }}>{s.first_name} {(s.last_name || "").toUpperCase()}</td>
-                        <td style={{ padding: "8px 10px", color: C.muted }}>{s.classe} - {s.cohort}</td>
+                        <td style={{ padding: "8px 10px", color: C.muted }}>{s.class_name} - {s.cohort}</td>
                         <td style={{ padding: "8px 10px", color: lvl.color, fontSize: 12 }}>{lvl.name}</td>
                         <td style={{ padding: "8px 10px", fontWeight: 700, color: C.accent }}>{s.total_xp || 0}</td>
                         <td style={{ padding: "8px 10px", color: C.muted }}>0/14</td>
@@ -263,7 +263,7 @@ export default function TeacherDashboard() {
                   if (!prenom || !nom || !email) { alert("Prenom, nom et email requis !"); return; }
                   if (!classe) { alert("Selectionnez une classe !"); return; }
                   if (!isSupabaseConfigured) { alert("Supabase non configure"); return; }
-                  const { error } = await supabase.from("cq_students").insert({ email, first_name: prenom, last_name: nom, role: "student", level: 0, total_xp: 0, classe, cohort: cohort || "2025" });
+                  const { error } = await supabase.from("cq_students").insert({ email, first_name: prenom, last_name: nom, role: "student", level: 0, total_xp: 0, class_name: classe, cohort: cohort || "2025" });
                   if (error) { alert("Erreur : " + error.message); return; }
                   const { data } = await supabase.from("cq_students").select("*").eq("role", "student").order("last_name");
                   if (data) setStudents(data);
@@ -318,7 +318,7 @@ export default function TeacherDashboard() {
                       <tr key={s.id} style={{ borderBottom: "1px solid " + C.border, background: i % 2 === 0 ? "transparent" : C.card + "40" }}>
                         <td style={{ padding: "8px 10px", fontWeight: 600, color: C.text }}>{s.first_name} {(s.last_name || "").toUpperCase()}</td>
                         <td style={{ padding: "8px 10px", color: C.muted }}>{s.email}</td>
-                        <td style={{ padding: "8px 10px", color: C.text }}>{s.classe}</td>
+                        <td style={{ padding: "8px 10px", color: C.text }}>{s.class_name}</td>
                         <td style={{ padding: "8px 10px", color: C.muted }}>{s.cohort}</td>
                         <td style={{ padding: "8px 10px", color: C.success, fontSize: 12 }}>Lie</td>
                         <td style={{ padding: "8px 10px" }}>
