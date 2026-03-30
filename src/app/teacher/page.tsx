@@ -90,6 +90,22 @@ export default function TeacherDashboard() {
           ))}
         </div>
 
+        {/* Global filters */}
+        <div style={{ display: "flex", gap: 12, marginBottom: 12, alignItems: "center", padding: "10px 14px", background: C.card, borderRadius: 8, border: "1px solid " + C.border }}>
+          <span style={{ fontSize: 13, fontWeight: 600, color: C.text }}>Filtres :</span>
+          <span style={{ fontSize: 12, color: C.muted }}>Classe :</span>
+          <select value={filterClasse} onChange={e => setFilterClasse(e.target.value)} style={{ padding: "8px 12px", background: C.bg, border: "1px solid " + C.border, borderRadius: 6, color: C.text, fontSize: 13 }}>
+            <option value="all">Toutes les classes</option>
+            {classes.map(cl => <option key={cl} value={cl}>{cl}</option>)}
+          </select>
+          <span style={{ fontSize: 12, color: C.muted }}>Cohorte :</span>
+          <select value={filterCohort} onChange={e => setFilterCohort(e.target.value)} style={{ padding: "8px 12px", background: C.bg, border: "1px solid " + C.border, borderRadius: 6, color: C.text, fontSize: 13 }}>
+            <option value="all">Toutes</option>
+            {cohorts.map(co => <option key={co} value={co}>{co}</option>)}
+          </select>
+          <span style={{ fontSize: 12, color: C.accent, marginLeft: "auto" }}>{filtered.length} eleve{filtered.length > 1 ? "s" : ""}</span>
+        </div>
+
         {/* Tabs */}
         <div style={{ display: "flex", gap: 0, marginBottom: 16, borderBottom: "2px solid " + C.border }}>
           {TABS.map(t => (
@@ -103,20 +119,6 @@ export default function TeacherDashboard() {
         {/* TAB: Progression */}
         {tab === "progression" && (
           <>
-            {/* Filters */}
-            <div style={{ display: "flex", gap: 12, marginBottom: 12, alignItems: "center" }}>
-              <span style={{ fontSize: 12, color: C.muted }}>Classe :</span>
-              <select value={filterClasse} onChange={e => setFilterClasse(e.target.value)} style={{ padding: "6px 10px", background: C.card, border: "1px solid " + C.border, borderRadius: 6, color: C.text, fontSize: 12 }}>
-                <option value="all">Toutes</option>
-                {classes.map(cl => <option key={cl} value={cl}>{cl}</option>)}
-              </select>
-              <span style={{ fontSize: 12, color: C.muted }}>Cohorte :</span>
-              <select value={filterCohort} onChange={e => setFilterCohort(e.target.value)} style={{ padding: "6px 10px", background: C.card, border: "1px solid " + C.border, borderRadius: 6, color: C.text, fontSize: 12 }}>
-                <option value="all">Toutes</option>
-                {cohorts.map(co => <option key={co} value={co}>{co}</option>)}
-              </select>
-            </div>
-
             {/* Student table */}
             <div style={{ overflowX: "auto" }}>
               <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
@@ -179,20 +181,6 @@ export default function TeacherDashboard() {
         {/* TAB: Gestion */}
         {tab === "gestion" && (
           <div>
-            {/* Filters */}
-            <div style={{ display: "flex", gap: 12, marginBottom: 16, alignItems: "center" }}>
-              <span style={{ fontSize: 12, color: C.muted }}>Classe :</span>
-              <select value={filterClasse} onChange={e => setFilterClasse(e.target.value)} style={{ padding: "6px 10px", background: C.card, border: "1px solid " + C.border, borderRadius: 6, color: C.text, fontSize: 12 }}>
-                <option value="all">Toutes</option>
-                {classes.map(cl => <option key={cl} value={cl}>{cl}</option>)}
-              </select>
-              <span style={{ fontSize: 12, color: C.muted }}>Cohorte :</span>
-              <select value={filterCohort} onChange={e => setFilterCohort(e.target.value)} style={{ padding: "6px 10px", background: C.card, border: "1px solid " + C.border, borderRadius: 6, color: C.text, fontSize: 12 }}>
-                <option value="all">Toutes</option>
-                {cohorts.map(co => <option key={co} value={co}>{co}</option>)}
-              </select>
-            </div>
-
             {/* Gestion des classes */}
             <div style={{ padding: "16px", background: C.card, borderRadius: 10, border: "1px solid " + C.border, marginBottom: 16 }}>
               <div style={{ fontSize: 15, fontWeight: 700, color: C.danger, marginBottom: 10 }}>Gestion des classes</div>
