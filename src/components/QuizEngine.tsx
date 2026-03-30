@@ -1,5 +1,7 @@
 "use client";
-import { useState, useRef } from "react";
+import { useAuth } from "@/components/AuthProvider";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
+import { useState, useRef, useEffect } from "react";
 import { TargetHit, FlameStreak, XPBar } from "@/components/GameAnimations";
 
 const CARD="#111827",BORDER="#1E3A5F",TEXT="#E2E8F0",MUTED="#94A3B8",GREEN="#16A34A",RED="#DC2626";
@@ -7,6 +9,7 @@ const CARD="#111827",BORDER="#1E3A5F",TEXT="#E2E8F0",MUTED="#94A3B8",GREEN="#16A
 interface QuizQ { q: string; o: string[]; c: number; e: string; }
 
 export default function QuizEngine({ questions, color="#16A34A", title="Quiz" }: { questions: QuizQ[]; color?: string; title?: string }) {
+  const { student, addXP } = useAuth();
   const[idx,setIdx]=useState(0);
   const[score,setScore]=useState(0);
   const[sel,setSel]=useState(null as number|null);
@@ -33,11 +36,29 @@ export default function QuizEngine({ questions, color="#16A34A", title="Quiz" }:
     qStartRef.current=Date.now();
   };
 
-  const restart=()=>{setIdx(0);setScore(0);setSel(null);setShow(false);setStreak(0);setShowTarget(false);qStartRef.current=Date.now()};
+  const[saved,setSaved]=useState(false);
+  const restart=()=>{setIdx(0);setScore(0);setSel(null);setShow(false);setStreak(0);setShowTarget(false);setSaved(false);qStartRef.current=Date.now()};
+
+  // Save score to Supabase when finished
+  const saveScore = async () => {
+    if (!isSupabaseConfigured || !student) return;
+    try {
+      await supabase.from("cq_game_scores").insert({
+        student_id: student.id,
+        student_email: student.email,
+        game_name: title || "Quiz",
+        score,
+        max_score: questions.length,
+        played_at: new Date().toISOString(),
+      });
+      await addXP(score * 5);
+    } catch {}
+  };
 
   // Finished
   if(idx>=questions.length){
     const pct=Math.round(score/questions.length*100);
+    if(!saved){setSaved(true);saveScore();}
     return(
       <div>
         <XPBar current={score} max={questions.length} color={pct>=70?GREEN:color}/>

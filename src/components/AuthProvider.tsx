@@ -1,6 +1,7 @@
 "use client";
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase";
+import { initSyncStorage, setupSyncStorage, loadFromSupabase } from "@/lib/SyncStorage";
 
 interface Student {
   id: string;
@@ -59,7 +60,12 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     if (!isSupabaseConfigured) return null;
     try {
       const { data } = await supabase.from("cq_students").select("*").eq("email", email).single();
-      if (data) setStudent(data);
+      if (data) {
+        setStudent(data);
+        initSyncStorage(data.id);
+        setupSyncStorage();
+        loadFromSupabase(data.id);
+      }
       return data;
     } catch { return null; }
   };

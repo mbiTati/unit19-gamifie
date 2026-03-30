@@ -1,8 +1,9 @@
 "use client";
+import { markStepComplete } from "@/lib/progressTracker";
 import { useAuth } from "@/components/AuthProvider";
 import CommentWidget from "@/components/CommentWidget";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TopBar from "@/components/TopBar";
 
 // Binary tree node
@@ -134,6 +135,10 @@ export default function Ch9Game() {
   const { user: authUser, loading: authLoading } = useAuth();
   if (authLoading) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
   if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
+
+  // Track visit
+  useEffect(() => { markStepComplete("ch9", "visited"); }, []);
+
 
   const [mode, setMode] = useState<"menu" | "tree" | "sort">("menu");
 

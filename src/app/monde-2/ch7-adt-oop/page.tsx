@@ -1,8 +1,9 @@
 "use client";
+import { markStepComplete } from "@/lib/progressTracker";
 import { useAuth } from "@/components/AuthProvider";
 import CommentWidget from "@/components/CommentWidget";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TopBar from "@/components/TopBar";
 
 const BG="#0B1120",CARD="#111827",BORDER="#1E3A5F",TEXT="#E2E8F0",MUTED="#94A3B8",GREEN="#16A34A",TEAL="#0891B2",PURPLE="#7C3AED",RED="#DC2626",ORANGE="#F97316";
@@ -35,6 +36,10 @@ export default function Ch7Game(){
   const { user: authUser, loading: authLoading } = useAuth();
   if (authLoading) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
   if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
+
+  // Track visit
+  useEffect(() => { markStepComplete("ch7", "visited"); }, []);
+
 
   const[phase,setPhase]=useState<Phase>("menu");
   const[expanded,setExpanded]=useState<string|null>(null);
