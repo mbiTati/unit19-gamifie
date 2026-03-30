@@ -14,6 +14,7 @@ export default function TeacherDashboard() {
   const [students, setStudents] = useState<any[]>([]);
   const [comments, setComments] = useState<any[]>([]);
   const [scores, setScores] = useState<any[]>([]);
+  const [cqClasses, setCqClasses] = useState<any[]>([]);
   const [tab, setTab] = useState<"progression"|"questions"|"gestion"|"documents"|"outils">("progression");
   const [filterClasse, setFilterClasse] = useState("BI2");
   const [filterCohort, setFilterCohort] = useState("all");
@@ -23,6 +24,7 @@ export default function TeacherDashboard() {
     supabase.from("cq_students").select("*").eq("role", "student").order("last_name").then(({ data }) => { if (data) setStudents(data); });
     supabase.from("cq_comments").select("*").order("created_at", { ascending: false }).limit(50).then(({ data }) => { if (data) setComments(data); });
     supabase.from("cq_game_scores").select("*").order("created_at", { ascending: false }).limit(100).then(({ data }) => { if (data) setScores(data); });
+    supabase.from("cq_classes").select("*").order("name").then(({ data }) => { if (data) setCqClasses(data); });
   }, [isProf]);
 
   if (loading) return <div style={{ minHeight: "100vh", background: C.bg, display: "flex", alignItems: "center", justifyContent: "center", color: C.muted }}>Chargement...</div>;
@@ -177,67 +179,126 @@ export default function TeacherDashboard() {
         {/* TAB: Gestion */}
         {tab === "gestion" && (
           <div>
+            {/* Filters */}
+            <div style={{ display: "flex", gap: 12, marginBottom: 16, alignItems: "center" }}>
+              <span style={{ fontSize: 12, color: C.muted }}>Classe :</span>
+              <select value={filterClasse} onChange={e => setFilterClasse(e.target.value)} style={{ padding: "6px 10px", background: C.card, border: "1px solid " + C.border, borderRadius: 6, color: C.text, fontSize: 12 }}>
+                <option value="all">Toutes</option>
+                {classes.map(cl => <option key={cl} value={cl}>{cl}</option>)}
+              </select>
+              <span style={{ fontSize: 12, color: C.muted }}>Cohorte :</span>
+              <select value={filterCohort} onChange={e => setFilterCohort(e.target.value)} style={{ padding: "6px 10px", background: C.card, border: "1px solid " + C.border, borderRadius: 6, color: C.text, fontSize: 12 }}>
+                <option value="all">Toutes</option>
+                {cohorts.map(co => <option key={co} value={co}>{co}</option>)}
+              </select>
+            </div>
+
+            {/* Gestion des classes */}
+            <div style={{ padding: "16px", background: C.card, borderRadius: 10, border: "1px solid " + C.border, marginBottom: 16 }}>
+              <div style={{ fontSize: 15, fontWeight: 700, color: C.danger, marginBottom: 10 }}>Gestion des classes</div>
+              <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 12 }}>
+                {cqClasses.map((cl, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", background: C.bg, borderRadius: 6, border: "1px solid " + C.border }}>
+                    <span style={{ fontWeight: 700, color: C.accent }}>{cl.name}</span>
+                    <span style={{ fontSize: 11, color: C.muted }}>{cl.description || ""} · {cl.cohort || "2025"}</span>
+                    <button onClick={async () => {
+                      if (!confirm("Supprimer la classe " + cl.name + " ?")) return;
+                      await supabase.from("cq_classes").delete().eq("id", cl.id);
+                      setCqClasses(prev => prev.filter(c => c.id !== cl.id));
+                    }} style={{ background: "none", border: "none", color: C.danger, cursor: "pointer", fontSize: 14, fontWeight: 700 }}>x</button>
+                  </div>
+                ))}
+                {cqClasses.length === 0 && <span style={{ fontSize: 12, color: C.muted, fontStyle: "italic" }}>Aucune classe</span>}
+              </div>
+              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                <input id="className" placeholder="Nom (ex: BI2)" style={{ width: 140, padding: "10px 12px", background: C.bg, border: "1px solid " + C.border, borderRadius: 8, color: C.text, fontSize: 13, outline: "none" }}/>
+                <input id="classDesc" placeholder="Description" style={{ flex: 1, padding: "10px 12px", background: C.bg, border: "1px solid " + C.border, borderRadius: 8, color: C.text, fontSize: 13, outline: "none" }}/>
+                <select id="classCohort" defaultValue="2025" style={{ padding: "10px", background: C.bg, border: "1px solid " + C.border, borderRadius: 8, color: C.text, fontSize: 13 }}>
+                  <option value="2025">2025</option>
+                  <option value="2026">2026</option>
+                </select>
+                <button onClick={async () => {
+                  const name = (document.getElementById("className") as HTMLInputElement)?.value?.trim();
+                  const desc = (document.getElementById("classDesc") as HTMLInputElement)?.value?.trim();
+                  const cohort = (document.getElementById("classCohort") as HTMLSelectElement)?.value;
+                  if (!name) { alert("Nom de classe requis !"); return; }
+                  if (!isSupabaseConfigured) { alert("Supabase non configure"); return; }
+                  const { error } = await supabase.from("cq_classes").insert({ name, description: desc || "", cohort: cohort || "2025" });
+                  if (error) { alert("Erreur : " + error.message); return; }
+                  const { data } = await supabase.from("cq_classes").select("*").order("name");
+                  if (data) setCqClasses(data);
+                  (document.getElementById("className") as HTMLInputElement).value = "";
+                  (document.getElementById("classDesc") as HTMLInputElement).value = "";
+                }} style={{ padding: "10px 20px", background: C.accent, color: C.bg, border: "none", borderRadius: 8, fontSize: 13, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap" }}>
+                  Creer la classe
+                </button>
+              </div>
+            </div>
+
             {/* Ajouter un eleve */}
-            <div style={{ padding: "16px", background: C.card, borderRadius: 10, border: "1px solid " + C.gold + "30", marginBottom: 12 }}>
-              <div style={{ fontSize: 15, fontWeight: 700, color: C.gold, marginBottom: 10 }}>Ajouter un eleve</div>
+            <div style={{ padding: "16px", background: C.card, borderRadius: 10, border: "1px solid " + C.border, marginBottom: 16 }}>
+              <div style={{ fontSize: 15, fontWeight: 700, color: C.danger, marginBottom: 4 }}>Ajouter un eleve</div>
+              <div style={{ fontSize: 12, color: C.muted, marginBottom: 10 }}>Mot de passe par defaut : <strong style={{ color: C.text }}>Schulz2025!</strong></div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginBottom: 8 }}>
                 <input id="addPrenom" placeholder="Prenom" style={{ padding: "10px 12px", background: C.bg, border: "1px solid " + C.border, borderRadius: 8, color: C.text, fontSize: 13, outline: "none" }}/>
                 <input id="addNom" placeholder="Nom" style={{ padding: "10px 12px", background: C.bg, border: "1px solid " + C.border, borderRadius: 8, color: C.text, fontSize: 13, outline: "none" }}/>
                 <input id="addEmail" placeholder="Email" style={{ padding: "10px 12px", background: C.bg, border: "1px solid " + C.border, borderRadius: 8, color: C.text, fontSize: 13, outline: "none" }}/>
               </div>
               <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                <select id="addClasse" defaultValue="BI2" style={{ padding: "10px", background: C.bg, border: "1px solid " + C.border, borderRadius: 8, color: C.text, fontSize: 13 }}>
+                <select id="addClasse" defaultValue="" style={{ flex: 1, padding: "10px", background: C.bg, border: "1px solid " + C.border, borderRadius: 8, color: C.text, fontSize: 13 }}>
+                  <option value="" disabled>— Classe —</option>
+                  {cqClasses.map(cl => <option key={cl.id} value={cl.name}>{cl.name}</option>)}
                   <option value="BI2">BI2</option>
-                  <option value="BI1">BI1</option>
-                  {classes.filter(cl => cl !== "BI1" && cl !== "BI2").map(cl => <option key={cl} value={cl}>{cl}</option>)}
+                </select>
+                <select id="addCohort" defaultValue="2025" style={{ flex: 1, padding: "10px", background: C.bg, border: "1px solid " + C.border, borderRadius: 8, color: C.text, fontSize: 13 }}>
+                  <option value="2025">2025</option>
+                  <option value="2026">2026</option>
                 </select>
                 <button onClick={async () => {
                   const prenom = (document.getElementById("addPrenom") as HTMLInputElement)?.value?.trim();
                   const nom = (document.getElementById("addNom") as HTMLInputElement)?.value?.trim();
                   const email = (document.getElementById("addEmail") as HTMLInputElement)?.value?.trim();
                   const classe = (document.getElementById("addClasse") as HTMLSelectElement)?.value;
+                  const cohort = (document.getElementById("addCohort") as HTMLSelectElement)?.value;
                   if (!prenom || !nom || !email) { alert("Prenom, nom et email requis !"); return; }
+                  if (!classe) { alert("Selectionnez une classe !"); return; }
                   if (!isSupabaseConfigured) { alert("Supabase non configure"); return; }
-                  const { error } = await supabase.from("cq_students").insert({ email, first_name: prenom, last_name: nom, role: "student", level: 0, total_xp: 0, classe: classe || "BI2", cohort: "2025" });
+                  const { error } = await supabase.from("cq_students").insert({ email, first_name: prenom, last_name: nom, role: "student", level: 0, total_xp: 0, classe, cohort: cohort || "2025" });
                   if (error) { alert("Erreur : " + error.message); return; }
-                  // Refresh list
                   const { data } = await supabase.from("cq_students").select("*").eq("role", "student").order("last_name");
                   if (data) setStudents(data);
                   (document.getElementById("addPrenom") as HTMLInputElement).value = "";
                   (document.getElementById("addNom") as HTMLInputElement).value = "";
                   (document.getElementById("addEmail") as HTMLInputElement).value = "";
                   alert(prenom + " " + nom + " ajoute en " + classe + " !");
-                }} style={{ flex: 1, padding: "10px 20px", background: C.gold, color: C.bg, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
-                  Ajouter l'eleve
+                }} style={{ padding: "10px 24px", background: C.accent, color: C.bg, border: "none", borderRadius: 8, fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
+                  Ajouter
                 </button>
               </div>
             </div>
 
-            {/* Eleves en difficulte */}
-            <div style={{ padding: "14px", background: C.card, borderRadius: 10, border: "1px solid " + C.border, marginBottom: 12 }}>
-              <div style={{ fontSize: 14, fontWeight: 600, color: C.danger, marginBottom: 8 }}>Eleves en difficulte (XP &lt; 40% de la moyenne)</div>
-              {struggling.length === 0 ? (
-                <div style={{ color: C.success, fontSize: 13 }}>Aucun eleve en difficulte</div>
-              ) : (
-                struggling.map((s, i) => (
-                  <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", borderBottom: "1px solid " + C.border }}>
-                    <span style={{ color: C.text }}>{s.first_name} {s.last_name}</span>
-                    <span style={{ color: C.danger, fontWeight: 600 }}>{s.total_xp || 0} XP</span>
+            {/* Eleves en difficulte + Top 5 */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              <div style={{ padding: "14px", background: C.card, borderRadius: 10, border: "1px solid " + C.border }}>
+                <div style={{ fontSize: 14, fontWeight: 600, color: C.danger, marginBottom: 8 }}>En difficulte</div>
+                {struggling.length === 0 ? <div style={{ color: C.success, fontSize: 12 }}>Aucun</div> :
+                  struggling.map((s, i) => (
+                    <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", fontSize: 12 }}>
+                      <span style={{ color: C.text }}>{s.first_name} {s.last_name}</span>
+                      <span style={{ color: C.danger }}>{s.total_xp || 0} XP</span>
+                    </div>
+                  ))
+                }
+              </div>
+              <div style={{ padding: "14px", background: C.card, borderRadius: 10, border: "1px solid " + C.border }}>
+                <div style={{ fontSize: 14, fontWeight: 600, color: C.gold, marginBottom: 8 }}>Top 5</div>
+                {Array.from(filtered).sort((a: any, b: any) => (b.total_xp || 0) - (a.total_xp || 0)).slice(0, 5).map((s: any, i: number) => (
+                  <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", fontSize: 12 }}>
+                    <span style={{ color: C.text }}>{i + 1}. {s.first_name} {s.last_name}</span>
+                    <span style={{ color: C.accent }}>{s.total_xp || 0} XP</span>
                   </div>
-                ))
-              )}
-            </div>
-
-            {/* Top 5 */}
-            <div style={{ padding: "14px", background: C.card, borderRadius: 10, border: "1px solid " + C.border }}>
-              <div style={{ fontSize: 14, fontWeight: 600, color: C.gold, marginBottom: 8 }}>Top 5 eleves</div>
-              {Array.from(filtered).sort((a: any, b: any) => (b.total_xp || 0) - (a.total_xp || 0)).slice(0, 5).map((s: any, i: number) => (
-                <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", borderBottom: i < 4 ? "1px solid " + C.border : "none" }}>
-                  <span style={{ color: C.text }}>{i + 1}. {s.first_name} {s.last_name}</span>
-                  <span style={{ color: C.accent, fontWeight: 700 }}>{s.total_xp || 0} XP</span>
-                </div>
-              ))}
-              {filtered.length === 0 && <div style={{ color: C.muted, fontSize: 13 }}>Aucun eleve dans cette classe</div>}
+                ))}
+              </div>
             </div>
           </div>
         )}
