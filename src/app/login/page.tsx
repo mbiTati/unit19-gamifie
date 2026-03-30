@@ -35,15 +35,20 @@ export default function LoginPage() {
       else router.push("/student");
     } else {
       if (!firstName.trim() || !lastName.trim()) { setError("Prenom et nom requis"); setLoading(false); return; }
+      // Etape 1 : signup Auth
       const { error, data } = await supabase.auth.signUp({ email, password });
       if (error) { setError(error.message); setLoading(false); return; }
+      // Etape 2 : creer profil
       if (data.user) {
         await supabase.from("cq_students").insert({
           email, first_name: firstName.trim(), last_name: lastName.trim(),
           role: "student", level: 0, total_xp: 0, class_name: "BI2", cohort: "2025",
+          auth_id: data.user.id,
         });
       }
-      setSuccess("Compte cree ! Verifiez votre email pour confirmer.");
+      // Etape 3 : confirmer email via RPC
+      try { await supabase.rpc("confirm_student_email", { student_email: email }); } catch {}
+      setSuccess("Compte cree ! Vous pouvez vous connecter.");
     }
     setLoading(false);
   };

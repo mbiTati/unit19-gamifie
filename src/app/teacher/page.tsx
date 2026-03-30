@@ -263,8 +263,33 @@ export default function TeacherDashboard() {
                   if (!prenom || !nom || !email) { alert("Prenom, nom et email requis !"); return; }
                   if (!classe) { alert("Selectionnez une classe !"); return; }
                   if (!isSupabaseConfigured) { alert("Supabase non configure"); return; }
-                  const { error } = await supabase.from("cq_students").insert({ email, first_name: prenom, last_name: nom, role: "student", level: 0, total_xp: 0, class_name: classe, cohort: cohort || "2025" });
-                  if (error) { alert("Erreur : " + error.message); return; }
+                  try {
+                    // Etape 1 : Creer le compte Auth via /auth/v1/signup
+                    const signupRes = await fetch(process.env.NEXT_PUBLIC_SUPABASE_URL + "/auth/v1/signup", {
+                      method: "POST",
+                      headers: { "apikey": process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "", "Content-Type": "application/json" },
+                      body: JSON.stringify({ email, password: "Schulz2025!" })
+                    });
+                    const signupData = await signupRes.json();
+                    if (signupData.error || signupData.msg) { 
+                      // Si le compte Auth existe deja, on continue quand meme pour le profil
+                      if (!signupData.msg?.includes("already") && !signupData.error?.includes("already")) {
+                        alert("Erreur Auth : " + (signupData.error || signupData.msg)); return; 
+                      }
+                    }
+                    const authId = signupData?.id || signupData?.user?.id || null;
+
+                    // Etape 2 : Creer le profil etudiant
+                    const { error } = await supabase.from("cq_students").insert({ 
+                      email, first_name: prenom, last_name: nom, role: "student", 
+                      level: 0, total_xp: 0, class_name: classe, cohort: cohort || "2025",
+                      auth_id: authId
+                    });
+                    if (error) { alert("Erreur profil : " + error.message); return; }
+
+                    // Etape 3 : Confirmer l'email via RPC
+                    await supabase.rpc("confirm_student_email", { student_email: email });
+                  } catch (e: any) { alert("Erreur : " + e.message); return; }
                   const { data } = await supabase.from("cq_students").select("*").eq("role", "student").order("last_name");
                   if (data) setStudents(data);
                   (document.getElementById("addPrenom") as HTMLInputElement).value = "";
