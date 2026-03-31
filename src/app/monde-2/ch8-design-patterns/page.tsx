@@ -17,6 +17,9 @@ const PATTERNS=[
   {name:"Composite",cat:"Structure",desc:"Compose des objets en structure d'arbre. Client traite objets simples et composites uniformément.",code:"interface Employe { void afficher(); }\nclass Developpeur implements Employe {\n    public void afficher() { /* ... */ }\n}\nclass GroupeEmployes implements Employe {\n    private List<Employe> employes = new ArrayList<>();\n    public void afficher() {\n        for (Employe e : employes) e.afficher();\n    }\n}",usage:"Arbres hiérarchiques, systèmes de fichiers, menus"},
   {name:"Observer",cat:"Comportement",desc:"Quand un objet change d'état, tous ses \"abonnés\" sont notifiés automatiquement.",code:"interface Observer { void update(String msg); }\nclass Canal {\n    List<Observer> abonnes = new ArrayList<>();\n    public void publier(String msg) {\n        for (Observer o : abonnes) o.update(msg);\n    }\n}",usage:"Notifications, événements UI, pub/sub"},
   {name:"Strategy",cat:"Comportement",desc:"Définit une famille d'algorithmes et permet d'en changer dynamiquement.",code:"interface TriStrategy { void trier(int[] arr); }\nclass BubbleSort implements TriStrategy { ... }\nclass QuickSort implements TriStrategy { ... }\nclass Trieur {\n    private TriStrategy strategy;\n    public void setStrategy(TriStrategy s) {\n        this.strategy = s;\n    }\n    public void executer(int[] arr) {\n        strategy.trier(arr);\n    }\n}",usage:"Algorithmes interchangeables, calcul de prix"},
+  {name:"Decorator",cat:"Structure",desc:"Ajoute dynamiquement des responsabilités à un objet SANS modifier sa classe. On enveloppe l'objet.",code:"interface Boisson { double prix(); String description(); }\nclass Cafe implements Boisson {\n    public double prix() { return 2.0; }\n    public String description() { return \"Cafe\"; }\n}\nclass AvecLait implements Boisson {\n    private Boisson boisson;\n    public AvecLait(Boisson b) { this.boisson = b; }\n    public double prix() { return boisson.prix() + 0.5; }\n    public String description() { return boisson.description() + \" + Lait\"; }\n}",usage:"Ajouter des fonctionnalites sans heritage : flux I/O Java, options de commande"},
+  {name:"Facade",cat:"Structure",desc:"Fournit une interface simplifiee vers un ensemble de sous-systemes complexes. Cache la complexite.",code:"class MoteurDemarrage { public void demarrer() { /* ... */ } }\nclass GPS { public void initialiser() { /* ... */ } }\nclass Climatisation { public void activer() { /* ... */ } }\n// Facade :\nclass VoitureFacade {\n    public void demarrer() {\n        new MoteurDemarrage().demarrer();\n        new GPS().initialiser();\n        new Climatisation().activer();\n    }\n}",usage:"API simplifiee, bibliotheques complexes, demarrage systeme"},
+  {name:"Visitor",cat:"Comportement",desc:"Separe un algorithme de la structure d'objets sur laquelle il opere. Ajoute des operations sans modifier les classes.",code:"interface Element { void accept(Visitor v); }\ninterface Visitor {\n    void visit(Cercle c);\n    void visit(Rectangle r);\n}\nclass Cercle implements Element {\n    public void accept(Visitor v) { v.visit(this); }\n}\nclass CalculAire implements Visitor {\n    public void visit(Cercle c) { /* PI*r*r */ }\n    public void visit(Rectangle r) { /* l*L */ }\n}",usage:"Parcours d'arbres, analyse de code, export multi-format"},
 ];
 
 const QUIZ=[
@@ -28,6 +31,9 @@ const QUIZ=[
   {q:"Les 3 catégories de Design Patterns (GoF) sont :",o:["Input, Output, Process","Création, Structure, Comportement","Simple, Moyen, Complexe","Java, Python, C++"],c:1,e:"GoF (Gang of Four) : Création (comment créer), Structure (comment composer), Comportement (comment interagir)."},
   {q:"Quel pattern fait le pont entre deux interfaces incompatibles ?",o:["Composite","Observer","Adapter","Builder"],c:2,e:"Adapter = convertisseur. Il fait le pont entre deux interfaces qui ne sont pas directement compatibles."},
   {q:"Builder est préféré quand :",o:["Il n'y a qu'un paramètre","L'objet a beaucoup de paramètres optionnels","On veut notifier des observateurs","On veut une seule instance"],c:1,e:"Builder sépare la construction d'un objet complexe, étape par étape, avec des paramètres optionnels."},
+  {q:"Decorator pattern permet de :",o:["Créer un seul objet","Ajouter des fonctionnalités sans modifier la classe originale","Simplifier une interface","Parcourir un arbre"],c:1,e:"Decorator enveloppe un objet pour lui ajouter des responsabilités dynamiquement, sans toucher à la classe."},
+  {q:"Facade pattern sert à :",o:["Notifier des observateurs","Fournir une interface simplifiée vers des sous-systèmes complexes","Créer des objets","Changer d'algorithme"],c:1,e:"Facade cache la complexité derrière une interface simple. Ex: VoitureFacade.demarrer() au lieu de 3 appels."},
+  {q:"Visitor pattern sépare :",o:["La création de l'utilisation","L'algorithme de la structure de données","L'interface de l'implémentation","Le client du serveur"],c:1,e:"Visitor sépare les opérations de la structure. On peut ajouter de nouvelles opérations sans modifier les classes."},
 ];
 
 const MATCH_ITEMS=[
@@ -38,6 +44,9 @@ const MATCH_ITEMS=[
   {pattern:"Adapter",scenario:"Intégrer une ancienne API de paiement avec une nouvelle interface"},
   {pattern:"Composite",scenario:"Système de fichiers : dossiers contenant fichiers et sous-dossiers"},
   {pattern:"Builder",scenario:"Constructeur de pizza : taille + base + garnitures optionnelles"},
+  {pattern:"Decorator",scenario:"Café : ajouter lait, sucre, crème sans modifier la classe Café"},
+  {pattern:"Facade",scenario:"Domotique : un seul bouton 'Bonsoir' éteint lumières, ferme volets, active alarme"},
+  {pattern:"Visitor",scenario:"Géométrie : calculer aire, périmètre, volume sur Cercle, Rectangle, Triangle"},
 ];
 
 type Phase="menu"|"explorer"|"quiz"|"match";
@@ -75,7 +84,7 @@ export default function Ch8Game(){
         </div>
         <div style={{display:"grid",gap:14}}>
           {[
-            {p:"explorer" as Phase,t:"Explorer les 7 Patterns",d:"Singleton, Factory, Builder, Adapter, Composite, Observer, Strategy",c:BLUE},
+            {p:"explorer" as Phase,t:"Explorer les 10 Patterns",d:"Création: Singleton, Factory, Builder — Structure: Adapter, Composite, Decorator, Facade — Comportement: Observer, Strategy, Visitor",c:BLUE},
             {p:"match" as Phase,t:"Pattern → Scénario",d:"Associez chaque pattern à son cas d'usage réel",c:ORANGE},
             {p:"quiz" as Phase,t:"Quiz Design Patterns",d:"8 questions pour maîtriser les patterns",c:GREEN},
           ].map(g=>(
