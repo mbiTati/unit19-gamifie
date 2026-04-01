@@ -1,4 +1,6 @@
 "use client";
+import React from "react";
+import { loadLocks, isLocked, setTeacher } from "@/lib/lockManager";
 import { useAuth } from "@/components/AuthProvider";
 import NavBar from "@/components/NavBar";
 import Link from "next/link";
@@ -40,6 +42,15 @@ export default function BossFinal(){
   const { user: authUser, loading: authLoading } = useAuth();
   if (authLoading) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
   if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
+
+  // Check locks
+  const [lockChecked, setLockChecked] = React.useState(false);
+  const [sectionLocked, setSectionLocked] = React.useState(false);
+  React.useEffect(() => {
+    loadLocks().then(locks => { setSectionLocked(locks["boss_final"] === true); setLockChecked(true); });
+  }, []);
+  if (!lockChecked) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
+  if (sectionLocked) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", color: "#e2e8f0", gap: 12 }}><div style={{ fontSize: 48 }}>🔒</div><div style={{ fontSize: 20, fontWeight: 700 }}>Acces bloque</div><div style={{ fontSize: 13, color: "#94a3b8" }}>Cette section est verrouillee par le professeur</div><a href="/" style={{ color: "#32E0C4", marginTop: 8 }}>Retour au Hub</a></div>;
 
   const[started,setStarted]=useState(false);
   const[questions]=useState(()=>shuffle(QS).slice(0,15));

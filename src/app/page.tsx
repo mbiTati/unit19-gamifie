@@ -241,6 +241,10 @@ export default function Home() {
           <div style={{ fontSize: 15, fontWeight: 700, color: "#32E0C4" }}>Animations</div>
           <div style={{ fontSize: 11, color: MUTED, marginTop: 4 }}>Call stack, tri, LL</div>
         </Link>
+        <Link href="/battle" style={{ padding: "14px", background: CARD, border: "1px solid #F59E0B" + "30", borderRadius: 12, textDecoration: "none", textAlign: "center" as const }}>
+          <div style={{ fontSize: 15, fontWeight: 700, color: "#F59E0B" }}>Battle</div>
+          <div style={{ fontSize: 11, color: MUTED, marginTop: 4 }}>Defi algorithmes</div>
+        </Link>
         <Link href="/jeux/recursion-tower" style={{ padding: "14px", background: CARD, border: "1px solid " + ORANGE + "30", borderRadius: 12, textDecoration: "none", textAlign: "center" as const }}>
           <div style={{ fontSize: 15, fontWeight: 700, color: ORANGE }}>Recursion Tower</div>
           <div style={{ fontSize: 11, color: MUTED, marginTop: 4 }}>Hanoi + pile d'appels</div>

@@ -55,6 +55,7 @@ export default function StudentHome(){
     {name:"Recursion Tower",href:"/jeux/recursion-tower",color:C.gold,tag:"REC"},
     {name:"Stack & Queue",href:"/jeux/stack-queue-runner",color:C.primary,tag:"LIFO"},
     {name:"Animations",href:"/jeux/block-animations",color:C.accent,tag:"ANIM"},
+    {name:"Battle",href:"/battle",color:C.gold,tag:"VS"},
   ];
 
   return(

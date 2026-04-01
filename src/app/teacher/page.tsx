@@ -15,7 +15,8 @@ export default function TeacherDashboard() {
   const [comments, setComments] = useState<any[]>([]);
   const [scores, setScores] = useState<any[]>([]);
   const [cqClasses, setCqClasses] = useState<any[]>([]);
-  const [tab, setTab] = useState<"progression"|"questions"|"gestion"|"documents"|"outils">("progression");
+  const [locks, setLocks] = useState<Record<string, boolean>>({});
+  const [tab, setTab] = useState<"progression"|"questions"|"gestion"|"documents"|"outils"|"direct"|"acces">("progression");
   const [filterClasse, setFilterClasse] = useState("BI2");
   const [filterCohort, setFilterCohort] = useState("all");
 
@@ -25,6 +26,9 @@ export default function TeacherDashboard() {
     supabase.from("cq_comments").select("*").order("created_at", { ascending: false }).limit(50).then(({ data }) => { if (data) setComments(data); });
     supabase.from("cq_game_scores").select("*").order("created_at", { ascending: false }).limit(100).then(({ data }) => { if (data) setScores(data); });
     supabase.from("cq_classes").select("*").order("name").then(({ data }) => { if (data) setCqClasses(data); });
+    supabase.from("cq_locks").select("*").then(({ data }) => {
+      if (data) { const m: Record<string, boolean> = {}; data.forEach((r: any) => m[r.section] = r.locked); setLocks(m); }
+    });
   }, [isProf]);
 
   if (loading) return <div style={{ minHeight: "100vh", background: C.bg, display: "flex", alignItems: "center", justifyContent: "center", color: C.muted }}>Chargement...</div>;
@@ -38,6 +42,13 @@ export default function TeacherDashboard() {
   const struggling = filtered.filter(s => (s.total_xp || 0) < avgXP * 0.4 && avgXP > 0);
   const u19Comments = comments.filter(c => c.unit === "Unit 19" || !c.unit);
   const unread = u19Comments.filter(c => !c.is_read);
+
+  const toggleLock = async (section: string) => {
+    if (!isSupabaseConfigured) return;
+    const newVal = !locks[section];
+    setLocks(prev => ({ ...prev, [section]: newVal }));
+    await supabase.from("cq_locks").upsert({ section, locked: newVal, unit: "Unit 19" }, { onConflict: "section" });
+  };
 
   const deleteStudent = async (id: string, name: string) => {
     if (!confirm("SUPPRIMER definitivement " + name + " ? Cette action est irreversible.")) return;
@@ -67,6 +78,8 @@ export default function TeacherDashboard() {
     { id: "gestion" as const, label: "Gerer les eleves" },
     { id: "documents" as const, label: "Mes Documents" },
     { id: "outils" as const, label: "Outils & Jeux" },
+    { id: "direct" as const, label: "En direct" },
+    { id: "acces" as const, label: "Acces" },
   ];
 
   return (
@@ -403,6 +416,63 @@ export default function TeacherDashboard() {
             </div>
           </div>
         )}
+        {/* TAB: En direct */}
+        {tab === "direct" && (
+          <div>
+            <div style={{ fontSize: 13, color: C.muted, marginBottom: 12 }}>Presence des eleves — basee sur la derniere activite Supabase</div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
+              {filtered.map((s: any, i: number) => {
+                const lastActive = s.updated_at || s.created_at;
+                const ago = lastActive ? Math.round((Date.now() - new Date(lastActive).getTime()) / 60000) : 999;
+                const online = ago < 5;
+                return (
+                  <div key={i} style={{ padding: "10px", background: C.card, borderRadius: 8, border: "1px solid " + (online ? C.success : C.border), display: "flex", alignItems: "center", gap: 8 }}>
+                    <div style={{ width: 8, height: 8, borderRadius: "50%", background: online ? C.success : C.border }} />
+                    <div>
+                      <div style={{ fontSize: 13, fontWeight: 600, color: C.text }}>{s.first_name} {s.last_name}</div>
+                      <div style={{ fontSize: 10, color: online ? C.success : C.muted }}>{online ? "En ligne" : ago < 60 ? `Il y a ${ago} min` : ago < 1440 ? `Il y a ${Math.round(ago/60)}h` : "Hors ligne"}</div>
+                    </div>
+                  </div>
+                );
+              })}
+              {filtered.length === 0 && <div style={{ gridColumn: "1/-1", padding: 20, textAlign: "center", color: C.muted }}>Aucun eleve</div>}
+            </div>
+          </div>
+        )}
+
+                {/* TAB: Acces */}
+        {tab === "acces" && (
+          <div>
+            <div style={{ fontSize: 13, color: C.muted, marginBottom: 12 }}>Bloquer/debloquer des sections pour les eleves. Le prof voit toujours tout.</div>
+            <div style={{ display: "grid", gap: 8 }}>
+              {[
+                { key: "jeux", label: "Jeux pedagogiques", desc: "Sort Race, Tree Builder, Graph Explorer, etc." },
+                { key: "quiz_live", label: "Quiz Live", desc: "Kahoot en classe" },
+                { key: "boss_final", label: "Boss Final", desc: "15 questions LO1-LO4" },
+                { key: "exercices", label: "Exercices", desc: "14 exercices par chapitre" },
+                { key: "exercices_entreprise", label: "Exercices Entreprise", desc: "5 cas (velos, tickets, pharmacie...)" },
+                { key: "projets", label: "Projets integrateurs", desc: "4 projets LO1-LO4" },
+                { key: "classement", label: "Classement", desc: "Leaderboard XP" },
+                { key: "documents_corriges", label: "Documents corriges", desc: "Corriges masques pour les eleves" },
+              ].map(section => (
+                <div key={section.key} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 16px", background: C.card, borderRadius: 8, border: "1px solid " + C.border }}>
+                  <div>
+                    <div style={{ fontSize: 14, fontWeight: 600, color: C.text }}>{section.label}</div>
+                    <div style={{ fontSize: 11, color: C.muted }}>{section.desc}</div>
+                  </div>
+                  <button onClick={() => toggleLock(section.key)}
+                    style={{ padding: "8px 20px", borderRadius: 8, border: "none", fontWeight: 700, fontSize: 13, cursor: "pointer",
+                      background: locks[section.key] ? C.danger + "20" : C.success + "20",
+                      color: locks[section.key] ? C.danger : C.success,
+                    }}>
+                    {locks[section.key] ? "BLOQUE" : "OUVERT"}
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
       </div>
     </div>
   );
