@@ -1,6 +1,4 @@
 "use client";
-import React from "react";
-import { loadLocks, isLocked, setTeacher } from "@/lib/lockManager";
 import NavBar from "@/components/NavBar";
 import { useState, useEffect, useRef } from "react";
 import GameShell from "@/components/GameShell";
@@ -49,20 +47,33 @@ const BANKS: Record<string, { name: string; color: string; questions: { q: strin
 type Mode = "menu" | "host" | "player";
 
 export default function QuizLive() {
-  const { user: authUser, loading: authLoading } = useAuth();
-  if (authLoading) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
-  if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
+  const { user, student, loading, isTeacher } = useAuth();
+  const [lockChecked, setLockChecked] = useState(false);
+  const [sectionLocked, setSectionLocked] = useState(false);
 
-  // Check locks
-  const [lockChecked, setLockChecked] = React.useState(false);
-  const [sectionLocked, setSectionLocked] = React.useState(false);
-  React.useEffect(() => {
-    loadLocks().then(locks => { setSectionLocked(locks["quiz_live"] === true); setLockChecked(true); });
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await supabase.from("cq_locks").select("*").eq("section", "quiz_live").maybeSingle();
+        if (data) setSectionLocked(data.locked === true);
+      } catch {}
+      setLockChecked(true);
+    })();
   }, []);
-  if (!lockChecked) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
-  if (sectionLocked) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", color: "#e2e8f0", gap: 12 }}><div style={{ fontSize: 48 }}>🔒</div><div style={{ fontSize: 20, fontWeight: 700 }}>Acces bloque</div><div style={{ fontSize: 13, color: "#94a3b8" }}>Cette section est verrouillee par le professeur</div><a href="/" style={{ color: "#32E0C4", marginTop: 8 }}>Retour au Hub</a></div>;
 
-  const { student, isTeacher } = useAuth();
+  if (loading || !lockChecked) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
+  if (!user) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
+  if (sectionLocked && !isTeacher) return (
+    <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", color: "#e2e8f0", gap: 12 }}>
+      <div style={{ fontSize: 48 }}>🔒</div>
+      <div style={{ fontSize: 20, fontWeight: 700 }}>Acces bloque</div>
+      <div style={{ fontSize: 13, color: "#94a3b8" }}>Cette section est verrouillee par le professeur</div>
+      <a href="/" style={{ color: "#32E0C4", marginTop: 8, textDecoration: "none" }}>Retour au Hub</a>
+    </div>
+  );
+
+
+
   const [mode, setMode] = useState<Mode>("menu");
   const [selectedBank, setSelectedBank] = useState<string>("structures");
   const [sessionCode, setSessionCode] = useState("");

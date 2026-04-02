@@ -1,11 +1,10 @@
 "use client";
-import React from "react";
-import { loadLocks, isLocked, setTeacher } from "@/lib/lockManager";
+import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/components/AuthProvider";
 import NavBar from "@/components/NavBar";
 import Link from "next/link";
 import TopBar from "@/components/TopBar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const BG="#0B1120",CARD="#111827",BORDER="#1E3A5F",TEXT="#E2E8F0",MUTED="#94A3B8",GREEN="#16A34A",RED="#DC2626",ORANGE="#F97316",PURPLE="#7C3AED",TEAL="#0891B2",BLUE="#3B82F6";
 
@@ -1288,18 +1287,32 @@ const EXERCISES=[
 ];
 
 export default function ExercicesEntreprise(){
-  const { user: authUser, loading: authLoading } = useAuth();
-  if (authLoading) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
-  if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
+  const { user, student, loading, isTeacher } = useAuth();
+  const [lockChecked, setLockChecked] = useState(false);
+  const [sectionLocked, setSectionLocked] = useState(false);
 
-  // Check locks
-  const [lockChecked, setLockChecked] = React.useState(false);
-  const [sectionLocked, setSectionLocked] = React.useState(false);
-  React.useEffect(() => {
-    loadLocks().then(locks => { setSectionLocked(locks["exercices_entreprise"] === true); setLockChecked(true); });
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await supabase.from("cq_locks").select("*").eq("section", "exercices_entreprise").maybeSingle();
+        if (data) setSectionLocked(data.locked === true);
+      } catch {}
+      setLockChecked(true);
+    })();
   }, []);
-  if (!lockChecked) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
-  if (sectionLocked) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", color: "#e2e8f0", gap: 12 }}><div style={{ fontSize: 48 }}>🔒</div><div style={{ fontSize: 20, fontWeight: 700 }}>Acces bloque</div><div style={{ fontSize: 13, color: "#94a3b8" }}>Cette section est verrouillee par le professeur</div><a href="/" style={{ color: "#32E0C4", marginTop: 8 }}>Retour au Hub</a></div>;
+
+  if (loading || !lockChecked) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
+  if (!user) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
+  if (sectionLocked && !isTeacher) return (
+    <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", color: "#e2e8f0", gap: 12 }}>
+      <div style={{ fontSize: 48 }}>🔒</div>
+      <div style={{ fontSize: 20, fontWeight: 700 }}>Acces bloque</div>
+      <div style={{ fontSize: 13, color: "#94a3b8" }}>Cette section est verrouillee par le professeur</div>
+      <a href="/" style={{ color: "#32E0C4", marginTop: 8, textDecoration: "none" }}>Retour au Hub</a>
+    </div>
+  );
+
+
 
   const[expanded,setExpanded]=useState(null);
   const[showCode,setShowCode]=useState(new Set());

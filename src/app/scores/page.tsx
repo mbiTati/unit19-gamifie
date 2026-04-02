@@ -25,11 +25,16 @@ export default function ScoresPage() {
   }, []);
 
   useEffect(() => {
-    if (!isSupabaseConfigured) return;
-    supabase.from("cq_students").select("*").eq("role", "student").then(({ data }) => {
+    if (!isSupabaseConfigured || !student) return;
+    // Students see only their class; teacher sees all
+    const query = supabase.from("cq_students").select("*").eq("role", "student");
+    if (student.role !== "teacher" && student.class_name) {
+      query.eq("class_name", student.class_name);
+    }
+    query.then(({ data }) => {
       if (data) setLeaderboard(data.sort((a: any, b: any) => (b.total_xp || 0) - (a.total_xp || 0)));
     });
-  }, []);
+  }, [student]);
 
   if (loading) return <div style={{ minHeight: "100vh", background: C.bg, display: "flex", alignItems: "center", justifyContent: "center", color: C.muted }}>Chargement...</div>;
   if (!user) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
