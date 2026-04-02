@@ -17,7 +17,7 @@ export default function TeacherDashboard() {
   const [cqClasses, setCqClasses] = useState<any[]>([]);
   const [locks, setLocks] = useState<Record<string, boolean>>({});
   const [tab, setTab] = useState<"progression"|"questions"|"gestion"|"documents"|"outils"|"direct"|"acces">("progression");
-  const [filterClasse, setFilterClasse] = useState("BI2");
+  const [filterClasse, setFilterClasse] = useState("all");
   const [filterCohort, setFilterCohort] = useState("all");
 
   useEffect(() => {
@@ -419,9 +419,9 @@ export default function TeacherDashboard() {
         {/* TAB: En direct */}
         {tab === "direct" && (
           <div>
-            <div style={{ fontSize: 13, color: C.muted, marginBottom: 12 }}>Presence des eleves — basee sur la derniere activite Supabase</div>
+            <div style={{ fontSize: 13, color: C.muted, marginBottom: 12 }}>Presence de TOUS les eleves — basee sur la derniere activite</div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
-              {filtered.map((s: any, i: number) => {
+              {students.filter(s => s.role !== "teacher").map((s: any, i: number) => {
                 const lastActive = s.updated_at || s.created_at;
                 const ago = lastActive ? Math.round((Date.now() - new Date(lastActive).getTime()) / 60000) : 999;
                 const online = ago < 5;
@@ -435,7 +435,7 @@ export default function TeacherDashboard() {
                   </div>
                 );
               })}
-              {filtered.length === 0 && <div style={{ gridColumn: "1/-1", padding: 20, textAlign: "center", color: C.muted }}>Aucun eleve</div>}
+              {students.filter(s => s.role !== "teacher").length === 0 && <div style={{ gridColumn: "1/-1", padding: 20, textAlign: "center", color: C.muted }}>Aucun eleve</div>}
             </div>
           </div>
         )}
