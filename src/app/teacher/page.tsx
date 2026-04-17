@@ -365,61 +365,99 @@ export default function TeacherDashboard() {
 
         {/* TAB: Documents */}
         {tab === "documents" && (
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-            {[
-              { title: "Fiches memo (PDF)", desc: "15 fiches recapitulatives", href: "/cours" },
-              { title: "Presentations (PPTX)", desc: "25 presentations avec notes prof", href: "/cours" },
-              { title: "Exercices entreprise", desc: "5 cas reels avec corrections", href: "/exercices-entreprise" },
-              { title: "Projets integrateurs", desc: "1 projet par LO", href: "/projets" },
-            ].map((d, i) => (
-              <Link key={i} href={d.href} style={{ padding: "14px", background: C.card, borderRadius: 10, border: "1px solid " + C.border, textDecoration: "none" }}>
-                <div style={{ fontSize: 14, fontWeight: 600, color: C.text }}>{d.title}</div>
-                <div style={{ fontSize: 12, color: C.muted, marginTop: 2 }}>{d.desc}</div>
-              </Link>
-            ))}
-          </div>
-        )}
-
-        {/* TAB: Outils & Jeux */}
-        {tab === "outils" && (
           <div>
-            {/* Battle & Quiz collectif */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 16 }}>
-              <Link href="/quiz-live" style={{ padding: "20px", background: `linear-gradient(135deg, ${C.danger}15, ${C.gold}15)`, borderRadius: 12, border: "2px solid " + C.gold + "40", textDecoration: "none", textAlign: "center" }}>
-                <div style={{ fontSize: 18, fontWeight: 800, color: C.gold }}>Quiz Live — Kahoot</div>
-                <div style={{ fontSize: 12, color: C.muted, marginTop: 4 }}>Projeter les questions, les eleves repondent sur leur ecran</div>
-                <div style={{ fontSize: 11, color: C.accent, marginTop: 6 }}>4 banques : Structures, Tri, Big O, Exceptions</div>
-              </Link>
-              <Link href="/scores" style={{ padding: "20px", background: `linear-gradient(135deg, ${C.accent}15, ${C.primary}15)`, borderRadius: 12, border: "2px solid " + C.accent + "40", textDecoration: "none", textAlign: "center" }}>
-                <div style={{ fontSize: 18, fontWeight: 800, color: C.accent }}>Battle — Leaderboard</div>
-                <div style={{ fontSize: 12, color: C.muted, marginTop: 4 }}>Classement XP en temps reel entre eleves</div>
-                <div style={{ fontSize: 11, color: C.gold, marginTop: 6 }}>Les eleves se defient par le score</div>
-              </Link>
+            {/* PPTX */}
+            <div style={{ marginBottom: 16 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: C.gold, padding: "3px 10px", background: C.gold + "15", borderRadius: 4 }}>PPTX</span>
+                <span style={{ fontSize: 14, fontWeight: 600, color: C.text }}>Presentations</span>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
+                {["Ch1_P1_Design_Specification_ADT","Ch2_P2_Memory_Stack_Function_Calls","Ch3_M1M2_FIFO_Queue_Sorting","Ch4_D1_Shortest_Path_BFS_Dijkstra","Ch5_P3_Formal_Spec_Stack","Ch6_M3_Encapsulation_Information_Hiding","Ch7_D2_ADT_Base_POO","Ch8_P4a_LinkedList_HashMap","Ch9_P4b_Tree_Sorting","Ch10_P5_Exceptions_JUnit5","Ch11_M4D3_ADT_BigO","Ch12_P6_Asymptotic_Analysis","Ch13_P7_Measuring_Efficiency","Ch14_M5D4_Tradeoffs_Independence"].map((f,i) => (
+                  <a key={i} href={"/docs/pptx/"+f+".pptx"} target="_blank" rel="noopener noreferrer" style={{ padding: "6px 10px", background: C.card, border: "1px solid " + C.border, borderRadius: 6, textDecoration: "none", fontSize: 12, color: C.text }}>{f.replace(/_/g," ")}</a>
+                ))}
+              </div>
             </div>
 
-            {/* Outils prof */}
-            <div style={{ fontSize: 12, fontWeight: 700, color: C.muted, letterSpacing: 2, marginBottom: 8 }}>OUTILS PROF</div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
-              {[
-                { name: "Roue du hasard", desc: "Tirage au sort theme", href: "/prof", c: C.gold },
-                { name: "Buzzer", desc: "Quiz en classe", href: "/prof", c: C.danger },
-                { name: "Block Animations", desc: "Projeter en cours", href: "/jeux/block-animations", c: C.accent },
-                { name: "Sort Race", desc: "Visualiser les tris", href: "/jeux/sort-race", c: C.danger },
-                { name: "Tree Builder", desc: "Construire un BST", href: "/jeux/tree-builder", c: C.success },
-                { name: "Graph Explorer", desc: "BFS / DFS", href: "/jeux/graph-explorer", c: C.secondary },
-              ].map((t, i) => (
-                <Link key={i} href={t.href} style={{ padding: "10px", background: C.card, border: "1px solid " + t.c + "25", borderRadius: 8, textDecoration: "none", textAlign: "center" }}>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: t.c }}>{t.name}</div>
-                  <div style={{ fontSize: 10, color: C.muted, marginTop: 2 }}>{t.desc}</div>
-                </Link>
-              ))}
+            {/* PDF Referentiel */}
+            <div style={{ marginBottom: 16 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: C.danger, padding: "3px 10px", background: C.danger + "15", borderRadius: 4 }}>PDF</span>
+                <span style={{ fontSize: 14, fontWeight: 600, color: C.text }}>Cours referentiel (29 PDFs)</span>
+              </div>
+              <a href="/cours" style={{ fontSize: 13, color: C.accent, textDecoration: "underline" }}>Voir tous les cours sur la page Documents</a>
+            </div>
+
+            {/* Fiches Memo */}
+            <div style={{ marginBottom: 16 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: C.success, padding: "3px 10px", background: C.success + "15", borderRadius: 4 }}>MEMO</span>
+                <span style={{ fontSize: 14, fontWeight: 600, color: C.text }}>Fiches memo (15 PDFs)</span>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 6 }}>
+                {["Ch1","Ch2","Ch3","Ch4","Ch5","Ch6","Ch7","Ch8a","Ch8b","Ch9","Ch10","Ch11","Ch12","Ch13","Ch14"].map((ch,i) => (
+                  <a key={i} href={"/fiches/"+["Ch1_Fiche_Memo_ADT","Ch2_Fiche_Memo_Memory_Stack","Ch3_Fiche_Memo_FIFO_Sorting","Ch4_Fiche_Memo_Shortest_Path","Ch5_Fiche_Memo_Notation_Formelle","Ch6_Fiche_Memo_Encapsulation","Ch7_Fiche_Memo_ADT_POO","Ch8_Fiche_Memo_Design_Patterns","Ch8_Fiche_Memo_LinkedList_HashMap","Ch9_Fiche_Memo_Tree_Sorting","Ch10_Fiche_Memo_Exceptions_JUnit","Ch11_Fiche_Memo_ADT_BigO","Ch12_Fiche_Memo_Asymptotic","Ch13_Fiche_Memo_Efficiency","Ch14_Fiche_Memo_Tradeoffs"][i]+".pdf"} target="_blank" rel="noopener noreferrer" style={{ padding: "6px 10px", background: C.card, border: "1px solid " + C.border, borderRadius: 6, textDecoration: "none", fontSize: 12, color: C.success }}>{ch}</a>
+                ))}
+              </div>
+            </div>
+
+            {/* Exercices */}
+            <div style={{ marginBottom: 16 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: C.secondary, padding: "3px 10px", background: C.secondary + "15", borderRadius: 4 }}>EXOS</span>
+                <span style={{ fontSize: 14, fontWeight: 600, color: C.text }}>Exercices & cas</span>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
+                <Link href="/exercices-entreprise" style={{ padding: "8px 10px", background: C.card, border: "1px solid " + C.border, borderRadius: 6, textDecoration: "none", fontSize: 12, color: C.text }}>5 Exercices Entreprise Java</Link>
+                <Link href="/projets" style={{ padding: "8px 10px", background: C.card, border: "1px solid " + C.border, borderRadius: 6, textDecoration: "none", fontSize: 12, color: C.text }}>4 Projets integrateurs</Link>
+              </div>
+            </div>
+
+            {/* Outils */}
+            <div style={{ marginBottom: 16 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: C.accent, padding: "3px 10px", background: C.accent + "15", borderRadius: 4 }}>TOOLS</span>
+                <span style={{ fontSize: 14, fontWeight: 600, color: C.text }}>Outils interactifs</span>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 6 }}>
+                {[
+                  { name: "Sort Race", href: "/jeux/sort-race" },
+                  { name: "Tree Builder", href: "/jeux/tree-builder" },
+                  { name: "Graph Explorer", href: "/jeux/graph-explorer" },
+                  { name: "LinkedList Lab", href: "/jeux/linked-list-lab" },
+                  { name: "Hash Table Hero", href: "/jeux/hash-table-hero" },
+                  { name: "Stack & Queue", href: "/jeux/stack-queue-runner" },
+                  { name: "Recursion Tower", href: "/jeux/recursion-tower" },
+                  { name: "Battle", href: "/battle" },
+                  { name: "Block Animations", href: "/jeux/block-animations" },
+                ].map((t, i) => (
+                  <Link key={i} href={t.href} style={{ padding: "6px 10px", background: C.card, border: "1px solid " + C.border, borderRadius: 6, textDecoration: "none", fontSize: 12, color: C.accent }}>{t.name}</Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Supabase */}
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: "#7C3AED", padding: "3px 10px", background: "#7C3AED15", borderRadius: 4 }}>CLOUD</span>
+                <span style={{ fontSize: 14, fontWeight: 600, color: C.text }}>Supabase</span>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
+                <a href="https://supabase.com/dashboard/project/jslbfkaujahihvjdxcjg" target="_blank" rel="noopener noreferrer" style={{ padding: "6px 10px", background: C.card, border: "1px solid " + C.border, borderRadius: 6, textDecoration: "none", fontSize: 12, color: "#7C3AED" }}>Dashboard Supabase</a>
+                <a href="https://supabase.com/dashboard/project/jslbfkaujahihvjdxcjg/editor" target="_blank" rel="noopener noreferrer" style={{ padding: "6px 10px", background: C.card, border: "1px solid " + C.border, borderRadius: 6, textDecoration: "none", fontSize: 12, color: "#7C3AED" }}>Table Editor</a>
+                <a href="https://supabase.com/dashboard/project/jslbfkaujahihvjdxcjg/sql/new" target="_blank" rel="noopener noreferrer" style={{ padding: "6px 10px", background: C.card, border: "1px solid " + C.border, borderRadius: 6, textDecoration: "none", fontSize: 12, color: "#7C3AED" }}>SQL Editor</a>
+                <a href="https://github.com/mbiTati/unit19-gamifie" target="_blank" rel="noopener noreferrer" style={{ padding: "6px 10px", background: C.card, border: "1px solid " + C.border, borderRadius: 6, textDecoration: "none", fontSize: 12, color: C.muted }}>GitHub Repo</a>
+              </div>
             </div>
           </div>
         )}
+
+        
+
         {/* TAB: En direct */}
         {tab === "direct" && (
           <div>
-            <div style={{ fontSize: 13, color: C.muted, marginBottom: 12 }}>Presence de TOUS les eleves — basee sur la derniere activite</div>
+            <div style={{ fontSize: 13, color: C.muted, marginBottom: 12 }}>Presence de TOUS les eleves</div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
               {students.filter(s => s.role !== "teacher").map((s: any, i: number) => {
                 const lastActive = s.updated_at || s.created_at;
@@ -430,30 +468,29 @@ export default function TeacherDashboard() {
                     <div style={{ width: 8, height: 8, borderRadius: "50%", background: online ? C.success : C.border }} />
                     <div>
                       <div style={{ fontSize: 13, fontWeight: 600, color: C.text }}>{s.first_name} {s.last_name}</div>
-                      <div style={{ fontSize: 10, color: online ? C.success : C.muted }}>{online ? "En ligne" : ago < 60 ? `Il y a ${ago} min` : ago < 1440 ? `Il y a ${Math.round(ago/60)}h` : "Hors ligne"}</div>
+                      <div style={{ fontSize: 10, color: online ? C.success : C.muted }}>{online ? "En ligne" : ago < 60 ? `Il y a ${ago} min` : "Hors ligne"}</div>
                     </div>
                   </div>
                 );
               })}
-              {students.filter(s => s.role !== "teacher").length === 0 && <div style={{ gridColumn: "1/-1", padding: 20, textAlign: "center", color: C.muted }}>Aucun eleve</div>}
             </div>
           </div>
         )}
 
-                {/* TAB: Acces */}
+        {/* TAB: Acces */}
         {tab === "acces" && (
           <div>
-            <div style={{ fontSize: 13, color: C.muted, marginBottom: 12 }}>Bloquer/debloquer des sections pour les eleves. Le prof voit toujours tout.</div>
+            <div style={{ fontSize: 13, color: C.muted, marginBottom: 12 }}>Bloquer/debloquer des sections pour les eleves.</div>
             <div style={{ display: "grid", gap: 8 }}>
               {[
-                { key: "jeux", label: "Jeux pedagogiques", desc: "Sort Race, Tree Builder, Graph Explorer, etc." },
+                { key: "jeux", label: "Jeux pedagogiques", desc: "Sort Race, Tree Builder, etc." },
                 { key: "quiz_live", label: "Quiz Live", desc: "Kahoot en classe" },
                 { key: "boss_final", label: "Boss Final", desc: "15 questions LO1-LO4" },
                 { key: "exercices", label: "Exercices", desc: "14 exercices par chapitre" },
-                { key: "exercices_entreprise", label: "Exercices Entreprise", desc: "5 cas (velos, tickets, pharmacie...)" },
+                { key: "exercices_entreprise", label: "Exercices Entreprise", desc: "5 cas" },
                 { key: "projets", label: "Projets integrateurs", desc: "4 projets LO1-LO4" },
                 { key: "classement", label: "Classement", desc: "Leaderboard XP" },
-                { key: "documents_corriges", label: "Documents corriges", desc: "Corriges masques pour les eleves" },
+                { key: "documents_corriges", label: "Documents corriges", desc: "Corriges masques" },
               ].map(section => (
                 <div key={section.key} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 16px", background: C.card, borderRadius: 8, border: "1px solid " + C.border }}>
                   <div>
