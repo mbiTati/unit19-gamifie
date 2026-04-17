@@ -383,9 +383,9 @@ export default function TeacherDashboard() {
             <div style={{ marginBottom: 16 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
                 <span style={{ fontSize: 11, fontWeight: 700, color: C.danger, padding: "3px 10px", background: C.danger + "15", borderRadius: 4 }}>PDF</span>
-                <span style={{ fontSize: 14, fontWeight: 600, color: C.text }}>Cours referentiel (29 PDFs)</span>
+                <span style={{ fontSize: 14, fontWeight: 600, color: C.text }}>Cours referentiel (52 PPTX)</span>
               </div>
-              <a href="/cours" style={{ fontSize: 13, color: C.accent, textDecoration: "underline" }}>Voir tous les cours sur la page Documents</a>
+              <a href="/cours" style={{ fontSize: 13, color: C.accent, textDecoration: "underline" }}>Voir les 52 PPTX sur la page Documents</a>
             </div>
 
             {/* Fiches Memo */}
