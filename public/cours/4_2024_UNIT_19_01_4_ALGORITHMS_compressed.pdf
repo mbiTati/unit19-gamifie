@@ -1,0 +1,1279 @@
+Unit 19 :
+Data Structures &
+Algorithms
+
+Sommaire
+Abstract Data Types (ADTs)
+Specification of ADTs with formal notation.
+Data structures
+Array, set, stack, queue, list, tree, types, e.g. active,
+passive, recursive.
+Algorithm types
+Recursive, backtracking, dynamic, divide and conquer,
+branch and bound, greedy, randomised, brute force.
+Algorithms
+Sort, insertion, quick, merge, heap, bucket, selection,
+search linear, binary, binary search tree, recursive,
+e.g. binary tree traversals, find path, travelling
+salesman.
+LO1 Examine abstract data types,
+concrete data structures and
+algorithms
+
+1.L
+esAlgorithmesdetri
+2.LesAlgorithmesderecherche
+3.LesautresAlgorithmes
+OBJECTIFS
+6HEURES
+
+1. LES ALGORITHMES DE TRI
+Le tri est une technique d'organisation des données. Il s'agit d'un processus d'organisation des enregistrements, par
+ordre croissant ou décroissant, c'est-à-dire en apportant des lignes de commande dans les données. Les méthodes de
+tri sont très importantes dans les structures de données.
+Le tri peut être effectué sur un ou une combinaison d'un ou plusieurs attributs présents dans chaque enregistrement.
+Il est très facile et efficace d'effectuer une recherche, si les données sont stockées dans l'ordre de tri. Le tri est effectué
+en fonction de la valeur clé de chaque enregistrement. En fonction de
+la composition de la clé, les enregistrements peuvent être stockés numériquement ou alphanumériquement. Dans le
+tri numérique, les enregistrements classés par ordre croissant ou décroissant selon la valeur numérique de la clé.
+
+T
+RIERC'ESTGAGNE
+Résumé
+Pourquoiavons-nousbesoindetrier?
+Pourtrouvercequ'oncherche
+Pourclasserdeséléments
+Pourchercherrapidement
+
+
+
+INSERTION SORT
+Le tri par insertion est un algorithme de tri simple qui fonctionne de la même manière que vous triez les cartes à jouer
+entre vos mains. Le tableau est virtuellement divisé en une partie triée et une partie non triée. Les valeurs de la partie
+non triée sont sélectionnées et placées à la bonne position dans la partie triée.
+Caractéristiques du tri par insertion
+Cet algorithme est l'un des algorithmes les plus simples avec une implémentation simple
+Fondamentalement, le tri par insertion est efficace pour les petites valeurs de données
+Le tri par insertion est de nature adaptative, c'est-à-dire qu'il convient aux ensembles de données qui sont déjà
+partiellement triés.
+Analyse de complexité du tri par insertion : Complexité temporelle du tri par insertion
+La complexité temporelle du pire cas du tri par insertion est O(N^2)
+La complexité temporelle moyenne du tri par insertion est O(N^2)
+La complexité temporelle du meilleur cas est O(N) .
+Complexité spatiale du tri par insertion
+La complexité de l'espace auxiliaire du tri par insertion est O (1)
+
+
+
+ENTREE :
+ARRAY : 32, 35, 43, 29, 28, 36, 32, 46, 45, 16,9
+SORTIE
+INSERTION SORT VIDEO
+
+DETAILS INSERTION SORT
+C'est un algorithme de tri simple, dans
+lequel les éléments sont triés en
+considérant un élément à la fois. La mise
+en œuvre est simple.
+Il est efficace pour les petits ensembles
+de données et pour les ensembles de
+données qui ont été substantiellement
+triés avant.
+Il ne change pas l'ordre relatif des
+éléments avec des clés égales
+Il réduit les déplacements inutiles à
+travers le réseau
+Il nécessite une quantité constante
+d'espace mémoire supplémentaire.
+Il est moins efficace sur une liste
+contenant plus d'éléments.
+À mesure que le nombre d'éléments
+augmente, les performances du
+programme seraient lentes
+Comment fonctionne-t-il ?
+Algorithme de tri efficace et efficient
+basé sur des opérations de
+comparaison.
+Il ajoute un élément à chaque itération.
+Vous devez sélectionner le plus petit
+élément du tableau et le déplacer au
+début du tableau en échangeant avec
+l'élément avant.
+Vous pouvez également accomplir cela
+en sélectionnant l'élément le plus
+puissant et en le positionnant à
+l'arrière.
+À chaque itération, le tri par sélection
+sélectionne un élément et le place à la
+position appropriée.
++ -
+
+Il est temps d'échanger et de faire
+quelques exercices rapides
+
+BUBBLE SORT
+Bubble Sort est l' algorithme de tri le plus simple qui fonctionne en échangeant à plusieurs reprises les éléments
+adjacents s'ils sont dans le mauvais ordre. Cet algorithme n'est pas adapté aux grands ensembles de données car sa
+complexité temporelle moyenne et dans le pire des cas est assez élevée.
+Caractéristiques du tri à bulles
+Cet algorithme est l'un des algorithmes les plus simples avec une implémentation simple
+Analyse de complexité du tri à bulles :
+Complexité temporelle : O(N² )
+Espace auxiliaire : O(1)
+
+
+
+ENTREE :
+ARRAY : 27, 30, 4, 37, 39, 36, 18, 14, 21, 22, 37, 27, 27
+SORTIE
+BUBBLE SORT VIDEO
+
+DETAILS BUBBLE SORT
+Le tri à bulles est facile à comprendre et
+à mettre en œuvre.
+Il ne nécessite aucun espace mémoire
+supplémentaire.
+Il s'agit d'un algorithme de tri stable, ce
+qui signifie que les éléments ayant la
+même valeur de clé conservent leur
+ordre relatif dans la sortie triée.
+Le tri à bulles a une complexité
+temporelle de O(N 2 ) ce qui le rend très
+lent pour les grands ensembles de
+données.
+Le tri à bulles est un algorithme de tri
+basé sur la comparaison, ce qui signifie
+qu'il nécessite un opérateur de
+comparaison pour déterminer l'ordre
+relatif des éléments dans l'ensemble de
+données d'entrée. Cela peut limiter
+l'efficacité de l'algorithme dans certains
+cas.
+Comment il fonctionne ?
+Parcourir à partir de la gauche et
+comparer les éléments adjacents et le
+plus élevé est placé sur le côté droit.
+De cette façon, le plus grand élément
+est d'abord déplacé vers l'extrémité la
+plus à droite.
+Ce processus se poursuit ensuite pour
+trouver le deuxième plus grand et le
+placer et ainsi de suite jusqu'à ce que
+les données soient triées.
+L'algorithme de tri à bulles, également
+connu sous le nom de tri descendant,
+est l'algorithme de tri le plus simple qui
+parcourt la liste à plusieurs reprises,
+compare les éléments adjacents et les
+permute s'ils sont dans le désordre.
++ -
+
+Il est temps d'échanger et de faire
+quelques exercices rapides
+
+SELECTION SORT
+L'algorithme sélectionne à plusieurs reprises l'élément le plus petit (ou le plus grand) de la partie non triée de la liste et
+l'échange avec le premier élément de la partie non triée. Ce processus est répété pour la partie non triée restante
+jusqu'à ce que la liste entière soit triée.
+Analyse de complexité du tri de sélection
+Complexité temporelle : la complexité temporelle du tri par sélection est O(N 2 ) car il existe deux boucles imbriquées :
+Une boucle pour sélectionner un élément de Array un par un = O(N)
+Une autre boucle pour comparer cet élément avec tous les autres éléments du tableau = O(N)
+Donc complexité globale = O(N) * O(N) = O(N*N) = O(N 2 )
+Espace auxiliaire : O(1) car la seule mémoire supplémentaire utilisée est pour les variables temporaires lors de l'échange
+de deux valeurs dans Array. Le tri par sélection ne fait jamais plus de O(N) échanges et peut être utile lorsque l'écriture en
+mémoire est coûteuse.
+
+// Java program for implementation of Selection Sort
+import java.io.*;
+public class SelectionSort
+{
+void sort(int arr[])
+{
+int n = arr.length;
+// One by one move boundary of unsorted subarray
+for (int i = 0; i < n-1; i++)
+{
+// Find the minimum element in unsorted array
+int min_idx = i;
+for (int j = i+1; j < n; j++)
+if (arr[j] < arr[min_idx])
+min_idx = j;
+// Swap the found minimum element with the first
+// element
+int temp = arr[min_idx];
+arr[min_idx] = arr[i];
+arr[i] = temp;
+}
+}
+// Prints the array
+void printArray(int arr[])
+{
+int n = arr.length;
+for (int i=0; i<n; ++i)
+System.out.print(arr[i]+" ");
+System.out.println();
+}
+// Driver code to test above
+public static void main(String args[])
+{
+SelectionSort ob = new SelectionSort();
+int arr[] = {29, 72,98,13, 87, 66, 52,51, 36};
+ob.sort(arr);
+System.out.println("Sorted array");
+ob.printArray(arr);
+}
+}
+
+SORTIE
+ENTREE :
+ARRAY : 1, 17, 7, 15, 29, 32, 16, 34, 31, 35, 23
+SELECTION SORT VIDEO
+
+DETAILS SELECTION SORT
+Simple et facile à comprendre.
+Fonctionne bien avec de petits
+ensembles de données.
+Le tri par sélection a une complexité
+temporelle de O(n^2) dans le cas le plus
+défavorable et moyen.
+Ne fonctionne pas bien sur de grands
+ensembles de données.
+Ne conserve pas l'ordre relatif des
+éléments avec des clés égales, ce qui
+signifie qu'il n'est pas stable.
+Comment fonctionne-t-il ?
+Le tri par sélection fonctionne en
+prenant le plus petit élément d'un
+tableau non trié et en le plaçant au
+premier plan. Vous passerez en revue
+chaque élément (de gauche à droite)
+jusqu'à ce que vous trouviez le plus
+petit.
+Il ajoute un élément à chaque itération.
+Vous devez sélectionner le plus petit
+élément du tableau et le déplacer au
+début du tableau en échangeant avec
+l'élément avant.
+À chaque itération, le tri par sélection
+sélectionne un élément et le place à la
+position appropriée.
++ -
+
+Il est temps d'échanger et de faire
+quelques exercices rapides
+
+QuickSort est un algorithme de tri basé sur l' algorithme Divide and Conquer qui sélectionne un élément comme pivot
+et partitionne le tableau donné autour du pivot sélectionné en plaçant le pivot dans sa position correcte dans le tableau
+trié.
+Analyse de complexité du tri rapide
+Espace auxiliaire : O(1) car aucun espace supplémentaire n'est utilisé
+QUICK SORT
+
+
+
+// Java implementation of QuickSort
+import java.io.*;
+class GFG {
+// A utility function to swap two elements
+static void swap(int[] arr, int i, int j)
+{
+int temp = arr[i];
+arr[i] = arr[j];
+arr[j] = temp;
+}
+// This function takes last element as pivot,
+// places the pivot element at its correct position
+// in sorted array, and places all smaller to left
+// of pivot and all greater elements to right of pivot
+static int partition(int[] arr, int low, int high)
+{
+// Choosing the pivot
+int pivot = arr[high];
+// Index of smaller element and indicates
+// the right position of pivot found so far
+int i = (low - 1);
+for (int j = low; j <= high - 1; j++) {
+// If current element is smaller than the pivot
+if (arr[j] < pivot) {
+// Increment index of smaller element
+i++;
+swap(arr, i, j);
+}
+}
+swap(arr, i + 1, high);
+return (i + 1);
+}
+}
+// Driver Code
+public static void main(String[] args)
+{
+int[] arr = {51, 95, 66, 72, 42, 38, 39, 41, 15};
+int N = arr.length;
+// Function call
+quickSort(arr, 0, N - 1);
+System.out.println("Sorted array:");
+printArr(arr);
+}
+// The main function that implements QuickSort
+// arr[] --> Array to be sorted,
+// low --> Starting index,
+// high --> Ending index
+static void quickSort(int[] arr, int low, int high)
+{
+if (low < high) {
+// pi is partitioning index, arr[p]
+// is now at right place
+int pi = partition(arr, low, high);
+// Separately sort elements before
+// partition and after partition
+quickSort(arr, low, pi - 1);
+quickSort(arr, pi + 1, high);
+}
+}
+// To print sorted array
+public static void printArr(int[] arr)
+{
+for (int i = 0; i < arr.length; i++) {
+System.out.print(arr[i] + " ");
+}
+}
+
+SORTIE
+ENTREE :
+ARRAY : 10, 39, 49, 9, 30, 44, 45, 3, 31, 39, 33, 5, 4
+QUICKSORT VIDEO
+
+DETAILS QUICKSORT
+C'est un algorithme type diviser pour
+mieux régner qui facilite la résolution de
+problèmes.
+Il est efficace sur de grands ensembles
+de données.
+Il a une faible surcharge, car il ne
+nécessite qu'une petite quantité de
+mémoire pour fonctionner.
+Il a une complexité temporelle dans le
+pire des cas de O(N 2 ), qui se produit
+lorsque le pivot est mal choisi.
+Ce n'est pas un bon choix pour les petits
+ensembles de données.
+Ce n'est pas un tri stable, ce qui signifie
+que si deux éléments ont la même clé,
+leur ordre relatif ne sera pas conservé
+dans la sortie triée en cas de tri rapide,
+car ici nous échangeons des éléments en
+fonction de la position du pivot (sans
+tenir compte de leur position d'origine
+postes).
+Comment fonctionne QuickSort ?
+Le processus clé dans quickSort est
+une partition() . L'objectif des partitions
+est de placer le pivot (tout élément
+peut être choisi comme pivot) à sa
+position correcte dans le tableau trié et
+de placer tous les éléments plus petits
+à gauche du pivot et tous les éléments
+plus grands à droite du pivot .
+La partition est effectuée de manière
+récursive de chaque côté du pivot
+après que le pivot est placé dans sa
+position correcte et cela trie finalement
+le tableau.
++ -
+
+Il est temps d'échanger et de faire
+quelques exercices rapides
+
+Le tri par fusion est défini comme un algorithme de tri qui fonctionne en divisant un tableau en sous-tableaux plus
+petits, en triant chaque sous-tableau, puis en fusionnant les sous-tableaux triés pour former le tableau trié final.
+En termes simples, nous pouvons dire que le processus de tri par fusion consiste à diviser le tableau en deux moitiés, à
+trier chaque moitié, puis à fusionner les moitiés triées ensemble. Ce processus est répété jusqu'à ce que le tableau
+entier soit trié.
+Analyse de complexité du tri par fusion :
+Complexité temporelle :
+O(N log(N)), le tri par fusion est un algorithme récursif et la complexité temporelle peut être exprimée comme une
+relation de récurrence suivante.
+T(n) = 2T(n/2) + θ(n)
+La complexité temporelle du tri par fusion est θ(Nlog(N)) dans les 3 cas (pire, moyen et meilleur) car le tri par fusion
+divise toujours le tableau en deux moitiés et prend un temps linéaire pour fusionner les deux moitiés.
+Espace auxiliaire :
+O(N), dans le tri par fusion, tous les éléments sont copiés dans un tableau auxiliaire. Donc, N espace auxiliaire est requis
+pour le tri par fusion.
+MERGE SORT
+
+Merge Sort
+
+// Java program for Merge Sort
+import java.io.*;
+class MergeSort {
+// Merges two subarrays of arr[]. // First subarray is arr[l..m]
+// Second subarray is arr[m+1..r]
+void merge(int arr[], int l, int m, int r)
+{
+ // Find sizes of two subarrays to be merged
+ int n1 = m - l + 1;
+ int n2 = r - m;
+ // Create temp arrays
+ int L[] = new int[n1];
+ int R[] = new int[n2];
+ // Copy data to temp arrays
+ for (int i = 0; i < n1; ++i)
+ L[i] = arr[l + i];
+ for (int j = 0; j < n2; ++j)
+ R[j] = arr[m + 1 + j];
+ // Merge the temp arrays
+ // Initial indices of first and second subarrays
+ int i = 0, j = 0;
+ // Initial index of merged subarray array
+ int k = l;
+ while (i < n1 && j < n2) {
+ if (L[i] <= R[j]) {
+ arr[k] = L[i];
+ i++;
+ }
+ else {
+ arr[k] = R[j];
+ j++;
+ }
+ k++;
+ }
+ // Copy remaining elements of L[] if any
+ while (i < n1) {
+ arr[k] = L[i];
+ i++;
+ k++;
+ }
+// Driver code
+public static void main(String args[])
+{
+int arr[] = {6, 5, 12, 10, 9, 1};
+System.out.println("Given array is");
+printArray(arr);
+MergeSort ob = new MergeSort();
+ob.sort(arr, 0, arr.length - 1);
+System.out.println("\nSorted array is");
+printArray(arr);
+}
+// Copy remaining elements of R[] if any
+while (j < n2) {
+arr[k] = R[j];
+j++;
+k++;
+}
+}
+// Main function that sorts arr[l..r] using
+// merge()
+void sort(int arr[], int l, int r)
+{
+if (l < r) {
+// Find the middle point
+int m = l + (r - l) / 2;
+// Sort first and second halves
+sort(arr, l, m);
+sort(arr, m + 1, r);
+// Merge the sorted halves
+merge(arr, l, m, r);
+}
+}
+// A utility function to print array of size n
+static void printArray(int arr[])
+{
+int n = arr.length;
+for (int i = 0; i < n; ++i)
+System.out.print(arr[i] + " ");
+System.out.println();
+}
+}
+
+SORTIE
+ENTREE :
+ARRAY : 2, 29, 41, 5, 28, 2, 28, 17, 46, 34, 5
+MERGESORT VIDEO
+
+DETAILS MERGESORT
+Stabilité : Le tri par fusion est un
+algorithme de tri stable, ce qui signifie
+qu'il maintient l'ordre relatif des
+éléments égaux dans le tableau d'entrée.
+Performances garanties dans le pire des
+cas : le tri par fusion a une complexité
+temporelle dans le pire des cas de O(N
+logN), ce qui signifie qu'il fonctionne bien
+même sur de grands ensembles de
+données.
+Parallélisable : Le tri par fusion est un
+algorithme naturellement parallélisable,
+ce qui signifie qu'il peut être facilement
+parallélisé pour tirer parti de plusieurs
+processeurs ou threads.
+Complexité de l'espace : nécessite de la
+mémoire supplémentaire pour stocker
+les sous-tableaux fusionnés pendant le
+processus de tri.
+Pas sur place : ce n'est pas un algorithme
+de tri sur place, ce qui signifie qu'il
+nécessite de la mémoire supplémentaire
+pour stocker les données triées. Cela
+peut être un inconvénient dans les
+applications où l'utilisation de la
+mémoire est un problème.
+Pas toujours optimal pour les petits
+ensembles de données : a une
+complexité temporelle plus élevée que
+certains autres algorithmes de tri, tels
+que le tri par insertion. Peut entraîner un
+ralentissement des performances pour
+les très petits ensembles de données.
+Comment fonctionne le tri par fusion ?
+Divisez d'abord la liste combinée en
+deux sous-listes
+Divisez la sous-liste de gauche en sousliste plus petite
+Divisez de la même manière les souslistes jusqu'à ce qu'il reste un élément
+dans la sous-liste.
+Triez les éléments dans leurs positions
+appropriées, puis combinez les souséléments.
+Les deux sous-listes sont fusionnées
+pour donner la sous-liste de taille triée
+Même chose pour le sous-groupe droit
+Les moitiés gauche et droite du tableau
+sont fusionnées pour donner le tableau
+trié
++ -
+
+EXERCICE
+Imaginez que vous ayez un tableau d'entiers non triés, et vous souhaitez les trier en
+utilisant l'algorithme de tri fusion.
+Imaginez que vous ayez un tableau d'entiers non triés, et vous souhaitez les trier en utilisant
+l'algorithme de tri fusion.
+Étapes de l'exercice :
+1.Définissez un tableau d'entiers non triés.
+2.Créez une fonction triFusion qui prend en entrée le tableau et trie les éléments en utilisant
+l'algorithme de tri fusion.
+3.Dans la fonction triFusion, divisez le tableau en deux moitiés égales.
+4.Récursivement, appliquez l'algorithme de tri fusion aux deux moitiés.
+5.Fusionnez les deux moitiés triées pour obtenir le tableau trié final.
+6.Affichez le tableau trié.
+
+Il est temps d'échanger et de faire
+quelques exercices rapides
+
+HEAPSORT
+Le tri par tas est une technique de tri basée sur la comparaison basée sur la structure de données du tas binaire .
+Similaire au tri par sélection où nous trouvons d'abord l'élément minimum et plaçons l'élément minimum au début.
+Répétez le même processus pour les éléments restants.
+Analyse de complexité du tri en tas
+Complexité temporelle : O(N log N)
+Espace auxiliaire : O(1)
+Détail Complexité temporelle
+Meilleur O(nlog n)
+Pire O(nlog n)
+Moyenne O(nlog n)
+Complexité spatiale O(1)
+La stabilité Non
+
+
+
+
+
+
+
+
+
+
+
+HEAPSORT VIDEO
+En clair, il y a plusieurs phases
+dans le tri des éléments :
+La première étape
+comprend la création d'un
+tas en ajustant les éléments
+du tableau
+La deuxième étape,
+suppression de l'élément
+racine du tas à plusieurs
+reprises en le déplaçant à la
+fin du tableau
+La troisième, le stockage
+de la structure du tas avec les
+éléments restants
+
+DETAILS HEAP SORT
++ -
+Avantages du tri par tas :
+Efficacité : Le temps nécessaire pour effectuer
+le tri augmente de manière logarithmique
+tandis que d'autres algorithmes peuvent croître
+de manière exponentielle plus lente à mesure
+que le nombre d'éléments à trier augmente.
+Cet algorithme de tri est très efficace.
+Utilisation de la mémoire : L'utilisation de la
+mémoire est minimale car, à part ce qui est
+nécessaire pour contenir la liste initiale des
+éléments à trier, elle ne nécessite aucun
+espace mémoire supplémentaire pour
+fonctionner.
+Simplicité : Plus simple à comprendre que
+d'autres algorithmes de tri tout aussi efficaces
+car il n'utilise pas de concepts informatiques
+avancés tels que la récursivité.
+Inconvénients du tri par tas :
+Coûteux : Le tri par tas est coûteux.
+Instable : le tri par tas est instable. Cela
+pourrait réorganiser l'ordre relatif.
+Efficace : le tri par tas n'est pas très efficace
+lorsque vous travaillez avec des données très
+complexes.
+Généralement 2 à 3 fois plus lent que
+QuickSort bien implémenté.
+Fonctionnement du tri en tas
+Étant donné que l'arbre satisfait la propriété
+Max-Heap, l'élément le plus volumineux
+est stocké au nœud racine.
+Swap : Supprimez l'élément racine et placezle à la fin du tableau (nième position) Mettez
+le dernier élément de l'arbre (tas) à la
+place vacante.
+Supprimer : Réduisez la taille du tas de 1.
+Heapify: Heapify à nouveau l'élément racine
+afin que nous ayons l'élément le plus élevé à
+la racine.
+Le processus est répété jusqu'à ce que tous
+les éléments de la liste soient triés.
+
+Il est temps d'échanger et de faire
+quelques exercices rapides
+
+BUCKETSORT
+Bucket = Seau
+Le tri par seaux, est un algorithme de tri qui divise les éléments d'un tableau en plusieurs
+compartiments. Les seaux sont ensuite triés un par un, soit en utilisant un algorithme de tri
+différent, soit en appliquant de manière récursive l'algorithme de tri par seaux.
+Les seaux triés sont combinés pour former un tableau trié final.
+Le processus de tri par seau peut être compris comme une approche de dispersion-collecte .
+Ici, les éléments sont d'abord dispersés dans des compartiments, puis les éléments de chaque
+compartiment sont triés. Enfin, les éléments sont rassemblés dans l'ordre (scatter - gather)
+Complexité temporelle du tri par compartiment
+Meilleur O(n+k)
+Pire O(n²)
+Moyenne O(n)
+Complexité spatiale O(n+k)
+La stabilité Oui
+
+
+
+1
+2
+3
+
+BUCKETSORT VIDEO
+EN CLAIR : procédure de base
+pour effectuer le tri par seau
+Tout d'abord, partitionnez la
+plage en un nombre fixe de
+compartiments.
+Ensuite, jetez chaque
+élément dans son seau
+approprié.
+Après cela, triez chaque
+seau individuellement en
+appliquant un algorithme de
+tri.
+Et enfin, concaténez tous les
+buckets triés.
+
+DETAILS HEAP SORT
++ -
+La méthode de tri du bucket :
+Créer un tableau de "buckets"
+initialement vides
+Scatter : parcourez le tableau
+d'origine, en plaçant chaque objet
+dans son seau approprié
+Chaque seau non vide doit être
+trié
+Rassembler : renvoie tous les
+éléments dans le tableau d'origine
+après avoir visité les
+compartiments dans l'ordre
+Le tri par seau réduit le nombre. de
+comparaisons.
+Il est asymptotiquement rapide en
+raison de la distribution uniforme
+des éléments.
+Il peut s'agir ou non d'un algorithme
+de tri stable.
+Ce n'est pas utile si nous avons un
+grand tableau car cela augmente le
+coût.
+Il ne s'agit pas d'un algorithme de tri
+sur place, car un espace
+supplémentaire est nécessaire pour
+trier les compartiments.
+
+Il est temps d'échanger et de faire
+quelques exercices rapides
+
+2. LES ALGORITHMES DE RECHERCHE
+Les algorithmes de recherche sont conçus pour vérifier un élément ou récupérer un élément à partir de n'importe
+quelle structure de données où il est stocké.
+Selon le type d'opération de recherche, ces algorithmes sont généralement classés en deux catégories :
+1.Recherche séquentielle : dans ce cas, la liste ou le tableau est parcouru de manière séquentielle et chaque élément
+est vérifié. Par exemple : Recherche linéaire .
+2.Recherche par intervalles : Ces algorithmes sont spécialement conçus pour la recherche dans des structures de
+données triées. Ces types d'algorithmes de recherche sont beaucoup plus efficaces que la recherche linéaire car ils
+ciblent à plusieurs reprises le centre de la structure de recherche et divisent l'espace de recherche en deux. Par
+exemple : Recherche binaire .
+
+TRIER C'EST GAGNE
+Résumé
+Pourquoi avons-nous besoin de trier ?
+Pour trouver ce qu'on cherche
+Pour classer des éléments
+Pour chercher rapidement
+Recherche binaire pour trouver l'élément
+"23" dans une liste de nombres donnée
+Recherche linéaire pour trouver l'élément
+"20" dans une liste de nombres donnée
+
+SEARCH LINEAR
+La recherche linéaire est définie comme un algorithme de recherche séquentielle qui commence à une extrémité et
+parcourt chaque élément d'une liste jusqu'à ce que l'élément souhaité soit trouvé, sinon la recherche se
+poursuit jusqu'à la fin de l'ensemble de données.
+Analyse de complexité de la recherche linéaire :
+Complexité temporelle :
+Meilleur cas : dans le meilleur des cas, la clé peut être présente au premier index. La complexité du meilleur cas est
+donc O(1)
+Pire cas : Dans le pire des cas, la clé peut être présente au dernier index, c'est-à-dire à l'opposé de la fin à partir de
+laquelle la recherche a commencé dans la liste. La complexité dans le pire des cas est donc O(N) où N est la taille de la
+liste.
+Cas moyen : O(N)
+Espace auxiliaire : O(1) car à l'exception de la variable à parcourir dans la liste, aucune autre variable n'est utilisée.
+
+Entrée initiale dans lequel on cherche 1
+
+LINEAR SEARCH
+
+LINEAR SEARCH
+Les étapes utilisées dans la mise en œuvre de la
+recherche linéaire sont répertoriées comme suit
+-
+Tout d'abord, nous devons parcourir les
+éléments du tableau à l'aide d'une boucle for
+.
+Dans chaque itération de la boucle for,
+comparez l'élément de recherche avec
+l'élément de tableau actuel, et :
+Si l'élément correspond, renvoie l'index
+de l'élément de tableau correspondant.
+Si l'élément ne correspond pas, passez à
+l'élément suivant.
+S'il n'y a pas de correspondance ou si
+l'élément de recherche n'est pas présent
+dans le tableau donné, renvoie -1.
+
+DETAILS LINEAR SEARCH
++ -
+Comment fonctionne l'algorithme
+de recherche linéaire ?
+Chaque élément est considéré
+comme une correspondance
+potentielle pour la clé et vérifié pour
+la même chose.
+Si un élément est trouvé égal à la clé,
+la recherche réussit et l'index de cet
+élément est renvoyé.
+Si aucun élément n'est trouvé égal à
+la clé, la recherche donne "Aucune
+correspondance trouvée".
+La recherche linéaire peut être utilisée
+indépendamment du fait que le tableau
+soit trié ou non. Il peut être utilisé sur
+des tableaux de n'importe quel type de
+données.
+Ne nécessite aucune mémoire
+supplémentaire.
+C'est un algorithme bien adapté pour
+les petits ensembles de données.
+La recherche linéaire a une complexité
+temporelle de O(N), ce qui la rend lente
+pour les grands ensembles de
+données.
+Ne convient pas aux grandes baies.
+Quand utiliser la recherche linéaire ?
+Lorsque nous avons affaire à un petit ensemble de données.
+Lorsque vous recherchez un jeu de données stocké dans une mémoire contiguë.
+
+Il est temps d'échanger et de faire
+quelques exercices rapides
+
+La recherche binaire est définie comme un algorithme de recherche utilisé dans un tableau trié en divisant de manière
+répétée l'intervalle de recherche par deux . L'idée de la recherche binaire est d'utiliser les informations selon lesquelles
+le tableau est trié et de réduire la complexité temporelle à O (log N).
+Analyse de complexité de la recherche binaire :
+Complexité temporelle :
+Meilleur cas : O(1)
+Cas moyen : O(log N)
+Pire cas : O(log N)
+Espace auxiliaire : O(1), si la pile d'appels récursifs est prise en compte, l'espace auxiliaire sera O(logN).
+BINARY SEARCH
+
+BINARY SEARCH
+2. Algorithme de recherche binaire récursif :
+Créez une fonction récursive et comparez le milieu de l'espace de
+recherche avec la clé. Et en fonction du résultat, retournez l'index où se
+trouve la clé ou appelez la fonction récursive pour l'espace de
+recherche suivant.
+
+BINARY SEARCH
+1. Algorithme de recherche binaire itératif :
+Ici, nous utilisons une boucle while pour continuer le processus de
+comparaison de la clé et de division de l'espace de recherche en
+deux moitiés.
+
+Considérons un tableau arr[] = {2, 5, 8, 12, 16, 23, 38,
+56, 72, 91} et la cible = 23 .
+Première étape : Calculez le milieu et comparez
+l'élément milieu avec la clé. Si la clé est inférieure à
+l'élément du milieu, déplacez-vous vers la gauche et si
+elle est supérieure au milieu, déplacez l'espace de
+recherche vers la droite.
+La clé (c'est-à-dire 23) est supérieure à
+l'élément médian actuel (c'est-à-dire 16).
+L'espace de recherche se déplace vers la droite.
+La clé est inférieure au milieu actuel 56.
+L'espace de recherche se déplace vers la
+gauche.
+Deuxième étape : si la clé correspond à la valeur de
+l'élément intermédiaire, l'élément est trouvé et arrête
+la recherche.
+
+DETAILS BINARY SEARCH
++ -
+Divisez l'espace de recherche en deux
+moitiés en trouvant l'index du milieu .
+Comparez l'élément central de l'espace de
+recherche avec la clé.
+Si la clé est trouvée à l'élément du milieu, le
+processus est terminé.
+Si la clé n'est pas trouvée à l'élément du
+milieu, choisissez quelle moitié sera utilisée
+comme prochain espace de recherche.
+Si la clé est plus petite que l'élément du
+milieu, le côté gauche est utilisé pour la
+recherche suivante.
+Si la clé est plus grande que l'élément
+du milieu, le côté droit est utilisé pour
+la recherche suivante.
+Ce processus se poursuit jusqu'à ce que la
+clé soit trouvée ou que l'espace de
+recherche total soit épuisé.
+Le tableau doit être trié.
+La recherche binaire nécessite que la
+structure de données recherchée soit
+stockée dans des emplacements de
+mémoire contigus.
+La recherche binaire nécessite que les
+éléments du tableau soient comparables,
+c'est-à-dire qu'ils doivent pouvoir être
+ordonnés.
+La recherche binaire est plus rapide que la
+recherche linéaire, en particulier pour les
+grands tableaux.
+Plus efficace que d'autres algorithmes de
+recherche avec une complexité temporelle
+similaire, comme la recherche par
+interpolation ou la recherche exponentielle.
+La recherche binaire est bien adaptée à la
+recherche de grands ensembles de données
+stockés dans une mémoire externe, comme
+sur un disque dur ou dans le cloud.
+Applications de la recherche binaire :
+La recherche binaire peut être utilisée comme élément de base pour des algorithmes
+plus complexes utilisés dans l'apprentissage automatique, tels que des algorithmes
+pour former des réseaux de neurones
+Il peut être utilisé pour effectuer des recherches dans une base de données.
+
+Il est temps d'échanger et de faire
+quelques exercices rapides
+
+BINARY SEARCH TREE
+L'arborescence de recherche binaire est une structure de données d'arborescence binaire basée sur des nœuds
+qui possède les propriétés suivantes :
+Le sous-arbre gauche d'un nœud ne contient que des nœuds avec des clés inférieures à la clé du nœud parent.
+Le sous-arbre droit d'un nœud ne contient que des nœuds avec des clés supérieures à la clé du nœud parent.
+Les sous-arborescences gauche et droite doivent également être chacune une arborescence de recherche binaire.
+La recherche binaire ne peut être implémentée que sur une liste triée d'éléments. Si les éléments ne sont pas déjà triés,
+nous devons d'abord les trier.
+Travail de recherche binaire
+L'algorithme de recherche binaire peut être mis en œuvre de deux manières :
+Méthode itérative
+Méthode récursive : La méthode récursive suit l'approche diviser pour mieux régner .
+
+Voici les différentes opérations réalisables sur un BST :
+Insérer un nœud dans une BST : Une nouvelle clé est toujours insérée à la feuille.
+Commencez à rechercher une clé de la racine jusqu'à un nœud feuille. Une fois qu'un
+nœud feuille est trouvé, le nouveau nœud est ajouté en tant qu'enfant du nœud feuille.
+Parcours dans l'ordre : Dans le cas d'arbres de recherche binaires (BST), le parcours dans
+l'ordre donne des nœuds dans un ordre non décroissant. Nous visitons d'abord l'enfant
+gauche, puis la racine, puis l'enfant droit.
+Vue droite de BST : La vue droite d'un arbre de recherche binaire est un ensemble de
+nœuds visibles lorsque l'arbre est visité du côté droit.
+Vue gauche de BST : La vue gauche d'un arbre de recherche binaire est un ensemble de
+nœuds visibles lorsque l'arbre est visité du côté gauche.
+Hauteur de BST : elle est calculée de manière récursive à l'aide de la hauteur des sousarbres gauche et droit du nœud et attribue la hauteur au nœud au maximum des hauteurs
+de deux enfants plus 1.
+Supprimer un nœud de BST : Il est utilisé pour supprimer un nœud avec une clé spécifique
+du BST et renvoyer le nouveau BST.
+Plus petit nœud du BST : Il est utilisé pour renvoyer le nœud avec la plus petite valeur dans
+le BST.
+Nombre total de nœuds dans un BST : La fonction renvoie le nombre total de nœuds dans
+le BST.
+Supprimer un BST : Il est utilisé pour supprimer complètement le BST et libérer la mémoire.
+
+BINARY SEARCH TREE
+
+DETAILS BINARY SEARCH TREE
++ -
+Algorithmes de graphe : peuvent être
+utilisés pour implémenter des algorithmes
+de graphe, comme dans les algorithmes
+d'arbre couvrant minimum.
+Files d'attente prioritaires : peuvent être
+utilisés pour implémenter des files
+d'attente prioritaires, où l'élément avec la
+priorité la plus élevée est à la racine de
+l'arborescence, et les éléments avec une
+priorité inférieure sont stockés dans les
+sous-arborescences.
+Stockage et récupération de données :
+peuvent être utilisés pour stocker et
+récupérer des données rapidement,
+comme dans les bases de données, où la
+recherche d'un enregistrement spécifique
+peut être effectuée en temps
+logarithmique.
+Recherche rapide : la recherche d'une
+valeur spécifique a une complexité
+temporelle moyenne de O(log n), où n
+est le nombre de nœuds dans l'arbre.
+Beaucoup plus rapide que de
+rechercher un élément dans un tableau
+ou une liste chaînée, qui ont une
+complexité temporelle de O(n) dans le
+pire des cas.
+Parcours dans l'ordre : peuvent être
+parcourus dans l'ordre, qui visite le
+sous-arbre gauche, la racine et le sousarbre droit. Cela peut être utilisé pour
+trier un jeu de données.
+Espace efficace : peu encombrants car
+ils ne stockent aucune information
+redondante, contrairement aux
+tableaux et aux listes chaînées.
+Arbres asymétriques : si un arbre
+devient asymétrique, la complexité
+temporelle des opérations de
+recherche, d'insertion et de suppression
+sera O(n) au lieu de O(log n), ce qui peut
+rendre l'arbre inefficace.
+Temps supplémentaire requis : les
+arbres auto-équilibrés nécessitent un
+temps supplémentaire pour maintenir
+l'équilibre pendant les opérations
+d'insertion et de suppression.
+Efficacité : les BST ne sont pas efficaces
+pour les ensembles de données
+comportant de nombreux doublons, car
+ils gaspillent de l'espace.
+
+Il est temps d'échanger et de faire
+quelques exercices rapides
+
+3. LES AUTRES ALGORITHMES
+Vous rencontrerez des problèmes récursifs dans la programmation compétitive. Et lorsque vous tenterez de résoudre ces
+problèmes en utilisant différents paradigmes de programmation, vous formulerez d'abord une logique récursive pour eux.
+En programmation, le raisonnement récursif est extrêmement essentiel. Il vous aide à décomposer de grands problèmes
+complexes en plus petits. Par conséquent, il est utilisé tout le temps dans presque tous les langages de programmation .
+
+RECURSIVE ALGORITHM
+Un algorithme récursif s'appelle avec des valeurs d'entrée plus petites et renvoie le résultat pour l'entrée actuelle en
+effectuant des opérations de base sur la valeur renvoyée pour l'entrée plus petite. Généralement, si un problème peut
+être résolu en appliquant des solutions à des versions plus petites du même problème, et que les versions plus petites
+se réduisent à des instances facilement solubles, alors le problème peut être résolu à l'aide d'un algorithme récursif.
+Pour construire un algorithme récursif, vous diviserez l'énoncé du problème donné en deux parties. Le premier est le cas
+de base et le second est l'étape récursive.
+Cas de base : ce n'est rien de plus que l'instance la plus simple d'un problème, consistant en une condition qui termine
+la fonction récursive. Ce cas de base évalue le résultat lorsqu'une condition donnée est remplie.
+Étape récursive : elle calcule le résultat en effectuant des appels récursifs à la même fonction, mais avec des entrées
+réduites en taille ou en complexité.
+Complexité temporelle : O(1)
+Espace auxiliaire : O(1)
+
+
+
+DETAIL RECURSIVE ALGORITHM
+
+Il est temps d'échanger et de faire
+quelques exercices rapides
+
+TREE AND TREE
+RAPPELS
+Rappel sur les trees
+Un arbre de recherche binaire (BST) est un type spécial d'arbre binaire dans lequel l'enfant gauche d'un nœud a une valeur
+inférieure à la valeur du nœud et l'enfant droit a une valeur supérieure à la valeur du nœud. Cette propriété s'appelle la propriété
+BST et permet de rechercher, d'insérer et de supprimer efficacement des éléments dans l'arborescence.
+La racine d'un BST est le nœud qui a la plus grande valeur dans le sous-arbre de gauche et la plus petite valeur dans le sous-arbre
+de droite. Chaque sous-arbre de gauche est un BST avec des nœuds qui ont des valeurs plus petites que la racine et chaque sousarbre de droite est un BST avec des nœuds qui ont des valeurs plus grandes que la racine.
+L'arborescence de recherche binaire est une structure de données d'arborescence binaire basée sur des nœuds qui possède les
+propriétés suivantes :
+Le sous-arbre gauche d'un nœud ne contient que des nœuds avec des clés inférieures à la clé du nœud.
+Le sous-arbre droit d'un nœud ne contient que des nœuds avec des clés supérieures à la clé du nœud.
+Cela signifie que tout ce qui se trouve à gauche de la racine est inférieur à la valeur de la racine et tout ce qui se trouve à droite
+de la racine est supérieur à la valeur de la racine. En raison de cette performance, une recherche binaire est très facile.
+Les sous-arborescences gauche et droite doivent également être chacune une arborescence de recherche binaire.
+Il ne doit pas y avoir de nœuds en double (BST peut avoir des valeurs en double avec différentes approches de traitement)
+
+BINARY TREE TRAVERSALS
+Traversal (Parcourir) est un processus pour visiter tous les nœuds d'un arbre et peut y imprimer leurs valeurs. Puisque
+tous les nœuds sont connectés via des arêtes (liens) qui partent toujours du nœud racine (tête). C'est-à-dire que nous
+ne pouvons pas accéder au hasard à un nœud dans un arbre.
+Un arbre pet être parcouru de différentes manières
+a.Inorder Traversal
+b.Preorder Traversal
+c.Postorder Traversal
+
+
+
+INORDER TRAVERSAL
+Traversée de l'arbre dans l'ordre
+Le sous-arbre gauche est visité en premier, suivi de la racine et enfin du sous-arbre droit dans cette stratégie de parcours. Gardez
+toujours à l'esprit que n'importe quel nœud peut être un sous-arbre en soi. La sortie d'un parcours d'arbre binaire dans l'ordre
+produit des valeurs de clé triées dans l'ordre croissant.
+Parcours dans l'ordre : Algorithme dans l'ordre (arbre)
+1.Parcourez le sous-arbre de gauche, c'est-à-dire appelez Inorder(left->subtree)
+2.Visitez la racine.
+3.Traverser le sous-arbre droit, c'est-à-dire appeler Inorder(right->subtree)
+Utilisations de Inorder Traversal :
+Dans le cas des arbres de recherche binaires (BST), le parcours dans l'ordre donne
+des nœuds dans un ordre non décroissant. Pour obtenir les nœuds de BST dans un
+ordre non croissant, une variante du parcours dans l'ordre où le parcours dans
+l'ordre est inversé peut être utilisée.
+Complexité temporelle : O(N)
+Espace auxiliaire : Si nous ne considérons pas la taille de la pile pour les appels de
+fonction, alors O(1) sinon O(h) où h est la hauteur de l'arbre.
+
+PREORDER TRAVERSAL
+Traversée de précommande : Préordre d'algorithme (arbre)
+1.Visitez la racine.
+2.Parcourez le sous-arbre de gauche, c'est-à-dire appelez Preorder(left->subtree)
+3.Parcourez le sous-arbre de droite, c'est-à-dire appelez Preorder(right->subtree)
+Utilisations de la précommande :
+La traversée de préordre est utilisée pour créer une copie de l'arbre. La traversée
+de préordre est également utilisée pour obtenir des expressions de préfixe sur un
+arbre d'expression.
+Complexité temporelle : O(N)
+Espace auxiliaire : Si nous ne considérons pas la taille de la pile pour les appels de
+fonction, alors O(1) sinon O(h) où h est la hauteur de l'arbre.
+Traversée de l'arbre de précommande
+Dans cette méthode de parcours, le nœud racine est d'abord visité, puis le sous-arbre gauche et enfin le sous-arbre droit.
+
+
+
+POSTORDER TRAVERSAL
+Traversée de l'arbre de post-commande
+Le nœud racine est visité en dernier dans cette méthode de parcours, d'où son nom. Tout d'abord, nous parcourons le sous-arbre
+gauche, puis le sous-arbre droit et enfin le nœud racine.
+Traversée de post-commande : Algorithme Postorder(tree)
+1.Parcourez le sous-arbre de gauche, c'est-à-dire appelez Postorder(left->subtree)
+2.Traversez le sous-arbre de droite, c'est-à-dire appelez Postorder(right->subtree)
+3.Visitez la racine
+Utilisations de Postorder :
+La traversée post-ordre est utilisée pour supprimer l'arbre. La traversée post-ordre
+est également utile pour obtenir l'expression postfixée d'un arbre d'expression
+Complexité temporelle : O(N)
+Espace auxiliaire : Si nous ne considérons pas la taille de la pile pour les appels de
+fonction, alors O(1) sinon O(h) où h est la hauteur de l'arbre.
+
+
+
+W3 SCHOOL POUR LES PATHS
+https://www.w3schools.com/dsa/dsa_the
+ory_graphs_shortestpath.php
+
+FIND PATH
+Les algorithmes de plus court chemin sont une famille d'algorithmes spécifiques.
+Nous connaissons le tous intuitivement : entre deux points, A et B, quel est le chemin le plus court ? En informatique, le
+problème du plus court chemin peut prendre différentes formes et différents algorithmes sont donc nécessaires pour
+pouvoir tous les résoudre.
+Les algorithmes de chemin le plus court fonctionnent généralement sur un graphe.
+Il existe également différents types d'algorithmes de plus court chemin. Peut-être avez-vous besoin de trouver le chemin le
+plus court entre les points A et B, mais peut-être avez-vous besoin du chemin le plus court entre le point A et tous
+les autres points du graphique.
+Les algorithmes de plus court chemin ont de nombreuses applications.
+les logiciels de cartographie tels que Google ou Apple Maps utilisent des algorithmes de chemin le plus court
+le réseau routier,
+les opérations et la recherche logistique
+les réseaux informatiques, comme Internet.
+Tout logiciel qui vous aide à choisir un itinéraire utilise une forme d'algorithme de chemin le plus court.
+
+L'algorithme de Bellman Ford est un algorithme de chemin le plus court à source unique. Cet algorithme est utilisé pour
+trouver la distance la plus courte entre le sommet unique et tous les autres sommets d'un graphe pondéré.
+Si le graphique pondéré contient les valeurs de poids négatives, l'algorithme de Dijkstra ne confirme pas s'il produit la
+bonne réponse ou non. Contrairement à l'algorithme de Dijkstra, l'algorithme de bellman ford garantit la bonne réponse
+même si le graphique pondéré contient les valeurs de poids négatives.
+ALGORITHME DE BELLMAN-FORD ?
+Comment fonctionne l'algorithme de Bellman Ford ?
+L'algorithme de Bellman Ford fonctionne en surestimant la longueur du chemin du sommet de départ à tous les autres
+sommets. Ensuite, il assouplit itérativement ces estimations en trouvant de nouveaux chemins qui sont plus courts que
+les chemins précédemment surestimés.
+En faisant cela à plusieurs reprises pour tous les sommets, nous pouvons garantir que le résultat est optimisé.
+
+Complexité temporelle : O(V * E), où V est le nombre de sommets dans le graphe et E est le nombre d'arêtes dans le
+graphe Espace
+auxiliaire : O(E)
+COMPLEXITÉ DE L'ALGORITHME DE BELLMAN-FORD
+
+L'algorithme de Bellman-Ford fonctionne en sous-estimant grossièrement la longueur du chemin du sommet de départ à
+tous les autres sommets. L'algorithme assouplit ensuite itérativement ces estimations en découvrant de nouveaux chemins
+plus courts que les chemins précédemment surestimés.
+Vous pouvez vous assurer que le résultat est optimisé en répétant ce processus pour tous les sommets.
+Étape 1 : Faites une liste de toutes les arêtes du graphique. C'est simple si une liste de contiguïté représente le graphe.
+Etape 2 : "V - 1" est utilisé pour calculer le nombre d'itérations. Étant donné que la distance la plus courte à une arête peut
+être ajustée V - 1 fois au plus, le nombre d'itérations augmentera du même nombre de sommets.
+Étape 3 : Commencez avec un sommet arbitraire et une distance minimale de zéro. Étant donné que vous exagérez les
+distances réelles, tous les autres nœuds doivent être affectés à l'infini.
+Pour chaque arête uv, relâchez les longueurs de chemin pour les sommets :
+Si la distance[v] est supérieure à la distance[u] + le poids de l'arête uv, alors
+distance[v] = distance[u] + poids d'arête uv
+Étape 4 : Si la nouvelle distance est inférieure à la précédente, mettez à jour la distance pour chaque arête à chaque
+itération. La distance à chaque nœud est la distance totale entre le nœud de départ et ce nœud spécifique.
+Étape 5 : Pour vous assurer que tous les chemins possibles sont pris en compte, vous devez tenir compte des allitérations.
+Vous vous retrouverez avec la distance la plus courte si vous faites cela.
+EN BREF
+
+ETAPES DE FONCTIONNEMENT
+LA BASE !
+Commencez avec un graphique pondéré
+Choisissez un sommet de départ et attribuez
+infini à tous les autres sommets
+
+ETAPES DE FONCTIONNEMENT
+Visitez chaque bord et assouplissez
+les distances de chemin si elles sont
+inexactes
+Nous devons faire cela V fois car dans le pire
+des cas, la longueur du chemin d'un sommet
+pourrait devoir être réajustée V fois
+
+ALGORITHME DE DIJKSTRA ?
+L'algorithme de Dijkstra est utilisé pour trouver le chemin le plus court entre les deux sommets mentionnés d'un
+graphe en appliquant l' algorithme Greedy comme base de principe.
+Par exemple : Utilisé pour trouver le plus court entre la destination à visiter depuis votre position actuelle sur une carte
+Google.
+Il utilise la recherche en largeur d'abord (qui n'est pas un algorithme de chemin le plus court à source unique) pour
+résoudre le problème de source unique. Il place une contrainte sur le graphique : il ne peut y avoir aucune arête de
+poids négatif. Cependant, pour cette seule contrainte, Dijkstra améliore considérablement le temps d'exécution de
+Bellman-Ford.
+Parfois utilisé pour résoudre le problème du plus court chemin de toutes les paires en l'exécutant simplement sur tous
+les sommets de V. Encore une fois, cela nécessite que tous les poids de bord soient tous positifs.
+
+ETAPES DE FONCTIONNEMENT
+remarquez comment le sommet dans
+le coin supérieur droit avait cette
+longueur de chemin ajustée
+Une fois que tous les sommets ont leurs
+longueurs de chemin, nous vérifions si un
+cycle négatif est présent
+
+EXIGENCES DE BASE POUR L'ALGORITHME DE DIJKSTRA
+1.Graph : L'algorithme peut être implémenté sur n'importe quel graphe, fonctionne mieux avec un graphe orienté
+pondéré avec des poids d'arête non négatifs et le graphe doit être représenté comme un ensemble de sommets et
+d'arêtes.
+2.Source Vertex : l'algorithme de Dijkstra nécessite un nœud source qui est le point de départ de la recherche.
+3.Sommet de destination : l'algorithme peut être modifié pour mettre fin à la recherche une fois qu'un sommet de
+destination spécifique est atteint.
+4.S'il y a un poids négatif dans le graphique, l'algorithme ne fonctionnera pas bien. Une fois qu'un nœud a été marqué
+comme visité, le chemin actuel vers ce nœud est marqué comme le chemin le plus court pour atteindre ce nœud.
+
+La complexité temporelle de l'algorithme de Dijkstra dépend de la structure de données utilisée pour la file d'attente
+prioritaire. Voici une répartition de la complexité temporelle basée sur différentes implémentations :
+Utilisation d'une liste non triée comme file d'attente prioritaire : O(V² ) , où V est le nombre de sommets dans le graphe.
+À chaque itération, l'algorithme recherche le sommet avec la plus petite distance parmi tous les sommets non visités, ce
+qui prend un temps O(V). Cette opération est effectuée V fois, résultant en une complexité temporelle de O(V^2).
+Utilisation d'une liste triée ou d'un tas binaire comme file d'attente prioritaire : O(E + V log V) , où E est le nombre
+d'arêtes dans le graphe. À chaque itération, l'algorithme extrait le sommet le plus éloigné de la file d'attente prioritaire,
+ce qui prend un temps O (log V). Les mises à jour de distance pour les sommets voisins prennent un temps O(E) au
+total. Cette opération est effectuée V fois, d'où une complexité temporelle de O(V log V + E log V). Puisque E peut être au
+plus V^2, la complexité temporelle est O(E + V log V).
+COMPLEXITÉ DE L'ALGORITHME DE DIJKSTRA
+https://youtu.be/MybdP4kice4?si=RfTqyT3JmV_cMWu4
+
+ETAPES DE FONCTIONNEMENT
+Commencez avec un graphique pondéré
+Choisissez un sommet de départ et attribuez
+des valeurs de chemin à l'infini à tous les
+autres appareils
+
+ETAPES DE FONCTIONNEMENT
+Aller à chaque sommet et mettre
+à jour sa longueur de chemin
+Si la longueur du chemin du sommet
+adjacent est inférieure à la nouvelle
+longueur du chemin, ne la mettez pas à jour
+
+ETAPES DE FONCTIONNEMENT
+Évitez de mettre à jour les
+longueurs de chemin des sommets
+déjà visités
+Après chaque itération, nous sélectionnons le
+sommet non visité avec la plus petite longueur
+de chemin. Donc on choisit 5 avant 7
+
+ETAPES DE FONCTIONNEMENT
+Remarquez comment le sommet
+le plus à droite voit sa longueur de
+chemin mise à jour deux fois
+Répétez jusqu'à ce que tous les sommets
+aient été visités
+
+ON Y VA AVEC L'ALGORITHME DE DIJKSTRA
+Entrée : Source = 0
+Sortie : Sommet
+Distance du sommet à partir de la source
+0 -> 0
+1 -> 2
+2 -> 6
+3 -> 7
+4 -> 17
+5 -> 22
+6 -> 19
+
+Il est temps d'échanger et de faire
+quelques exercices rapides
+
+UN PROBLEME ?
+Tu as décidé d'aller faire un tour des Etats-Unis.
+Tu arrives à New York, tu dois faire plusieurs villes, et tu reprends l'avion de New York. Pour préparer ton voyage, tu
+veux dépenser le moins possible (temps ou argent). Tu décides de choisir le meilleur trajet pour minimiser les
+coûts, le temps, la distance.
+
+En informatique, le problème du voyageur de commerce, ou problème du commis voyageur, est un problème
+d'optimisation qui, étant donné une liste de villes, et des distances entre toutes les paires de villes, détermine un plus
+court chemin qui visite chaque ville une et une seule fois et qui termine dans la ville de départ.
+Malgré la simplicité de son énoncé, il s'agit d'un problème d'optimisation pour lequel on ne connait pas d'algorithme
+permettant de trouver une solution exacte rapidement dans tous les cas. Plus précisément, on ne connait pas
+d'algorithme en temps polynomial, et sa version décisionnelle (pour une distance D, existe-t-il un chemin plus court que
+D passant par toutes les villes et qui termine dans la ville de départ ?) est un problème NP-complet, ce qui est un indice
+de sa difficulté.
+C'est un problème algorithmique célèbre, qui a généré beaucoup de recherches et qui est souvent utilisé comme
+introduction à l'algorithmique ou à la théorie de la complexité. Il présente de nombreuses applications que ce soit en
+planification et en logistique, ou bien dans des domaines plus éloignés comme la génétique (en remplaçant les villes par
+des gènes et la distance par la similarité).
+LE VOYAGEUR
+
+LES DONNÉES
+
+LES DONNÉES
+
+AU FINAL
+Il existe différentes approches pour trouver la solution au problème du voyageur de commerce : approche naïve, approche
+gourmande, approche de programmation dynamique, etc.
