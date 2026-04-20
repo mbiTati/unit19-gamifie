@@ -43,7 +43,7 @@ interface World {
 
 const WORLDS: World[] = [
   {
-    id: 1, name: "Monde 1", title: "Explorer les ADT", lo: "LO1", emoji: "layers", color: PURPLE, glow: "#7C3AED30",
+    id: 1, name: "LO1", title: "Examine ADT, Data Structures & Algorithms", lo: "LO1", emoji: "layers", color: PURPLE, glow: "#7C3AED30",
     modules: [
       { num: 1, name: "Design Specification", criteria: "P1", game: "/monde-1/ch1-design-spec", exercise: "/exercice/ch1", type: "quiz", description: "Associez les opérations aux bons ADT" },
       { num: 2, name: "Memory Stack", criteria: "P2", game: "/monde-1/ch2-memory-stack", exercise: "/exercice/ch2", type: "simulator", description: "Simulez le call stack pas à pas" },
@@ -53,7 +53,7 @@ const WORLDS: World[] = [
     boss: { route: "/monde-1/boss-lo1", name: "Boss LO1" },
   },
   {
-    id: 2, name: "Monde 2", title: "Spécification & Conception", lo: "LO2", emoji: "scroll", color: TEAL, glow: "#0891B230",
+    id: 2, name: "LO2", title: "Specify ADT & Algorithms in Formal Notation", lo: "LO2", emoji: "scroll", color: TEAL, glow: "#0891B230",
     modules: [
       { num: 5, name: "Spec formelle & VDM/SDL", criteria: "P3", game: "/monde-2/ch5-formal-spec", exercise: "/exercice/ch5", type: "builder", description: "Notation impérative, VDM, SDL, ASN.1 + classifier les conditions" },
       { num: 6, name: "Encapsulation & Interfaces", criteria: "M3", game: "/monde-2/ch6-encapsulation", exercise: "/exercice/ch6", type: "simulator", description: "Simulateur visuel, info hiding, interfaces, héritage" },
@@ -63,7 +63,7 @@ const WORLDS: World[] = [
     boss: { route: "/monde-2/boss-lo2", name: "Boss LO2" },
   },
   {
-    id: 3, name: "Monde 3", title: "Implémenter", lo: "LO3", emoji: "code", color: ORANGE, glow: "#F9731630",
+    id: 3, name: "LO3", title: "Implement Complex Data Structures & Algorithms", lo: "LO3", emoji: "code", color: ORANGE, glow: "#F9731630",
     modules: [
       { num: 8, name: "LinkedList + HashMap", criteria: "P4a", game: "/monde-3/ch8-linkedlist-hashmap", exercise: "/exercice/ch8", type: "simulator", description: "Manipulez les structures en temps réel" },
       { num: 9, name: "Tree + Sorting", criteria: "P4b", game: "/monde-3/ch9-queue-tree-sort", exercise: "/exercice/ch9", type: "simulator", description: "Parcours d'arbre + tri pas à pas" },
@@ -73,7 +73,7 @@ const WORLDS: World[] = [
     boss: { route: "/monde-3/boss-lo3", name: "Boss LO3" },
   },
   {
-    id: 4, name: "Monde 4", title: "Évaluer l'efficacité", lo: "LO4", emoji: "chart", color: GREEN, glow: "#16A34A30",
+    id: 4, name: "LO4", title: "Assess Effectiveness of DS & Algorithms", lo: "LO4", emoji: "chart", color: GREEN, glow: "#16A34A30",
     modules: [
       { num: 12, name: "Analyse asymptotique", criteria: "P6", game: "/monde-4/ch12-asymptotic", exercise: "/exercice/ch12", type: "simulator", description: "Classer, Code→O(), Calculateur visuel, Quiz Big O" },
       { num: 13, name: "Mesurer l'efficacité", criteria: "P7", game: "/monde-4/ch13-efficiency", exercise: "/exercice/ch13", type: "quiz", description: "Benchmark temps + mémoire" },
@@ -134,7 +134,7 @@ export default function Home() {
         <div style={{ marginBottom: 8 }}><GraduationCap size={48} color="#00A896" /></div>
         <div style={{ fontSize: 12, fontWeight: 600, letterSpacing: 3, textTransform: "uppercase" as const, color: ACCENT }}>Unit 19 — Data Structures & Algorithms</div>
         <h1 style={{ fontSize: 36, fontWeight: 800, margin: "0.5rem 0", color: "white" }}>Unit 19 : Data Structures & Algorithms</h1>
-        <p style={{ color: MUTED, fontSize: 14, maxWidth: 480, margin: "0.5rem auto 1rem" }}>4 mondes, 14 chapitres, des mini-jeux interactifs</p>
+        <p style={{ color: MUTED, fontSize: 14, maxWidth: 480, margin: "0.5rem auto 1rem" }}>4 Learning Outcomes, 14 chapitres, des mini-jeux interactifs</p>
 
         {/* Stats */}
         <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" as const, marginTop: 16 }}>

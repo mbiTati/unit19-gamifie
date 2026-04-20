@@ -14,6 +14,15 @@ const DOCS = [
     { name: "Data Structures (cours)", file: "1_2024_UNIT_19_01_2_DATA_STRUCTURES_compressed.pptx", tag: "REF" },
     { name: "Algorithms (cours)", file: "2_2024_UNIT_19_01_4_ALGORITHMS_compressed.pptx", tag: "REF" },
     { name: "Pile / Stack (cours)", file: "PILE.pptx", tag: "REF" },
+    { name: "Array (cours detaille)", file: "LO1_Array.pptx", tag: "NEW" },
+    { name: "Set (cours detaille)", file: "LO1_Set.pptx", tag: "NEW" },
+    { name: "Stack - Pile (cours detaille)", file: "LO1_Stack.pptx", tag: "NEW" },
+    { name: "Queue - File (cours detaille)", file: "LO1_Queue.pptx", tag: "NEW" },
+    { name: "LinkedList (cours detaille)", file: "LO1_LinkedList.pptx", tag: "NEW" },
+    { name: "Tree - Arbre (cours detaille)", file: "LO1_Tree.pptx", tag: "NEW" },
+    { name: "Algorithmes de Tri (cours detaille)", file: "LO1_Algorithms_Sort.pptx", tag: "NEW" },
+    { name: "Algorithmes de Recherche (cours detaille)", file: "LO1_Algorithms_Search.pptx", tag: "NEW" },
+    { name: "Types d'Algorithmes (cours detaille)", file: "LO1_Algorithm_Types.pptx", tag: "NEW" },
   ]},
   { cat: "LO2 — Specification & Conception", color: "#0891B2", items: [
     { name: "Ch.5 — Formal Spec VDM/SDL", file: "Ch5_P3_Formal_Spec_Stack.pptx", tag: "P3" },
@@ -28,6 +37,11 @@ const DOCS = [
     { name: "Creation Conditions (cours)", file: "8_UNIT_19_02_04_Creation_Conditions_compressed.pptx", tag: "REF" },
     { name: "Parallelism (cours)", file: "11_UNIT_19_02_03_c_Parallelism_compressed.pptx", tag: "REF" },
     { name: "Efficiency (cours)", file: "12_UNIT_19_02_03_g_Efficiency_compressed.pptx", tag: "REF" },
+    { name: "ADT & Notation Formelle (cours detaille)", file: "LO2_ADT_Formal_Notation.pptx", tag: "NEW" },
+    { name: "SDL & VDM (cours detaille)", file: "LO2_SDL_VDM.pptx", tag: "NEW" },
+    { name: "Design Patterns Complet (cours detaille)", file: "LO2_Design_Patterns_Complete.pptx", tag: "NEW" },
+    { name: "Encapsulation & Interfaces (cours detaille)", file: "LO2_Encapsulation_Interfaces.pptx", tag: "NEW" },
+    { name: "Pre/Post/Error Conditions (cours detaille)", file: "LO2_Pre_Post_Conditions.pptx", tag: "NEW" },
   ]},
   { cat: "LO3 — Implementation & Testing", color: "#F97316", items: [
     { name: "Ch.8 — LinkedList & HashMap", file: "Ch8_P4a_LinkedList_HashMap.pptx", tag: "P4a" },
@@ -40,6 +54,9 @@ const DOCS = [
     { name: "Tests partie 2 (cours)", file: "4_UNIT_19_03_02_a_Tests_compressed.pptx", tag: "REF" },
     { name: "Techniques (cours)", file: "2_UNIT_19_03_02_c_Techniques_compressed.pptx", tag: "REF" },
     { name: "Testing Debugging Java", file: "Testing_Debugging_Java_v2.pptx", tag: "REF" },
+    { name: "HashMap (cours detaille)", file: "LO3_HashMap.pptx", tag: "NEW" },
+    { name: "Algorithmes de Graphes (cours detaille)", file: "LO3_Graph_Algorithms.pptx", tag: "NEW" },
+    { name: "Testing & JUnit 5 (cours detaille)", file: "LO3_Testing_JUnit.pptx", tag: "NEW" },
   ]},
   { cat: "LO4 — Efficacite & Complexite", color: "#D97706", items: [
     { name: "Ch.12 — Analyse asymptotique", file: "Ch12_P6_Asymptotic_Analysis.pptx", tag: "P6" },
@@ -50,6 +67,8 @@ const DOCS = [
     { name: "Big O (cours)", file: "BIG_O.pptx", tag: "REF" },
     { name: "Cours Big O complet", file: "Cours_Big_O.pptx", tag: "REF" },
     { name: "Big O Debutants", file: "Cours_Big_O_Debutants_1.pptx", tag: "REF" },
+    { name: "Big O Notation (cours detaille)", file: "LO4_Big_O_Notation.pptx", tag: "NEW" },
+    { name: "Benchmark & Mesure (cours detaille)", file: "LO4_Benchmark.pptx", tag: "NEW" },
   ]},
   { cat: "Java & Exercices", color: "#DC2626", items: [
     { name: "POO Rappels", file: "Programmation_Orientee_Objet_Rappels.pptx", tag: "JAVA" },
@@ -71,7 +90,7 @@ const DOCS = [
 
 const FICHES = ["Ch1_Fiche_Memo_ADT","Ch2_Fiche_Memo_Memory_Stack","Ch3_Fiche_Memo_FIFO_Sorting","Ch4_Fiche_Memo_Shortest_Path","Ch5_Fiche_Memo_Notation_Formelle","Ch6_Fiche_Memo_Encapsulation","Ch7_Fiche_Memo_ADT_POO","Ch8_Fiche_Memo_Design_Patterns","Ch8_Fiche_Memo_LinkedList_HashMap","Ch9_Fiche_Memo_Tree_Sorting","Ch10_Fiche_Memo_Exceptions_JUnit","Ch11_Fiche_Memo_ADT_BigO","Ch12_Fiche_Memo_Asymptotic","Ch13_Fiche_Memo_Efficiency","Ch14_Fiche_Memo_Tradeoffs"];
 
-const TC: Record<string,string> = {P1:"#F59E0B",P2:"#F59E0B",P3:"#F59E0B","P4a":"#F59E0B","P4b":"#F59E0B",P5:"#F59E0B",P6:"#F59E0B",P7:"#F59E0B","M1/M2":"#0891B2",M3:"#0891B2","M4/D3":"#0891B2","M5/D4":"#0891B2",D1:"#7C3AED",D2:"#7C3AED",REF:"#DC2626",JAVA:"#DC2626",SUP:"#64748B"};
+const TC: Record<string,string> = {P1:"#F59E0B",P2:"#F59E0B",P3:"#F59E0B","P4a":"#F59E0B","P4b":"#F59E0B",P5:"#F59E0B",P6:"#F59E0B",P7:"#F59E0B","M1/M2":"#0891B2",M3:"#0891B2","M4/D3":"#0891B2","M5/D4":"#0891B2",D1:"#7C3AED",D2:"#7C3AED",REF:"#DC2626",JAVA:"#DC2626",SUP:"#64748B",NEW:"#10B981"};
 
 export default function CoursPage() {
   const { user, student, loading, isTeacher } = useAuth();
@@ -87,7 +106,7 @@ export default function CoursPage() {
       <NavBar />
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "1rem 1.5rem" }}>
         <h1 style={{ fontSize: 22, fontWeight: 700, marginBottom: 4 }}>Documents & Cours</h1>
-        <p style={{ fontSize: 13, color: C.muted, marginBottom: 12 }}>{isTeacher ? "52 PPTX + 15 fiches memo — tout telecharger" : "15 fiches memo recapitulatives"}</p>
+        <p style={{ fontSize: 13, color: C.muted, marginBottom: 12 }}>{isTeacher ? "71 PPTX + 15 fiches memo — tout telecharger" : "15 fiches memo recapitulatives"}</p>
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Rechercher..."
           style={{ width: "100%", padding: "10px 14px", background: C.card, border: "1px solid " + C.border, borderRadius: 8, color: C.text, fontSize: 14, outline: "none", marginBottom: 16, boxSizing: "border-box" }} />
 
