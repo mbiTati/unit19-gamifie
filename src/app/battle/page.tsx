@@ -45,9 +45,6 @@ const CATEGORIES = [
 
 export default function BattlePage() {
   const { user: authUser, loading: authLoading, student } = useAuth();
-  if (authLoading) return <div style={{ minHeight: "100vh", background: C.bg, display: "flex", alignItems: "center", justifyContent: "center", color: C.muted }}>Chargement...</div>;
-  if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
-
   const [phase, setPhase] = useState<"menu"|"play"|"result">("menu");
   const [catId, setCatId] = useState("");
   const [questions, setQuestions] = useState<any[]>([]);
@@ -100,7 +97,11 @@ export default function BattlePage() {
 
   const btnColors = [C.danger, C.secondary, C.gold, C.success];
 
-  if (phase === "menu") return (
+  if (authLoading) return <div style={{ minHeight: "100vh", background: C.bg, display: "flex", alignItems: "center", justifyContent: "center", color: C.muted }}>Chargement...</div>;
+  if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
+
+  if (phase === "menu")
+ return (
     <div style={{ minHeight: "100vh", background: C.bg, color: C.text }}>
       <NavBar />
       <div style={{ maxWidth: 600, margin: "0 auto", padding: "1.5rem", textAlign: "center" }}>

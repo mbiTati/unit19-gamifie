@@ -51,9 +51,6 @@ function TreeSVG({ node, x, y, dx, highlighted }: { node: TreeNode|null; x: numb
 }
 
 export default function TreeBuilder() {
-  const { user: authUser, loading: authLoading } = useAuth();
-  if (authLoading) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
-  if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
 
   const [root, setRoot] = useState<TreeNode|null>(null);
   const [input, setInput] = useState("");

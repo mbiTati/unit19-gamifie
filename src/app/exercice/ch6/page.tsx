@@ -2,9 +2,7 @@
 import { useAuth } from "@/components/AuthProvider";
 import CodeExercise from "@/components/CodeExercise";
 export default function Ex6() {
-  const { user: authUser, loading: authLoading } = useAuth();
-  if (authLoading) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
-  if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
+  // AUTH CHECK MOVED TO AFTER HOOKS
  return <CodeExercise
   chapter={6} title="Encapsulation & Information Hiding" criteria="M3" worldColor="#0891B2" totalPoints={60}
   intro="Refactorez ce code pour ajouter l'encapsulation, les interfaces et l'information hiding."

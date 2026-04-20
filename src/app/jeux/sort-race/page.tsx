@@ -27,9 +27,6 @@ function Bars({arr,hi,color}:{arr:number[];hi?:number;color:string}){
 }
 
 export default function SortRace(){
-  const { user: authUser, loading: authLoading } = useAuth();
-  if (authLoading) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
-  if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
 
   const[mode,setMode]=useState<"menu"|"race">("menu");
   const[size,setSize]=useState(20);

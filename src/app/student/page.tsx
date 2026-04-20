@@ -13,9 +13,6 @@ function getNextLevel(xp:number){for(const l of LEVELS)if(xp<l.minXP)return l;re
 function getLevelIndex(xp:number){let i=0;for(let j=0;j<LEVELS.length;j++)if(xp>=LEVELS[j].minXP)i=j;return i;}
 
 export default function StudentHome(){
-  const { user: authUser, loading: authLoading } = useAuth();
-  if (authLoading) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
-  if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
 
   const{student,isTeacher,loading}=useAuth();
   const[gameScores,setGameScores]=useState<any[]>([]);

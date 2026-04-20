@@ -29,9 +29,6 @@ const QS=[
   {q:"Graph DFS utilise :",o:["Queue","Stack","HashMap","Array"],c:1,e:"DFS = Depth-First Search = exploration en profondeur. Utilise un Stack (ou la récursion = call stack)."},
 ];
 export default function BossLO4(){
-  const { user: authUser, loading: authLoading } = useAuth();
-  if (authLoading) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
-  if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
 
   // Track visit
   useEffect(() => { markStepComplete("boss-lo4", "visited"); }, []);

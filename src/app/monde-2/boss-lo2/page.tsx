@@ -29,9 +29,6 @@ const QS=[
   {q:"Les 3 catégories de Design Patterns GoF :",o:["Création, Structure, Comportement","Simple, Moyen, Complexe","Input, Process, Output","Data, Logic, UI"],c:0,e:"GoF : Création (comment créer), Structure (comment composer), Comportement (comment interagir)."},
 ];
 export default function BossLO2(){
-  const { user: authUser, loading: authLoading } = useAuth();
-  if (authLoading) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
-  if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
 
   // Track visit
   useEffect(() => { markStepComplete("boss-lo2", "visited"); }, []);

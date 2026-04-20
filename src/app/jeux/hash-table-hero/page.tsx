@@ -16,9 +16,6 @@ function hashFn(key: string): number {
 interface Entry { key: string; value: string; }
 
 export default function HashTableHero() {
-  const { user: authUser, loading: authLoading } = useAuth();
-  if (authLoading) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
-  if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
 
   const [table, setTable] = useState<(Entry[])[]>(Array.from({length:TABLE_SIZE},():Entry[]=>[]));
   const [keyInput, setKeyInput] = useState("");

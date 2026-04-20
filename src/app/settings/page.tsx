@@ -25,10 +25,6 @@ function getAvailableTitles(xp: number): string[] {
 }
 
 export default function SettingsPage() {
-  const { user: authUser, loading: authLoading } = useAuth();
-  if (authLoading) return <div style={{ minHeight: "100vh", background: C.bg, display: "flex", alignItems: "center", justifyContent: "center", color: C.muted }}>Chargement...</div>;
-  if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
-
   const { student, user } = useAuth();
   const xp = student?.total_xp || 0;
   const lvl = getLevel(xp);

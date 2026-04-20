@@ -2,9 +2,7 @@
 import { useAuth } from "@/components/AuthProvider";
 import CodeExercise from "@/components/CodeExercise";
 export default function Ex11() {
-  const { user: authUser, loading: authLoading } = useAuth();
-  if (authLoading) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
-  if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
+  // AUTH CHECK MOVED TO AFTER HOOKS
  return <CodeExercise
   chapter={11} title="Big O — Identifier la complexité" criteria="M4/D3" worldColor="#F97316" totalPoints={50}
   intro="Analysez la complexité Big O de ces extraits de code."

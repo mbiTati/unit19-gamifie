@@ -132,9 +132,6 @@ function SortingGame() {
 }
 
 export default function Ch9Game() {
-  const { user: authUser, loading: authLoading } = useAuth();
-  if (authLoading) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
-  if (!authUser) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
 
   // Track visit
   useEffect(() => { markStepComplete("ch9", "visited"); }, []);
