@@ -98,6 +98,8 @@ export default function ProjetsPage(){
     })();
   }, []);
 
+  const[selected,setSelected]=useState(null as string|null);
+
   if (loading || !lockChecked) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
   if (!user) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
   if (sectionLocked && !isTeacher) return (
@@ -109,11 +111,7 @@ export default function ProjetsPage(){
     </div>
   );
 
-
-
-  const[selected,setSelected]=useState(null as string|null);
-
-  const proj=selected?PROJECTS.find(p=>p.id===selected):null;
+    const proj=selected?PROJECTS.find(p=>p.id===selected):null;
 
   if(proj)return(
     <div style={{minHeight:"100vh",background:BG,color:TEXT}}>
