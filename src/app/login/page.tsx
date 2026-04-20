@@ -39,8 +39,43 @@ export default function LoginPage() {
     if (!isSupabaseConfigured) { setError("Supabase non configure"); setLoading(false); return; }
 
     if (mode === "login") {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) { setError(error.message); setLoading(false); return; }
+      // Tentative 1 : connexion normale
+      let { error } = await supabase.auth.signInWithPassword({ email, password });
+      
+      if (error) {
+        // Si "Email not confirmed" -> confirmer et reessayer
+        if (error.message.includes("not confirmed") || error.message.includes("not_confirmed")) {
+          try { await supabase.rpc("confirm_student_email", { student_email: email }); } catch {}
+          const retry = await supabase.auth.signInWithPassword({ email, password });
+          if (retry.error) { setError(retry.error.message); setLoading(false); return; }
+        }
+        // Si "Invalid credentials" -> le compte Auth n'existe peut-etre pas
+        // Creer le compte Auth + confirmer + reessayer
+        else if (error.message.includes("Invalid") || error.message.includes("invalid")) {
+          // Verifier si le profil existe dans cq_students
+          const { data: profile } = await supabase.from("cq_students").select("*").eq("email", email).single();
+          if (profile) {
+            // Le profil existe mais pas le compte Auth -> creer
+            const { data: signupData, error: signupErr } = await supabase.auth.signUp({ email, password });
+            if (!signupErr && signupData?.user) {
+              // Confirmer l'email
+              try { await supabase.rpc("confirm_student_email", { student_email: email }); } catch {}
+              // Lier auth_id
+              try { await supabase.from("cq_students").update({ auth_id: signupData.user.id }).eq("email", email); } catch {}
+              // Reessayer le login
+              const retry2 = await supabase.auth.signInWithPassword({ email, password });
+              if (retry2.error) { setError("Compte cree. Reessayez de vous connecter."); setLoading(false); return; }
+            } else {
+              setError(error.message); setLoading(false); return;
+            }
+          } else {
+            setError("Aucun compte avec cet email. Demandez au professeur."); setLoading(false); return;
+          }
+        } else {
+          setError(error.message); setLoading(false); return;
+        }
+      }
+      
       // Check role and redirect
       const { data: profile } = await supabase.from("cq_students").select("role").eq("email", email).single();
       if (profile?.role === "teacher") router.push("/teacher");
