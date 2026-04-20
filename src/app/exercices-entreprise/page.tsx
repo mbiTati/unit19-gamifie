@@ -1301,10 +1301,10 @@ export default function ExercicesEntreprise(){
     })();
   }, []);
 
-  if (loading || !lockChecked) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
-  if (!user) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
   const[expanded,setExpanded]=useState(null);
   const[showCode,setShowCode]=useState(new Set());
+  if (loading || !lockChecked) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
+  if (!user) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
 
   if (sectionLocked && !isTeacher) return (
     <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", color: "#e2e8f0", gap: 12 }}>
