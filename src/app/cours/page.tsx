@@ -74,7 +74,7 @@ const FICHES = ["Ch1_Fiche_Memo_ADT","Ch2_Fiche_Memo_Memory_Stack","Ch3_Fiche_Me
 const TC: Record<string,string> = {P1:"#F59E0B",P2:"#F59E0B",P3:"#F59E0B","P4a":"#F59E0B","P4b":"#F59E0B",P5:"#F59E0B",P6:"#F59E0B",P7:"#F59E0B","M1/M2":"#0891B2",M3:"#0891B2","M4/D3":"#0891B2","M5/D4":"#0891B2",D1:"#7C3AED",D2:"#7C3AED",REF:"#DC2626",JAVA:"#DC2626",SUP:"#64748B"};
 
 export default function CoursPage() {
-  const { user, loading } = useAuth();
+  const { user, student, loading, isTeacher } = useAuth();
   const [search, setSearch] = useState("");
 
   if (loading) return <div style={{ minHeight: "100vh", background: C.bg, display: "flex", alignItems: "center", justifyContent: "center", color: C.muted }}>Chargement...</div>;
@@ -87,11 +87,17 @@ export default function CoursPage() {
       <NavBar />
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "1rem 1.5rem" }}>
         <h1 style={{ fontSize: 22, fontWeight: 700, marginBottom: 4 }}>Documents & Cours</h1>
-        <p style={{ fontSize: 13, color: C.muted, marginBottom: 12 }}>52 PPTX + 15 fiches memo — tout telecharger</p>
+        <p style={{ fontSize: 13, color: C.muted, marginBottom: 12 }}>{isTeacher ? "52 PPTX + 15 fiches memo — tout telecharger" : "15 fiches memo recapitulatives"}</p>
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Rechercher..."
           style={{ width: "100%", padding: "10px 14px", background: C.card, border: "1px solid " + C.border, borderRadius: 8, color: C.text, fontSize: 14, outline: "none", marginBottom: 16, boxSizing: "border-box" }} />
 
-        {DOCS.map((sec, si) => {
+        {!isTeacher && (
+          <div style={{ padding: "10px 14px", background: C.gold + "10", border: "1px solid " + C.gold + "30", borderRadius: 8, marginBottom: 16, fontSize: 12, color: C.gold }}>
+            Eleve : acces aux fiches memo uniquement. Les presentations PPTX sont reservees au professeur.
+          </div>
+        )}
+
+        {isTeacher && DOCS.map((sec, si) => {
           const items = sec.items.filter(d => !q || d.name.toLowerCase().includes(q));
           if (!items.length) return null;
           return (
