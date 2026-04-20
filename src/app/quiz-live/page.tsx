@@ -61,6 +61,18 @@ export default function QuizLive() {
     })();
   }, []);
 
+  const [mode, setMode] = useState<Mode>("menu");
+  const [selectedBank, setSelectedBank] = useState<string>("structures");
+  const [sessionCode, setSessionCode] = useState("");
+  const [hostQuestions, setHostQuestions] = useState<any[]>([]);
+  const [hostIdx, setHostIdx] = useState(-1);
+  const [hostShowAnswer, setHostShowAnswer] = useState(false);
+  const [playerCode, setPlayerCode] = useState("");
+  const [playerAnswer, setPlayerAnswer] = useState<number|null>(null);
+  const [playerScore, setPlayerScore] = useState(0);
+  const [playerWaiting, setPlayerWaiting] = useState(true);
+  const [playerQ, setPlayerQ] = useState<any>(null);
+
   if (loading || !lockChecked) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
   if (!user) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
   if (sectionLocked && !isTeacher) return (
@@ -74,17 +86,6 @@ export default function QuizLive() {
 
 
 
-  const [mode, setMode] = useState<Mode>("menu");
-  const [selectedBank, setSelectedBank] = useState<string>("structures");
-  const [sessionCode, setSessionCode] = useState("");
-  const [hostQuestions, setHostQuestions] = useState<any[]>([]);
-  const [hostIdx, setHostIdx] = useState(-1);
-  const [hostShowAnswer, setHostShowAnswer] = useState(false);
-  const [playerCode, setPlayerCode] = useState("");
-  const [playerAnswer, setPlayerAnswer] = useState<number|null>(null);
-  const [playerScore, setPlayerScore] = useState(0);
-  const [playerWaiting, setPlayerWaiting] = useState(true);
-  const [playerQ, setPlayerQ] = useState<any>(null);
 
   // Host: create session
   const createSession = () => {
