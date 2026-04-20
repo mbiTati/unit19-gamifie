@@ -67,16 +67,6 @@ export default function BossFinal(){
   const[showTarget,setShowTarget]=useState(false);
   const[showConfetti,setShowConfetti]=useState(false);
 
-  if (loading || !lockChecked) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
-  if (!user) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
-  if (sectionLocked && !isTeacher) return (
-    <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", color: "#e2e8f0", gap: 12 }}>
-      <div style={{ fontSize: 48 }}>🔒</div>
-      <div style={{ fontSize: 20, fontWeight: 700 }}>Acces bloque</div>
-      <div style={{ fontSize: 13, color: "#94a3b8" }}>Cette section est verrouillee par le professeur</div>
-      <a href="/" style={{ color: "#32E0C4", marginTop: 8, textDecoration: "none" }}>Retour au Hub</a>
-    </div>
-  );
 
 
 
@@ -105,6 +95,17 @@ export default function BossFinal(){
 
   const finished=started&&(timeLeft<=0||idx>=questions.length);
   useEffect(()=>{if(finished&&timerId){clearInterval(timerId);const maxP=questions.length*25;if(score>=maxP*0.9)setShowConfetti(true)}},[finished]);
+
+  if (loading || !lockChecked) return <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>Chargement...</div>;
+  if (!user) { if (typeof window !== "undefined") window.location.href = "/login"; return null; }
+  if (sectionLocked && !isTeacher) return (
+    <div style={{ minHeight: "100vh", background: "#0a0f1a", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", color: "#e2e8f0", gap: 12 }}>
+      <div style={{ fontSize: 48 }}>🔒</div>
+      <div style={{ fontSize: 20, fontWeight: 700 }}>Acces bloque</div>
+      <div style={{ fontSize: 13, color: "#94a3b8" }}>Cette section est verrouillee par le professeur</div>
+      <a href="/" style={{ color: "#32E0C4", marginTop: 8, textDecoration: "none" }}>Retour au Hub</a>
+    </div>
+  );
 
   if(!started)return(
     <div style={{minHeight:"100vh",background:BG,color:TEXT,padding:"2rem 1rem"}}>
