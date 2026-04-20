@@ -265,20 +265,17 @@ export default function TeacherDashboard() {
                   if (!classe) { alert("Selectionnez une classe !"); return; }
                   if (!isSupabaseConfigured) { alert("Supabase non configure"); return; }
                   try {
-                    // Etape 1 : Creer le compte Auth via /auth/v1/signup
-                    const signupRes = await fetch(process.env.NEXT_PUBLIC_SUPABASE_URL + "/auth/v1/signup", {
-                      method: "POST",
-                      headers: { "apikey": process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "", "Content-Type": "application/json" },
-                      body: JSON.stringify({ email, password: "Schulz2025!" })
+                    // Etape 1 : Creer le compte Auth via supabase.auth.signUp
+                    const { data: signupData, error: signupError } = await supabase.auth.signUp({ 
+                      email, password: "Schulz2025!" 
                     });
-                    const signupData = await signupRes.json();
-                    if (signupData.error || signupData.msg) { 
-                      // Si le compte Auth existe deja, on continue quand meme pour le profil
-                      if (!signupData.msg?.includes("already") && !signupData.error?.includes("already")) {
-                        alert("Erreur Auth : " + (signupData.error || signupData.msg)); return; 
+                    if (signupError) {
+                      // Si le compte existe deja, on continue
+                      if (!signupError.message?.includes("already")) {
+                        alert("Erreur Auth : " + signupError.message); return;
                       }
                     }
-                    const authId = signupData?.id || signupData?.user?.id || null;
+                    const authId = signupData?.user?.id || null;
 
                     // Etape 2 : Creer le profil etudiant
                     const { error } = await supabase.from("cq_students").insert({ 
